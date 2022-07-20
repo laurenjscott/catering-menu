@@ -40,6 +40,10 @@ li {
 	font-weight: bold;
 }
 
+img {
+    width: 100%;
+}
+
 footer {
 	padding-top: 1rem;
 }

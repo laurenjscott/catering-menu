@@ -1,0 +1,62 @@
+html {
+	font-family: "Open Sans", sans-serif;
+	box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+	font-family: inherit;
+	box-shadow: inherit;
+}
+
+body {
+	text-align: center;
+}
+
+main {
+    padding-bottom: 2rem;
+}
+
+h2 {
+	text-transform: uppercase;
+	margin-bottom: 0;
+}
+
+h3 {
+	font-weight: 300;
+	margin-top: 0;
+	margin-bottom: 0.5rem;
+	font-size: 1rem;
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	font-weight: bold;
+}
+
+footer {
+	padding-top: 1rem;
+}
+
+.perServingorDozen {
+	font-size: 0.75rem;
+}
+
+.gluten-free {
+	display: inline-block;
+	padding: 0 0.5rem;
+	background-color: slategray;
+	color: #fff;
+	border-radius: 0.75rem;
+}
+
+.perServingorDozen,
+.gluten-free {
+	font-size: 0.75rem;
+}

@@ -7,7 +7,7 @@ html {
 *:before,
 *:after {
 	font-family: inherit;
-	box-shadow: inherit;
+	box-sizing: inherit;
 }
 
 body {
@@ -41,8 +41,78 @@ li {
 }
 
 img {
-	width: 100%;
-	max-width: 500px;
+    width: 100%;
+    max-width: 500px;
+}
+
+dialog {
+    width: 100%;
+/*    max-width: 428px;*/
+    border: 8px solid slategray;
+    font-size: 1.25rem;    
+}
+
+dialog:not([class*="unsupported"]) {
+    max-width: 428px;
+}
+
+
+dialog button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 0;
+    border-radius: 0.25rem;
+    background-color: slategray;
+    color: #FFF;
+    padding: 0.5rem 1.25rem;
+    cursor: pointer;
+    outline: 0;
+    font-size: inherit;
+}
+
+
+dialog button:focus {
+    outline: 1px solid #000;
+}
+
+dialog::backdrop {
+    background-color: rgba(0,0,0,0.4);
+}
+
+/*applies only to browsers that don't currently support <dialog>*/
+dialog.unsupported {
+    width: 100%;
+    height: 100%;
+
+}
+
+/*applies only to browsers that don't currently support <dialog>*/
+dialog.unsupported.hidden { 
+	display: none;
+}
+
+/*applies only to browsers that don't currently support <dialog>*/
+dialog.unsupported.display { 
+    background-color: rgba(0,0,0,0.4);
+    border: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+dialog.unsupported.display form {
+    background-color: #FFF;
+    border: 8px solid slategray;
+    padding: 3rem 1rem;
+    width: 100%;
+    max-width: 428px;
+
+    
 }
 
 footer {
@@ -59,9 +129,18 @@ footer {
 	background-color: slategray;
 	color: #fff;
 	border-radius: 0.75rem;
+    
 }
 
 .perServingorDozen,
 .gluten-free {
 	font-size: 0.75rem;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.dialog-title {
+    font-size: 1.5rem;
 }

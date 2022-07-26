@@ -41,8 +41,27 @@ li {
 }
 
 img {
-	width: 100%;
-	max-width: 500px;
+    width: 100%;
+    max-width: 500px;
+}
+
+dialog {
+    width: 100%;
+    max-width: 428px;
+    border: 8px solid #707070;
+    font-size: 1.25rem;
+    
+}
+
+dialog button {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 0;
+    border-radius: 0.25rem;
+    background-color: #707070;
+    color: #FFF;
+    padding: 0.5rem 1.25rem;
+    cursor: pointer;
 }
 
 footer {
@@ -59,6 +78,7 @@ footer {
 	background-color: slategray;
 	color: #fff;
 	border-radius: 0.75rem;
+    
 }
 
 .perServingorDozen,

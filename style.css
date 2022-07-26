@@ -7,7 +7,7 @@ html {
 *:before,
 *:after {
 	font-family: inherit;
-	box-shadow: inherit;
+	box-sizing: inherit;
 }
 
 body {
@@ -48,20 +48,26 @@ img {
 dialog {
     width: 100%;
     max-width: 428px;
-    border: 8px solid #707070;
-    font-size: 1.25rem;
-    
+    border: 8px solid slategray;
+    font-size: 1.25rem;    
 }
 
 dialog button {
     -webkit-appearance: none;
+    -moz-appearance: none;
     appearance: none;
     border: 0;
     border-radius: 0.25rem;
-    background-color: #707070;
+    background-color: slategray;
     color: #FFF;
     padding: 0.5rem 1.25rem;
     cursor: pointer;
+    outline: 0;
+    font-size: inherit;
+}
+
+dialog button:focus {
+    outline: 1px solid #000;
 }
 
 footer {
@@ -84,4 +90,12 @@ footer {
 .perServingorDozen,
 .gluten-free {
 	font-size: 0.75rem;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.dialog-title {
+    font-size: 1.5rem;
 }

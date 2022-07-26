@@ -2,6 +2,7 @@
 const main = document.querySelector("main");
 const dialog = document.querySelector("dialog");
 const dialogPara = document.querySelector("dialog p");
+const dialogBtn = document.querySelector("dialog button");
 
 /*Data**************/
 const json =
@@ -11,6 +12,18 @@ const menuObj = JSON.parse(json);
 
 /****************************************************/
 
+//Check if browser supports the dialog element
+if (window.HTMLDialogElement == undefined) {
+	dialog.classList.add("unsupported", "hidden");
+}
+
+dialogBtn.addEventListener("click", () => {
+    if(dialog.classList.contains("unsupported")) {
+       checkUnsupportedBrowser(hide = true);
+    } else {
+        dialog.close(); //Must do this explicitly because of the type attribute applied to the button element. Otherwise, dialog won't close in browsers that support the dialog element. See comment in HTML file
+    }
+})
 
 renderFullMenu();
 displayGFDialog();
@@ -65,7 +78,23 @@ function displayGFDialog() {
         )
     });
     if(glutenFreeMenuItems.length > 0) {
-       dialog.showModal();
+       if(dialog.classList.contains("unsupported")) {
+          checkUnsupportedBrowser(hide = false)
+        } else {
+            dialog.showModal();
+        }
        dialogPara.innerHTML = `<span class="bold dialog-title">Gluten Free?</span><br><span class="bold">Save 25%</span> on your ${glutenFreeMenuItems[Math.floor((glutenFreeMenuItems.length - 1) * Math.random())]} purchase today, ${new Intl.DateTimeFormat("en-us").format(new Date())}.`;
     }
+}
+
+//Controls visibility of element that renders when dialog isn't supported (it appears a div-like block element).
+function checkUnsupportedBrowser (hide) {
+        if (hide === false) {
+            dialog.classList.remove("hidden");
+            dialog.classList.add("display");
+        }
+        else {
+            dialog.classList.remove("display");
+            dialog.classList.add("hidden");
+        }
 }

@@ -47,10 +47,15 @@ img {
 
 dialog {
     width: 100%;
-    max-width: 428px;
+/*    max-width: 428px;*/
     border: 8px solid slategray;
     font-size: 1.25rem;    
 }
+
+dialog:not([class*="unsupported"]) {
+    max-width: 428px;
+}
+
 
 dialog button {
     -webkit-appearance: none;
@@ -66,8 +71,48 @@ dialog button {
     font-size: inherit;
 }
 
+
 dialog button:focus {
     outline: 1px solid #000;
+}
+
+dialog::backdrop {
+    background-color: rgba(0,0,0,0.4);
+}
+
+/*applies only to browsers that don't currently support <dialog>*/
+dialog.unsupported {
+    width: 100%;
+    height: 100%;
+
+}
+
+/*applies only to browsers that don't currently support <dialog>*/
+dialog.unsupported.hidden { 
+	display: none;
+}
+
+/*applies only to browsers that don't currently support <dialog>*/
+dialog.unsupported.display { 
+    background-color: rgba(0,0,0,0.4);
+    border: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+dialog.unsupported.display form {
+    background-color: #FFF;
+    border: 8px solid slategray;
+    padding: 3rem 1rem;
+    width: 100%;
+    max-width: 428px;
+
+    
 }
 
 footer {

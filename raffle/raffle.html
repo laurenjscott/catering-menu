@@ -1,31 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Catering Menu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&amp;display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="./style.css">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Virtual Raffle</title>
+	<link rel="stylesheet" href="./raffle.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet"> 
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet"> 
 
 </head>
 <body>
-<main>
-	<h1>Menu</h1>
-</main>
-<img src="./dose-juice-sTPy-oeA3h0-unsplash.jpg" alt="An arrangement of green vegtables lying flat on a table" width="480">
-<dialog>
-    <form method="dialog">
-        <p></p>
-        <button type="button">Got it!</button> <!--must include type attribute so that browsers that support the dialog element will be able to close the dialog-->
-    </form>
-</dialog>
-<footer>
-	<small>Standard rates and minimums apply.</small>
-</footer>
-<script src="./script.js"></script>
+	<header>
+		<h1>Virtual Raffle</h1>   
+	</header>
+	<main>
+		<section>
+			<h2>Raffle Entrants</h2>
+			<ul></ul>
+		</section>
+	</main>
+	<button id="clear-storage-button" type="button">Clear Previous Winners</button>
+	<button id="refresh-button" type="button">Pick Winner</button>
+	<aside>
+		<h2>Previous Winners: 0</h2>
+		<ul></ul>
+	</aside>
+	<dialog>
+		<form method="dialog">
+            <p>Are you sure? This is a permanent action.</p>
+			<button>Yes, clear winners</button>
+			<button autofocus>No, cancel</button>
+		</form>
 
+	</dialog>	
 </body>
+    <script src="./raffle.js"></script>
 </html>

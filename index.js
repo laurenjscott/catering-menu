@@ -1,6 +1,4 @@
-const submitButton = document.querySelector("button");
-
-function submitEntries() {
+const submitEntries = () => {
     const allInputs = document.querySelectorAll("input");
     const inputValues = [];
     const allInputsArray = [...allInputs];
@@ -18,12 +16,28 @@ function submitEntries() {
         alert("Each name must contain at least two letters!");
         return;
     }
-    //No duplicates?       
-//    } else if() {
-//        
-//    } else {
-//        
-//    }
+    //No duplicates?    
+    const dupeCountsObj = {};
+    inputValues.forEach(value => {dupeCountsObj[value.toLowerCase()] = (dupeCountsObj[value.toLowerCase()] || 0) + 1});
+    const dupeCountsArray = Object.values(dupeCountsObj);
+    const isDupe = dupeCountsArray.some(count => count > 1 );
+    if(isDupe) {
+        alert("No duplicate entries allowed!");
+        return;
+    } else {
+          const entriesObj = {"raffleEntries": ""};
+          const valueArray = [];
+          for(let i = 0; i < inputValues.length; i++ ) {
+              valueArray.push({firstName: inputValues[i], entryID: i + 1});
+          }
+          entriesObj.raffleEntries = valueArray;
+          //Save form data to session storage. It only accepts strings.
+          sessionStorage.setItem("raffleEntries", JSON.stringify(entriesObj));
+          window.location.assign("./raffle/raffle.html");
+
+    }
 }
 
-submitButton.addEventListener("click", (event) => submitEntries());
+
+const submitButton = document.querySelector("button");
+submitButton.addEventListener("click", () => submitEntries());

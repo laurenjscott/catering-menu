@@ -1,91 +1,168 @@
-/*Elements**************/
-const main = document.querySelector("main");
+
+/*Variables***********************************/
+//Elements
+const mainUl = document.querySelector("main ul");
+const asideH2 = document.querySelector("aside h2");
+const asideUl = document.querySelector("aside ul");
+const pickWinnerButton = document.querySelector("button#refresh-button");
+const clearStorageButton = document.querySelector(
+	"button#clear-storage-button"
+);
 const dialog = document.querySelector("dialog");
-const dialogPara = document.querySelector("dialog p");
-const dialogBtn = document.querySelector("dialog button");
+const yesClearStorageButton = document.querySelector(
+	"dialog button:first-of-type"
+);
+const noCancelButton = document.querySelector(
+	"dialog button:last-child");
 
-/*Data**************/
-const json =
-  '{ "menu" : { "Appetizers" : { "generalDescription" : "Minimum 2 dozen", "menuItems" : [ { "glutenFree" : false, "itemName" : "Mini Crab Cakes", "perDozen" : true, "perServing" : false, "price" : 34.99 }, { "glutenFree" : true, "itemName" : "Beef Tenderloin Skewers w/Chimichurri Sauce", "perDozen" : true, "perServing" : false, "price" : 29.99 }, { "glutenFree" : true, "itemName" : "Jumbo Shrimp Cocktail", "perDozen" : true, "perServing" : false, "price" : 29.99 }, { "glutenFree" : false, "itemName" : "Mini Onion Tartlets", "perDozen" : true, "perServing" : false, "price" : 19.99 }, { "glutenFree" : false, "itemName" : "Spinach Tartlets", "perDozen" : true, "perServing" : false, "price" : 19.99 }, { "glutenFree" : true, "itemName" : "Maple Glazed Bacon Wrapped Chicken", "perDozen" : true, "perServing" : false, "price" : 19.99 }, { "glutenFree" : true, "itemName" : "Bacon Wrapped Dates", "perDozen" : true, "perServing" : false, "price" : 19.99 }, { "glutenFree" : false, "itemName" : "Locally Sourced Cheese Board", "perDozen" : false, "perServing" : true, "price" : 7.99 }, { "glutenFree" : false, "itemName" : "Vegetable Crudite Platter", "perDozen" : false, "perServing" : true, "price" : 4.99 } ] }, "Soups & Salads" : { "generalDescription" : "Prices per serving", "menuItems" : [ { "glutenFree" : true, "itemName" : "Winter Apple Kale Salad", "price" : 4.99 }, { "glutenFree" : false, "itemName" : "Spinach and Bacon Salad", "price" : 4.99 }, { "glutenFree" : true, "itemName" : "Raspberry Vinaigrette Salad", "price" : 3.99 }, { "glutenFree" : true, "itemName" : "Butternut Squash Soup", "price" : 3.99 }, { "glutenFree" : false, "itemName" : "Chicken and Wild Rice Soup", "price" : 3.99 } ] }, "Entrees" : { "generalDescription" : "Served with fresh baked rolls and whipped butter. Prices per serving", "menuItems" : [ { "glutenFree" : false, "itemName" : "Jumbo Lump Crab Cakes with Remoulade Sauce", "price" : 16.99 }, { "glutenFree" : true, "itemName" : "USDA Choice Filet Mignon w/ Port Reduction", "price" : 14.99 }, { "glutenFree" : true, "itemName" : "Herb Grilled Salmon w/ Fresh Dill Sauce", "price" : 14.99 }, { "glutenFree" : false, "itemName" : "Lobster Ravioli", "price" : 14.99 }, { "glutenFree" : true, "itemName" : "Spiral Cut Ham w/ Maple Honey Glaze", "price" : 12.99 }, { "glutenFree" : false, "itemName" : "Smoked Turkey w/ Homemade Gravy", "price" : 12.99 }, { "glutenFree" : false, "itemName" : "Butternut Squash Ravioli w/ Sage Cream Sauce ", "price" : 12.99 } ] }, "Sides" : { "generalDescription" : "All sides $3.99 per serving", "menuItems" : [ { "glutenFree" : true, "itemName" : "Wild Rice Pilaf w/ Cranberries and Almonds" }, { "glutenFree" : true, "itemName" : "Winter Root Vegetable Medley" }, { "glutenFree" : true, "itemName" : "Green Bean Casserole w/ Frizzled Onions" }, { "glutenFree" : false, "itemName" : "Baked Four Cheese Macaroni" }, { "glutenFree" : true, "itemName" : "Cheddar Mashed Potatoes" }, { "glutenFree" : false, "itemName" : "Sourdough Stuffing" }, { "glutenFree" : true, "itemName" : "Pecan Crusted Mashed Sweet Potatoes" } ] } } }';
+//JSON data
+//const json =
+//	'{"raffleEntries":[{"entryID": 1, "firstName": "Heather"}, {"entryID": 2, "firstName": "Akilah"}, {"entryID": 3, "firstName": "Marcus"},{"entryID": 4, "firstName": "Jacob"},{"entryID": 5, "firstName": "Erika"}]}';
+//const entries = JSON.parse(json);
+const entries = JSON.parse(sessionStorage.getItem("raffleEntries"));
 
-const menuObj = JSON.parse(json);
+//Local storage stuff
+let localStorageWinners = localStorage.getItem("raffleWinners")
+	? JSON.parse(localStorage.getItem("raffleWinners"))
+	: undefined;
+let allRaffleWinners = [];
+if (localStorageWinners) {
+	allRaffleWinners = localStorageWinners;
+}
 
-/****************************************************/
+//Used to save winner of raffle
+let currentWinner;
+
+
+
+/***************************************************************************/
+
+//Enable or disable "ClearWinners" button. If enabled, add event listerner to button thst opens dialog element
+if (localStorageWinners) {
+    clearStorageButton.classList.add("enabled-button");
+    clearStorageButton.addEventListener("click", clearStorageButtonFunction);
+    clearStorageButton.removeAttribute("aria-disabled");
+} else {
+     clearStorageButton.classList.add("disabled-button");
+     clearStorageButton.setAttribute("aria-disabled", "true");
+}
+
+
+//render list of entries
+entries.raffleEntries.forEach((item) => {
+	let li = document.createElement("li");
+	li.setAttribute("data-name", item.firstName);
+	li.textContent = item.firstName;
+	mainUl.appendChild(li);
+});
+
+//render list of previous winners
+if (localStorageWinners) {
+	localStorageWinners.forEach((item) => {
+		let li = document.createElement("li");
+		li.setAttribute("data-name", item.firstName);
+		li.textContent = `${item.firstName}, ${Intl.DateTimeFormat("en-US", {
+			dateStyle: "full",
+			timeStyle: "long"
+		}).format(new Date(item.winDate))}`;
+		asideUl.appendChild(li);
+	});
+	asideH2.textContent = `Previous Winners: ${allRaffleWinners.length}`;
+}
+
+/**********************************************************/
 
 //Check if browser supports the dialog element
 if (window.HTMLDialogElement == undefined) {
 	dialog.classList.add("unsupported", "hidden");
 }
 
-dialogBtn.addEventListener("click", () => {
-    if(dialog.classList.contains("unsupported")) {
-       checkUnsupportedBrowser(hide = true);
-    } else {
-        dialog.close(); //Must do this explicitly because of the type attribute applied to the button element. Otherwise, dialog won't close in browsers that support the dialog element. See comment in HTML file
+/*Other Event Listeners************************************/
+
+//Pick Winner button
+pickWinnerButton.addEventListener("click", () => {
+	pickWinner();
+});
+
+
+//"Yes" button in dialog
+yesClearStorageButton.addEventListener("click", () => {
+	localStorage.removeItem("raffleWinners");
+	asideUl.innerHTML = "";
+	asideH2.textContent = `Previous Winners: 0`;
+    if (dialog.classList.contains("unsupported")) {
+        checkUnsupportedBrowser(hide = true);
+     }
+    toggleClearStorageButtonState();
+	
+});
+
+//"No" button in dialog
+noCancelButton.addEventListener("click", () => {
+    if (dialog.classList.contains("unsupported")) {
+        checkUnsupportedBrowser(hide = true);
+     }
+    toggleClearStorageButtonState();
+
+});
+
+
+/************Functions**************************************/
+
+function pickWinner() {
+	//add a randomNumber key and value to each raffle entry object
+	entries.raffleEntries.forEach((item) => {
+		item.randomNumber = Math.random();
+	});
+	//add previous winner to previous winner list, if applicable
+	if (currentWinner) {
+		let li = document.createElement("li");
+		li.setAttribute("data-name", currentWinner.firstName);
+		li.textContent = `${currentWinner.firstName}, ${Intl.DateTimeFormat("en-US", {
+			dateStyle: "full",
+			timeStyle: "long"
+		}).format(new Date(currentWinner.winDate))}`;
+		asideUl.appendChild(li);
+		asideH2.textContent = `Previous Winners: ${asideUl.childNodes.length}`;
+	}
+	//Who has the lowest random number? Tell it to the console.
+	currentWinner = entries.raffleEntries.reduce((previousMinEntry, entry) =>
+		Math.abs(previousMinEntry.randomNumber) < Math.abs(entry.randomNumber)
+			? previousMinEntry
+			: entry
+	);
+	console.log(
+		`Congratulations, ${currentWinner.firstName}! You are the raffle winner!`
+	);
+
+	//highlight winner and push winner to local storage
+	highlightAndPush(currentWinner);
+    
+    //enables or disables "Clear Winners" button based on local storage value. Caveat: don't toggle local storage was previously empty prior to function execution
+    if (JSON.parse(localStorage.raffleWinners).length > 1) {
+        toggleClearStorageButtonState();
     }
-})
-
-renderFullMenu();
-displayGFDialog();
-
-/*Functions*************************/
-function renderFullMenu() {
-  Object.keys(menuObj.menu).forEach((key) => {
-    //create an article and append it to main
-    let article = document.createElement("article");
-    main.appendChild(article);
-    //Add a heading
-    let h2 = document.createElement("h2");
-    h2.textContent = key;
-    article.appendChild(h2);
-    //Add a subheading
-    let h3 = document.createElement("h3");
-    h3.textContent = menuObj.menu[key].generalDescription;
-    article.appendChild(h3);
-    renderMenuItems(key, article);
-  });
+    
 }
 
-function renderMenuItems(key, article) {
-  let ul = document.createElement("ul");
-  article.appendChild(ul);
-  menuObj.menu[key].menuItems.forEach((item) => {
-    let li = document.createElement("li");
-    li.innerHTML = `<span class="menuItemName">${item.itemName}</span>	
-		${item.price != undefined ? Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(item.price)
-				: ""}
-		${
-			item.glutenFree === true
-				? '<span class="gluten-free" title="This item is gluten free!" aria-label="gluten free">GF</span>'
-				: ""
-		}	
-		<span class="perServingorDozen">${
-			item.perServing === true ? "serving" : item.perDozen === true ? "dozen" : ""
-		}</span>`;
-    ul.appendChild(li);
-  });
+
+function highlightAndPush(currentWinner) {
+	//add a timestamp to raffle winner object
+	currentWinner.winDate = new Date();
+	//add currentWinner to allRaffleWinners array
+	allRaffleWinners.push(currentWinner);
+	//Local storage only accepts strings
+	localStorage.setItem("raffleWinners", JSON.stringify(allRaffleWinners));
+	//remove highlight from previous winner
+	if (document.querySelector("li.highlight") != null) {
+		document.querySelector("li.highlight").classList.remove("highlight");
+	}
+	//Finally, highlight the winner visually
+	document
+		.querySelector(`li[data-name='${currentWinner.firstName}']`)
+		.classList.add("highlight");
 }
 
-function displayGFDialog() {
-    const glutenFreeMenuItems = [];
-        Object.keys(menuObj.menu).forEach(
-            key => {menuObj.menu[key].menuItems.forEach(
-                menuItem => {
-                    if(menuItem.glutenFree === true) {
-                        glutenFreeMenuItems.push(menuItem.itemName);
-                }
-            }
-        )
-    });
-    if(glutenFreeMenuItems.length > 0) {
-       if(dialog.classList.contains("unsupported")) {
-          checkUnsupportedBrowser(hide = false)
-        } else {
-            dialog.showModal();
-        }
-       dialogPara.innerHTML = `<span class="bold dialog-title">Gluten Free?</span><br><span class="bold">Save 25%</span> on your ${glutenFreeMenuItems[Math.floor((glutenFreeMenuItems.length - 1) * Math.random())]} purchase today, ${new Intl.DateTimeFormat("en-us").format(new Date())}.`;
-    }
-}
 
 //Controls visibility of element that renders when dialog isn't supported (it appears a div-like block element).
 function checkUnsupportedBrowser (hide) {
@@ -97,4 +174,34 @@ function checkUnsupportedBrowser (hide) {
             dialog.classList.remove("display");
             dialog.classList.add("hidden");
         }
+}
+
+
+//Toggle state of and script action applied to "Clear Winners" button. Executed after clicking the "Clear Winners" button
+function toggleClearStorageButtonState () {
+    if (localStorage.raffleWinners) {
+        if (clearStorageButton.classList.contains("disabled-button")) {
+            clearStorageButton.classList.replace("disabled-button", "enabled-button");
+            clearStorageButton.addEventListener("click", clearStorageButtonFunction);
+            clearStorageButton.removeAttribute("aria-disabled");
+        }
+    } else {
+         if (clearStorageButton.classList.contains("enabled-button")) {
+            clearStorageButton.classList.replace("enabled-button", "disabled-button");
+            clearStorageButton.removeEventListener("click", clearStorageButtonFunction);
+            clearStorageButton.setAttribute("aria-disabled", "true");
+
+        }
+    }
+}
+
+function clearStorageButtonFunction () {
+	//Note: dialog closes automatically since its form child element has an attribute value of "dialog"
+    
+        if (dialog.classList.contains("unsupported")) {
+            checkUnsupportedBrowser(hide = false); //if browser doesn't support dialog element, run function that controls visibility of the element that the browser replaces the dialog  – a div-like block element.
+        } else {
+            setTimeout(() =>  {dialog.showModal();}, 500); // a delay is needed to avoid "bug" where double-clicking on this button causes "double tap to zoom" is be enabled on iOS when the dialog is opened. Touch action rules applied in CSS are ignored as long as the dialog is open.
+
+        }    
 }

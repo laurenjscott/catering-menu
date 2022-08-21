@@ -16,14 +16,24 @@
 	<h1>Menu</h1>
 </main>
 <img src="dose-juice-sTPy-oeA3h0-unsplash.jpg" alt="An arrangement of green vegtables lying flat on a table" width="480">
-<dialog>
+<dialog aria-live="polite" aria-label="Gluten Free?" aria-describedby="dialog-text">
     <form method="dialog">
-        <p></p>
+        <p id="dialog-text"></p>
         <button type="button">Got it!</button> <!--must include type attribute so that browsers that support the dialog element will be able to close the dialog-->
     </form>
 </dialog>
 <footer>
 	<small>Standard rates and minimums apply.</small>
+    <address>
+        <p>N9ne Caterers<br>
+           2400 West Michigan Avenue<br>
+           Chicago, IL 60647    
+        </p>
+        <p>1-312-555-5555</p>
+        <p><a href="">info@example.com</a></p>
+    </address>
+    <p>&copy; 2022 NN Hospitality Group, LLC.</p>
+
 </footer>
 <script src="./index.js"></script>
 

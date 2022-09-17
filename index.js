@@ -5,6 +5,7 @@ const dialogPara = document.querySelector("dialog p");
 const dialogBtn = document.querySelector("dialog button");
 
 /*Data**************/
+let response;
 let menuObj;
 
 /****************************************************/
@@ -26,8 +27,17 @@ renderFullMenu();
 
 /*Functions*************************/
 async function renderFullMenu() {
-    const response = await fetch('./nf-catering-menu.json');
-    menuObj = await response.json();
+    
+    try {
+//      await retrieveData();
+        response = await fetch('./nf-catering-menu.json');
+        menuObj = await response.json();
+//      throw new TypeError("testError");
+    }
+    catch (error) {
+      console.log(error);
+      return;
+    }
     Object.keys(menuObj.menu).forEach((key) => {
       //create an article and append it to main
       let article = document.createElement("article");
@@ -42,8 +52,23 @@ async function renderFullMenu() {
       article.appendChild(h3);
       renderMenuItems(key, article);
     });
-    setTimeout(displayGFDialog, 10000) ;
+    setTimeout(displayGFDialog, 10000);
 }
+
+//function retrieveData() {
+//    return new Promise((resolve, reject) => {
+//        response = fetch('./nf-catering-menu.json').then(response => {menuObj = response.json()});
+//        console.log(menuObj);
+//        if (response) {
+//            resolve(console.log("It works!"));
+//        } else {
+//            reject(console.log("Didn't work!"));
+//        }
+//        
+//    })
+//    response = fetch('./nf-catering-menu.json');
+//    menuObj = response.json();
+//}
 
 function renderMenuItems(key, article) {
   let ul = document.createElement("ul");

@@ -1,6 +1,8 @@
 html {
 	font-family: "Open Sans", sans-serif;
 	box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 *,
@@ -13,6 +15,23 @@ html {
 body {
 	text-align: center;
 }
+
+header {
+    text-align: left;
+
+
+}
+
+header a {
+    color: inherit;
+    padding: 2rem 1rem 2rem 0;
+}
+
+header a:hover {
+    font-weight: bold;
+}
+
+
 
 main {
     padding-bottom: 2rem;
@@ -47,7 +66,6 @@ img {
 
 dialog {
     width: 100%;
-/*    max-width: 428px;*/
     border: 8px solid slategray;
     font-size: 1.25rem;    
 }

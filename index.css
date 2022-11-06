@@ -1,146 +1,40 @@
-html {
-	font-family: "Open Sans", sans-serif;
-	box-sizing: border-box;
-}
+*, *:before, *:after {
+    box-sizing: border-box;
+    text-align: center;
+    font-family: "Open Sans", sans-serif;
 
-*,
-*:before,
-*:after {
-	font-family: inherit;
-	box-sizing: inherit;
 }
 
 body {
-	text-align: center;
-}
-
-main {
-    padding-bottom: 2rem;
-}
-
-h2 {
-	text-transform: uppercase;
-	margin-bottom: 0;
-}
-
-h3 {
-	font-weight: 300;
-	margin-top: 0;
-	margin-bottom: 0.5rem;
-	font-size: 1rem;
-}
-
-ul {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-li {
-	font-weight: bold;
-}
-
-img {
-    width: 100%;
-    max-width: 500px;
-}
-
-dialog {
-    width: 100%;
-/*    max-width: 428px;*/
-    border: 8px solid slategray;
-    font-size: 1.25rem;    
-}
-
-dialog:not([class*="unsupported"]) {
-    max-width: 428px;
-}
-
-
-dialog button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border: 0;
-    border-radius: 0.25rem;
-    background-color: slategray;
-    color: #FFF;
-    padding: 0.5rem 1.25rem;
-    cursor: pointer;
-    outline: 0;
-    font-size: inherit;
-}
-
-
-dialog button:focus {
-    outline: 1px solid #000;
-}
-
-dialog::backdrop {
-    background-color: rgba(0,0,0,0.4);
-}
-
-/*applies only to browsers that don't currently support <dialog>*/
-dialog.unsupported {
-    width: 100%;
-    height: 100%;
-
-}
-
-/*applies only to browsers that don't currently support <dialog>*/
-dialog.unsupported.hidden { 
-	display: none;
-}
-
-/*applies only to browsers that don't currently support <dialog>*/
-dialog.unsupported.display { 
-    background-color: rgba(0,0,0,0.4);
-    border: 0;
-    position: fixed;
-    top: 0;
-    left: 0;
+    box-sizing: inherit;
+    font-family: inherit;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-
 }
 
-dialog.unsupported.display form {
-    background-color: #FFF;
-    border: 8px solid slategray;
-    padding: 3rem 1rem;
-    width: 100%;
-    max-width: 428px;
-
-    
-}
-
-footer {
-	padding-top: 1rem;
-}
-
-.perServingorDozen {
-	font-size: 0.75rem;
-}
-
-.gluten-free {
-	display: inline-block;
-	padding: 0 0.5rem;
-	background-color: slategray;
+h1 + a {
+	background-color: fuchsia;
 	color: #fff;
+	outline: 0;
+	padding: 1.5rem 2rem;
 	border-radius: 0.75rem;
+	cursor: pointer;
+	font-size: inherit;
+	display: block;
+	width: 100%;
+	max-width: 600px;
+	min-width: 400px;
+	font-weight: bold;
+    text-decoration: none;
     
 }
 
-.perServingorDozen,
-.gluten-free {
-	font-size: 0.75rem;
+h1 + a:hover {
+	background-color: hotpink;
 }
 
-.bold {
-    font-weight: bold;
-}
-
-.dialog-title {
-    font-size: 1.5rem;
+h1 + a:focus {
+	outline: 1px solid #707070;
 }

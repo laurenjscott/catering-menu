@@ -1,0 +1,40 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+    text-align: center;
+    font-family: "Open Sans", sans-serif;
+
+}
+
+body {
+    box-sizing: inherit;
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 + a {
+	background-color: fuchsia;
+	color: #fff;
+	outline: 0;
+	padding: 1.5rem 2rem;
+	border-radius: 0.75rem;
+	cursor: pointer;
+	font-size: inherit;
+	display: block;
+	width: 100%;
+	max-width: 600px;
+	min-width: 400px;
+	font-weight: bold;
+    text-decoration: none;
+    
+}
+
+h1 + a:hover {
+	background-color: hotpink;
+}
+
+h1 + a:focus {
+	outline: 1px solid #707070;
+}

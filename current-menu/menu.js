@@ -2,20 +2,20 @@
 const main = document.querySelector("main");
 const dialog = document.querySelector("dialog");
 const dialogPara = document.querySelector("dialog p");
-const dialogBtn = document.querySelector("dialog button");
+const dialogBtn = document.querySelector("dialog button"); //close button
 
 /*Data**************/
-let response;
-let menuObj;
+let response; //will eventually store the response returned when querying a JSON file for a JSON catering menu object
+let menuObj; //will eventually store the JSON catering menu object that was created from the JSON file
 
 /****************************************************/
 
 //Check if browser supports the dialog element
 if (window.HTMLDialogElement == undefined) {
-	dialog.classList.add("unsupported", "hidden");
+	dialog.classList.add("unsupported", "hidden"); //mostly intended for Safari 15.3 (or maybe 15.4???) and lower since those version don't support the <dialog> element
 }
 
-dialogBtn.addEventListener("click", () => {
+dialogBtn.addEventListener("click", () => {//If <dialog> is supported, then close the element. Else, run a function that will control the visibility of the dialog element's substitute used in unsupported browsers. When run with a "hide=true" argument, the substitute block element is hidden.
     if(dialog.classList.contains("unsupported")) {
        checkUnsupportedBrowser(hide = true);
     } else {
@@ -23,22 +23,21 @@ dialogBtn.addEventListener("click", () => {
     }
 })
 
-renderFullMenu();
+renderFullMenu(); //runs on window load. Rends the menu's data
 
 /*Functions*************************/
 async function renderFullMenu() {
     
     try {
-//      await retrieveData();
-        response = await fetch('./nf-catering-menu.json');
-        menuObj = await response.json();
-//      throw new TypeError("testError");
+        response = await fetch('./nf-catering-menu.json'); //returns a string
+        menuObj = await response.json();  // converts response into a JS object. See if "await" this is even neccessary.
     }
     catch (error) {
-      console.log(error);
+      console.log(error);//This returns an error if something bad occurred while fetching data from the JSON file. The page load won't break instantly but an error will be placed in the console. Also, the function will quit after the error is logged.
       return;
     }
-    Object.keys(menuObj.menu).forEach((key) => {
+    //At this point, the response has to be 200 to proceed. That means the JSON catering menu object was successfully retrieved from the JSON file and stored in the menuObj variable
+    Object.keys(menuObj.menu).forEach((key) => { //loop through all categories in the menu object. "key" is the individual menu category
       //create an article and append it to main
       let article = document.createElement("article");
       main.appendChild(article);
@@ -50,9 +49,9 @@ async function renderFullMenu() {
       let h3 = document.createElement("h3");
       h3.textContent = menuObj.menu[key].generalDescription;
       article.appendChild(h3);
-      renderMenuItems(key, article);
+      renderMenuItems(key, article);//sub-function that adds menu items for the current category
     });
-    setTimeout(displayGFDialog, 10000);
+    setTimeout(displayGFDialog, 10000); //wait 10 seconds and then display "gluten-free deal of the day" dialog element
 }
 
 //function retrieveData() {
@@ -70,7 +69,7 @@ async function renderFullMenu() {
 //    menuObj = response.json();
 //}
 
-function renderMenuItems(key, article) {
+function renderMenuItems(key, article) {// sub-function of renderFullMenu() function. Loops thru each of the categories' individual menu items. "key" is the category's name. and "article" is the HTML article element that represents the category in the DOM.
   let ul = document.createElement("ul");
   article.appendChild(ul);
   menuObj.menu[key].menuItems.forEach((item) => {
@@ -90,18 +89,18 @@ function renderMenuItems(key, article) {
   });
 }
 
-function displayGFDialog() {
-    const glutenFreeMenuItems = [];
-        Object.keys(menuObj.menu).forEach(
-            key => {menuObj.menu[key].menuItems.forEach(
-                menuItem => {
-                    if(menuItem.glutenFree === true) {
+function displayGFDialog() { // displays a dialog showing the gluten free special of the day
+    const glutenFreeMenuItems = []; //will eventually hold the gluten-free menu items
+        Object.keys(menuObj.menu).forEach( //loop through all menu categories
+            key => {menuObj.menu[key].menuItems.forEach( //sub-loop through a menu category's menu items. "key" is the individual menu category
+                menuItem => { //an individual menu item in a category
+                    if(menuItem.glutenFree === true) { // push to glutenFreeMenuItems array if menu item is gluten free
                         glutenFreeMenuItems.push(menuItem.itemName);
                 }
             }
         )
     });
-    dialogPara.innerHTML = `<span class="bold dialog-title">Gluten Free?</span><br><span class="bold">Save 25%</span> on your ${glutenFreeMenuItems[Math.floor((glutenFreeMenuItems.length - 1) * Math.random())]} purchase today, ${new Intl.DateTimeFormat("en-us").format(new Date())}.`;
+    dialogPara.innerHTML = `<span class="bold dialog-title">Gluten Free?</span><br><span class="bold">Save 25%</span> on your ${glutenFreeMenuItems[Math.floor((glutenFreeMenuItems.length - 1) * Math.random())]} purchase today, ${new Intl.DateTimeFormat("en-us").format(new Date())}.`; // represents text that is displayed in the gluten free dialog. The special of the day is randomly assigned.
     
     if(glutenFreeMenuItems.length > 0) {
        if(dialog.classList.contains("unsupported")) {
@@ -110,6 +109,8 @@ function displayGFDialog() {
             dialog.showModal();
         }
     }
+    
+    console.log(glutenFreeMenuItems);
 }
 
 //Controls visibility of element that renders when dialog isn't supported (it appears a div-like block element).

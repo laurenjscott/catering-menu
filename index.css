@@ -30,7 +30,7 @@ a:hover {
 
 main {
     height: calc(100vh - 4.25rem); /*subtracts height of h1 in header*/
-    background: center / cover no-repeat url("assets/charcuterie.jpg");
+    background: center / cover no-repeat url("assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg");
     display: flex;
     flex-direction: column;
     justify-content:flex-end;

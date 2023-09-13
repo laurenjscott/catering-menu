@@ -1,0 +1,205 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5rem 0.5rem 0;
+}
+
+header div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    border: 1px solid #000;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    border-radius: 0.75rem;
+
+}
+
+main > div:first-of-type {
+    background: center / cover no-repeat url("../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg");
+    height: 20vh;
+    color: #FFF;
+    margin-bottom: 1rem;
+}
+
+
+h1 {
+    margin-left: 0.5rem;
+}
+
+input:invalid, select:invalid {
+    border-color: #F00;
+}
+
+
+main > section:first-of-type, footer {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    
+}
+
+
+
+main select, main input {
+    border: 1px solid #000;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
+    background-color: #FFF;
+    font-size: 85%;
+}
+
+
+
+dialog {
+    padding: 0;
+    border: 0;
+}
+
+dialog::backdrop {
+    background-color: #707070;
+    opacity: 0.75;
+}
+
+
+dialog > button:first-of-type {
+    position: absolute;
+    top:  0.5rem;
+    right: 0.5rem;
+    color: #FFF;
+    
+}
+
+dialog section:first-of-type {
+    background: center / cover no-repeat url("../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg");
+    height: 10rem; 
+    margin-bottom: 2rem;
+}
+
+
+dialog form > *:not(hr) {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+dialog label:first-of-type {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+}
+
+dialog form hr {
+	border: 0.5px solid gray;
+	margin-bottom: 1rem;
+}
+
+dialog form p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+dialog form hr {
+    margin-bottom: 2rem;
+}
+
+dialog textarea {
+    resize: none;
+    width: calc(100% - 1rem); /* As of 2022-09-12, Chrome and Safari seems ignore the "cols" and "row" attribute values, so I have to set textarea siize manually with CSS. Also, setting the width to 100% by itself causes the textarea to overflow the form in all browsers since it seems like box-sizing is ignored and width doesn't take it consideration the margins */
+    height: 8rem;
+}
+
+
+dialog input[type="number"] {
+	/*for firefox*/
+	-moz-appearance: textfield;
+}
+
+
+dialog input[type="number"]:disabled {
+	width: 3rem;
+	-webkit-text-fill-color: #fff; /*safari only. see here https://stackoverflow.com/questions/57085123/targeting-disabled-field-in-safari-with-css */
+	text-align: center;
+    padding: 0.25rem 0.5rem;
+}
+
+/*hide spinner next to number input*/
+dialog input::-webkit-outer-spin-button,
+dialog input::-webkit-inner-spin-button {
+	/* for chrome and safari*/
+	-webkit-appearance: none;
+}
+
+dialog #quantity-section {
+	display: flex;
+	justify-content: space-between;
+    align-items: center;
+
+}
+
+
+dialog #qty-picker-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+
+dialog #qty-picker-wrapper button:first-of-type {
+    cursor: inherit;
+    
+}
+
+
+dialog #add-to-cart-button {
+	display: flex;
+	justify-content: space-between;
+	gap: 0.5rem;
+    font-weight: 700;
+    padding: 0.5rem;
+}
+
+dialog label,
+dialog textarea {
+	display: block;
+}
+
+
+dialog textarea, dialog #quantity-section  {
+    margin-bottom: 1rem;   
+}
+
+#quantity-section input, #quantity-section button {
+    font-size: 85%;
+}
+
+
+
+main > section:first-of-type label, dialog label:first-of-type {
+    font-weight: 700;
+}
+
+header button, dialog > button:first-of-type, dialog #qty-picker-wrapper button {
+    background-color: transparent;
+    border: 0;
+    
+}
+
+dialog input[type="number"]:disabled, dialog #add-to-cart-button {
+    border-radius: 0.25rem;
+	border: 0;
+	background-color: teal;
+    color: #FFF;
+}
+
+.invalidMinMaxDescription {
+    color: #F00;
+    font-style: italic;
+}
+
+

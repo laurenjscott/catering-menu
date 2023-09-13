@@ -1,0 +1,55 @@
+html {
+	font-family: "Open Sans", sans-serif;
+	box-sizing: border-box;
+}
+
+
+*,
+*:before,
+*:after {
+	font-family: inherit;
+	box-sizing: inherit;
+/*    border: 1px solid red;*/
+}
+
+button {
+    cursor: pointer;
+}
+
+nav {
+    display: flex;
+    align-items: flex-start;
+    position: absolute;
+    top: 4rem;
+    left: -999rem;
+    padding: 0.5rem;
+    background-color: #C8D2B5;
+    width: 100%;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+
+nav.show-main-nav {
+    left: 0;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-right: auto;
+}
+
+nav li {
+    margin-bottom: 1rem;
+}
+
+nav li a {
+    display: block;
+    color: #BC1FC3;
+    font-weight: 700;
+    
+}
+
+

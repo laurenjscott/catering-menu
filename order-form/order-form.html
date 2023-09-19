@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -25,11 +25,11 @@
                 <i class="fas fa-times-circle fa-2x" aria-hidden="true" title="Close main navigation"></i>
             </button>
         </nav>
-        <div id="cart-wrapper">
+        <button type="button">
             <i class="fas fa-shopping-cart" aria-hidden="true"></i>
             <span class="sr-only">Number of items in cart:</span>
-            <p>0</p>
-        </div>
+            <span>0</span>
+        </button>
     </header>
     <main>
         <div id="h1-wrapper">
@@ -37,34 +37,93 @@
         </div>
         <section id="event-date-time-picker-section">
             <h2>Event Date and Time Information</h2>
-            <p><span>Orders must be placed at least 24 hours prior to the event date, and they can be made 6 months in advance.</span> Delivery times are every half-hour, starting at 10:30 AM and ending at 6:30 PM. All times are Central Standard Time.</p>
-            <label for="date-picker">Event Date</label>
-            <input id="date-picker" type="date" required min="" max="" title="Select an event date. At least 2 days notice required. Orders can be made up to 6 months in advance."> 
-            <label for="time-picker">Event Time</label>
-            <select name="time-picker" id="time-picker" required title="Select an event time.">
-                <option value=""></option>
-                <option value="10:30">10:30 AM</option>
-                <option value="11:00">11:00 AM</option>
-                <option value="11:30">11:30 AM</option>
-                <option value="12:00">12:00 PM</option>
-                <option value="12:30">12:30 PM</option>
-                <option value="13:00">01:00 PM</option>
-                <option value="13:30">01:30 PM</option>
-                <option value="14:00">02:00 PM</option>
-                <option value="14:30">02:30 PM</option>
-                <option value="15:00">03:00 PM</option>
-                <option value="15:30">03:30 PM</option>
-                <option value="16:00">04:00 PM</option>
-                <option value="16:30">04:30 PM</option>
-                <option value="17:00">05:00 PM</option>
-                <option value="17:30">05:30 PM</option>
-                <option value="18:00">06:00 PM</option>
-                <option value="18:30">06:30 PM</option>
-            </select>
+            <p><span>Orders must be placed at least 48 hours prior to the event date, and they can be made 6 months in advance.</span> Delivery times are every half-hour, starting at 10:30 AM and ending at 6:30 PM. All times are Central Standard Time.</p>
+            <label for="date-picker">Event Date
+                <input id="date-picker" type="date" required title="Select an event date. At least 2 days notice required. Orders can be made up to 6 months in advance."> 
+            </label>
+            <label for="time-picker">Event Time
+                <select name="time-picker" id="time-picker" required title="Select an event time.">
+                  <option value=""></option>
+                  <option value="10:30">10:30 AM</option>
+                  <option value="11:00">11:00 AM</option>
+                  <option value="11:30">11:30 AM</option>
+                  <option value="12:00">12:00 PM</option>
+                  <option value="12:30">12:30 PM</option>
+                  <option value="13:00">01:00 PM</option>
+                  <option value="13:30">01:30 PM</option>
+                  <option value="14:00">02:00 PM</option>
+                  <option value="14:30">02:30 PM</option>
+                  <option value="15:00">03:00 PM</option>
+                  <option value="15:30">03:30 PM</option>
+                  <option value="16:00">04:00 PM</option>
+                  <option value="16:30">04:30 PM</option>
+                  <option value="17:00">05:00 PM</option>
+                  <option value="17:30">05:30 PM</option>
+                  <option value="18:00">06:00 PM</option>
+                  <option value="18:30">06:30 PM</option>
+                </select>   
+            </label>
+        </section>
+        <hr>
+        <section id="menu-items">
+            <article>
+                <h3>Appetizers</h3>
+                <p>Minimum 2 dozen</p>
+                <ul>
+                  <li data-price="34.99" data-menu-item-name="Mini Crabless Cakes" data-gluten-free="false" data-per-serving="false" data-per-dozen="true">
+                      <a href="#menu-item-dialog" class="disabled-menu-item-link">
+                          <div class="image-wrapper">
+                              <img src="../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg" alt="image of food" width="100">
+                          </div>
+                          <div class="text-wrapper">
+                              <h4>Mini Crabless Cakes</h4>
+                              <p>$34.99 per dozen</p>
+                              <p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit. Possimus odio reiciendis quisquam dignissimos omnis itaque consequatur repellendus delectus, animi porro veritatis natus placeat cumque at, distinctio, iure ducimus necessitatibus alias.</p>
+                           </div>
+                      </a>
+                  </li>
+                  <li data-price="29.99" data-menu-item-name="King Oyster Mushroom Skewers w/Chimichurri Sauce" data-gluten-free="true" data-per-serving="false" data-per-dozen="true">
+                      <a href="#menu-item-dialog" class="disabled-menu-item-link">
+                          <div class="image-wrapper">
+                              <img src="../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg" alt="image of food" width="100">
+                          </div>
+                           <div class="text-wrapper">
+                              <h4>King Oyster Mushroom Skewers w/Chimichurri Sauce</h4>
+                              <p>$29.99 per dozen</p>
+                              <p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit. Possimus odio reiciendis quisquam dignissimos omnis itaque consequatur repellendus delectus, animi porro veritatis natus placeat cumque at, distinctio, iure ducimus necessitatibus alias.</p>
+                           </div>
+                      </a>
+                    </li>
+                    <li data-price="34.99" data-menu-item-name="Mini Crabless Cakes" data-gluten-free="false" data-per-serving="false" data-per-dozen="true">
+                      <a href="#menu-item-dialog" class="disabled-menu-item-link">
+                          <div class="image-wrapper">
+                              <img src="../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg" alt="image of food" width="100">
+                          </div>
+                          <div class="text-wrapper">
+                              <h4>Mini Crabless Cakes</h4>
+                              <p>$34.99 per dozen</p>
+                              <p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit. Possimus odio reiciendis quisquam dignissimos omnis itaque consequatur repellendus delectus, animi porro veritatis natus placeat cumque at, distinctio, iure ducimus necessitatibus alias.</p>
+                           </div>
+                      </a>
+                  </li>
+                  <li data-price="29.99" data-menu-item-name="King Oyster Mushroom Skewers w/Chimichurri Sauce" data-gluten-free="true" data-per-serving="false" data-per-dozen="true">
+                      <a href="#menu-item-dialog" class="disabled-menu-item-link">
+                          <div class="image-wrapper">
+                              <img src="../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg" alt="image of food" width="100">
+                          </div>
+                           <div class="text-wrapper">
+                              <h4>King Oyster Mushroom Skewers w/Chimichurri Sauce</h4>
+                              <p>$29.99 per dozen</p>
+                              <p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit. Possimus odio reiciendis quisquam dignissimos omnis itaque consequatur repellendus delectus, animi porro veritatis natus placeat cumque at, distinctio, iure ducimus necessitatibus alias.</p>
+                           </div>
+                      </a>
+                  </li>
+                </ul>
+            </article>
         </section>
     </main>
 	<section>
-        <dialog>
+        <dialog id="menu-item-dialog">
                 <button>
                     <i class="fas fa-times-circle fa-3x"></i>
                 </button>

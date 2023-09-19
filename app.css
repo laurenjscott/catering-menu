@@ -9,11 +9,20 @@ html {
 *:after {
 	font-family: inherit;
 	box-sizing: inherit;
-/*    border: 1px solid red;*/
 }
 
 button {
     cursor: pointer;
+    font-size: inherit;
+
+}
+
+button:disabled {
+    cursor: auto;
+}
+
+a {
+    color: #BC1FC3;
 }
 
 nav {
@@ -47,7 +56,6 @@ nav li {
 
 nav li a {
     display: block;
-    color: #BC1FC3;
     font-weight: 700;
     
 }

@@ -3,6 +3,19 @@ body {
     padding: 0;
 }
 
+h1 {
+    margin-left: 0.5rem;
+}
+
+hr {
+    border: 0.5px solid gray;
+}
+
+input:invalid, select:invalid {
+    border-color: #F00;
+}
+
+
 header {
     display: flex;
     justify-content: space-between;
@@ -10,16 +23,19 @@ header {
     margin: 0.5rem 0.5rem 0;
 }
 
-header div {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
+footer {
+    margin-top: 3rem;
+}
+
+header > button:last-of-type {
     border: 1px solid #000;
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
+    padding: 0.75rem;
     border-radius: 0.75rem;
 
+}
+
+header > button:last-of-type:disabled {
+    border: 1px solid lightgray;
 }
 
 main > div:first-of-type {
@@ -30,23 +46,6 @@ main > div:first-of-type {
 }
 
 
-h1 {
-    margin-left: 0.5rem;
-}
-
-input:invalid, select:invalid {
-    border-color: #F00;
-}
-
-
-main > section:first-of-type, footer {
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    
-}
-
-
-
 main select, main input {
     border: 1px solid #000;
     border-radius: 0.25rem;
@@ -55,6 +54,10 @@ main select, main input {
     font-size: 85%;
 }
 
+main label {
+    display: block;
+    margin-bottom: 1rem;
+}
 
 
 dialog {
@@ -83,18 +86,12 @@ dialog section:first-of-type {
 }
 
 
-dialog form > *:not(hr) {
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-}
-
 dialog label:first-of-type {
     font-size: 1.25rem;
     margin-bottom: 0.25rem;
 }
 
 dialog form hr {
-	border: 0.5px solid gray;
 	margin-bottom: 1rem;
 }
 
@@ -197,9 +194,116 @@ dialog input[type="number"]:disabled, dialog #add-to-cart-button {
     color: #FFF;
 }
 
-.invalidMinMaxDescription {
+
+main section, footer,  dialog form > *:not(hr) {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.invalid-min-max-description {
     color: #F00;
     font-style: italic;
 }
+
+#menu-items {
+    margin-top: 1rem;
+}
+
+#menu-items ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 0 1rem;
+    padding: 0;
+    list-style: none;
+}
+
+#menu-items ul li a {
+    box-shadow: 1px 1px 2px 1px rgba(112, 112, 112, 0.2);
+    border-radius: 1rem;
+    overflow: hidden;
+
+}
+
+#menu-items ul li a:not(.disabled-menu-item-link):hover {
+    box-shadow: 2px 2px 6px 1px rgba(112, 112, 112, 0.2);   
+}
+
+#menu-items ul li a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+}
+
+
+.image-wrapper {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0; /* used to prevent the div from being shrunk to accomodate the text-wrapper flex item */
+
+}
+
+.text-wrapper {
+    padding: 0 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+
+.text-wrapper h4 {
+     -webkit-line-clamp: 2;
+}
+
+.text-wrapper p {
+    font-size: 0.9rem;
+    -webkit-line-clamp: 1;
+}
+
+.text-wrapper p:last-of-type {
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+
+.text-wrapper h4, .text-wrapper p {
+    margin-top: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+    /* See here for more on line-clamp: https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-line-clamp. I decided timplement this versus text-overflow so I don't have explicitly set a width on the paragragh. More responsive that way */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;   
+}
+
+.disabled-menu-item-link {
+    opacity: 0.5;
+    pointer-events: none;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+
+@media (min-width: 428px) {
+    main label {
+        display: inline-block;     
+    }
+}
+
+@media (min-width: 800px) {
+    #menu-items ul {
+        display: grid;
+        grid-template-columns: 50% 50%;
+    }
+    
+}
+
+
+
+
+
+
+
 
 

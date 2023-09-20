@@ -1,6 +1,5 @@
 window.addEventListener("load", event => {
-    const hamburger = document.querySelector("header > button:first-of-type");
-    hamburger.addEventListener("click", showMainNavigation);
+    addListenersToMainNavButtons();
     modifyCopyrightYear();
 });
 
@@ -33,9 +32,14 @@ export default function populateMainNavigation(folder) { //argument is temporary
     }
 }
 
-function showMainNavigation() {
-    const nav = document.querySelector("header nav");
-    nav.classList.add("show-main-nav");
+function addListenersToMainNavButtons() {
+    const buttonArray = [...document.querySelectorAll("header button:first-of-type")];
+    buttonArray.forEach(button => button.addEventListener("click", toggleMainNavigation));
+}
+
+function toggleMainNavigation() {
+    const nav = document.querySelector("nav");
+    nav.classList.toggle("show-main-nav");
 }
 
 

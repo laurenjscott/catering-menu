@@ -124,12 +124,12 @@ function toggleMenuItemLinks(boolean) { //links are disabled if there is no even
    
 }
 
-function disableMenuItemLinks() { //links are enabled if there is both event date and time data available
-    const allMenuItemLinks = [...document.querySelectorAll("#menu-items a")];
-    allMenuItemLinks.forEach(a => {
-        a.classList.add("disabled-menu-item-link");
-    })
-}
+//function disableMenuItemLinks() { //links are enabled if there is both event date and time data available
+//    const allMenuItemLinks = [...document.querySelectorAll("#menu-items a")];
+//    allMenuItemLinks.forEach(a => {
+//        a.classList.add("disabled-menu-item-link");
+//    })
+//}
 
 
 function updateCartCount() {
@@ -186,42 +186,41 @@ function validateEventDate(event) {
     const minMaxInvalidString = document.querySelector(
         "#event-date-time-picker-section p span"
     );
-    if (
-        dateInput.validity.rangeUnderflow === true ||
-        dateInput.validity.rangeOverflow === true
-    ) {
-        //target descriptive text
-        minMaxInvalidString.classList.add("invalid-min-max-description");
-        //report validity
+    
+    if(dateInput.validity.valid === false) {
+        if(dateInput.validity.rangeUnderflow === true || dateInput.validity.rangeOverflow === true) {
+            //target descriptive text
+            minMaxInvalidString.classList.add("invalid-min-max-description");
+        } else {
+            //un-target descriptive text
+            minMaxInvalidString.classList.remove("invalid-min-max-description");
+        }
         dateInput.reportValidity();
         //disable all menu item links
         toggleMenuItemLinks(false);
-    } else if (dateInput.validity.valid === false) {
-        //un-target descriptive text
-        minMaxInvalidString.classList.remove("invalid-min-max-description");
-//        //report validity
-        dateInput.reportValidity();
-        //disable all menu item links
-        toggleMenuItemLinks(false);
-
+        //check if cart is NOT empty
+        const hiddenDateInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-date']");
+        const hiddenTimeInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-time']");
+        invalidDateCartCheck(hiddenDateInput, hiddenTimeInput);
     } else {
         //un-target descriptive text
         minMaxInvalidString.classList.remove("invalid-min-max-description");
         //Do both event time/date inputs have valid values? If so, enable all menu item links
         checkFullEventInfoValidation();
-    }
-    
+    } 
 }
 
 
 function validateEventTime(event) {
     const timeInput = event.target;
+    const hiddenDateInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-date']");
+    const hiddenTimeInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-time']");
     if(timeInput.validity.valid === false) {
         //report validity
         timeInput.reportValidity();
         //disable all menu item links
-         toggleMenuItemLinks(false);
-        
+        toggleMenuItemLinks(false);
+        invalidDateCartCheck(hiddenDateInput, hiddenTimeInput);
     } else {
         //Do both event time/date inputs have valid values? If so, enable all menu item links
         checkFullEventInfoValidation();
@@ -229,22 +228,35 @@ function validateEventTime(event) {
 }
 
 function checkFullEventInfoValidation() {
-    const allEventTimeDateInputs = [...document.querySelectorAll("#event-date-time-picker-section input, #event-date-time-picker-section select")];
-    if(allEventTimeDateInputs.every(input => input.validity.valid === true)) {
+    const allVisibleEventTimeDateInputs = [...document.querySelectorAll("#event-date-time-picker-section input:not([hidden]), #event-date-time-picker-section select:not([hidden])")];
+    const hiddenDateInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-date']");
+    const hiddenTimeInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-time']");
+    if(allVisibleEventTimeDateInputs.every(input => input.validity.valid === true)) {
         toggleMenuItemLinks(true);
         //add event listener to links
         const menuItemLinks = [...document.querySelectorAll("#menu-items a")];
         menuItemLinks.forEach(a => {
             a.addEventListener("click", () => document.querySelector("dialog").showModal());
-        })
+        });
+        passValidEventInputData(hiddenDateInput, hiddenTimeInput);
     } else {
         //disable menu item links
         toggleMenuItemLinks(false);
     }
 }
 
+function passValidEventInputData(...hiddenInputs) {  //stores most recently entered valid event date and time in hidden text inputs so they can be reset if user makes either of these fields contain invalid data AND they have a non-empty cart.
+    const dateInput = document.querySelector("#event-date-time-picker-section input[type='date']");
+    const timeInput = document.querySelector("#event-date-time-picker-section select");
+    hiddenInputs[0].value = dateInput.value;
+    hiddenInputs[1].value = timeInput.value;
+}
 
-
+function invalidDateCartCheck(...hiddenInputs) {//checks to see if cart has stuff in it. If it does, log the most recent valid event time and date to the console
+    if(sessionStorage.cart != undefined) {
+        console.log(`You have entered a event date and/or time that is either empty or invalid. Do you want to revert changes back to ${hiddenInputs[0].value} at ${hiddenInputs[1].value}, or empty your cart?`); 
+    } 
+}
 
 
 function debounce(func, timeout = 500){ //Used to allow user to complete data entry before checking for validation errors.

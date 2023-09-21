@@ -23,27 +23,27 @@ window.addEventListener("load", (event) => {
 	const addToCartButton = document.querySelector("#quantity-section #add-to-cart-button");
 	addToCartButton.addEventListener("click", (event) => {
 		//grab menu item's label text content
-		const menuItemName = document.querySelector("label:first-of-type")
+		const menuItemName = document.querySelector("dialog label:first-of-type")
 			.textContent;
 
 		//grab menu item description
-		const description = document.querySelector("label:first-of-type + p")
+		const description = document.querySelector("dialog label:first-of-type + p")
 			.textContent;
 
 		//grab qty requested
-		const qty = parseInt(document.querySelector("input[type='number']").value);
+		const qty = parseInt(document.querySelector("dialog input[type='number']").value);
 
 		//grab special instructions
-		const specialInstructions = document.querySelector("textarea").value;
+		const specialInstructions = document.querySelector("dialog textarea").value;
 
 		//grab price per unit
 		const pricePerUnit = parseInt(
-			document.querySelector("input[type='hidden']").value
+			document.querySelector("dialog input[type='hidden']").value
 		);
 
 		//calculate subtotal
 		const subtotal = parseInt(
-			document.querySelector("output").textContent.replace(/\$/g, "")
+			document.querySelector("dialog output").textContent.replace(/\$/g, "")
 		);
 
 		//form a object based off form information
@@ -123,13 +123,6 @@ function toggleMenuItemLinks(boolean) { //links are disabled if there is no even
     }
    
 }
-
-//function disableMenuItemLinks() { //links are enabled if there is both event date and time data available
-//    const allMenuItemLinks = [...document.querySelectorAll("#menu-items a")];
-//    allMenuItemLinks.forEach(a => {
-//        a.classList.add("disabled-menu-item-link");
-//    })
-//}
 
 
 function updateCartCount() {

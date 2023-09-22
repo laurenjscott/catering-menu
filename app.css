@@ -60,4 +60,9 @@ nav li a {
     
 }
 
+dialog::backdrop {
+    background-color: #707070;
+    opacity: 0.75;
+}
+
 

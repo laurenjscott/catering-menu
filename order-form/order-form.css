@@ -69,18 +69,13 @@ article h3 + p {
 }
 
 
-dialog {
+dialog { /* POSSIBLE refactot */
     padding: 0;
     border: 0;
 }
 
-dialog::backdrop {
-    background-color: #707070;
-    opacity: 0.75;
-}
 
-
-dialog > button:first-of-type {
+dialog > button:first-of-type { /* refactor */
     position: absolute;
     top:  0.5rem;
     right: 0.5rem;
@@ -88,45 +83,47 @@ dialog > button:first-of-type {
     
 }
 
-dialog section:first-of-type {
+dialog section:first-of-type { /* refactor */
     background: center / cover no-repeat url("../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg");
     height: 10rem; 
     margin-bottom: 2rem;
 }
 
 
-dialog label:first-of-type {
+dialog label:first-of-type { /* refactor */
     font-size: 1.25rem;
     margin-bottom: 0.25rem;
 }
 
-dialog form hr {
+/*
+dialog form hr { 
 	margin-bottom: 1rem;
 }
+*/
 
-dialog form p {
+dialog form p { /* refactor */
     margin-top: 0;
     margin-bottom: 1rem;
 }
 
-dialog form hr {
+dialog form hr { /* refactor */
     margin-bottom: 2rem;
 }
 
-dialog textarea {
+dialog textarea { /* refactor */
     resize: none;
     width: calc(100% - 1rem); /* As of 2022-09-12, Chrome and Safari seems ignore the "cols" and "row" attribute values, so I have to set textarea siize manually with CSS. Also, setting the width to 100% by itself causes the textarea to overflow the form in all browsers since it seems like box-sizing is ignored and width doesn't take it consideration the margins */
     height: 8rem;
 }
 
 
-dialog input[type="number"] {
+dialog input[type="number"] { /* refactor */
 	/*for firefox*/
 	-moz-appearance: textfield;
 }
 
 
-dialog input[type="number"]:disabled {
+dialog input[type="number"]:disabled { /* refactor */
 	width: 3rem;
 	-webkit-text-fill-color: #fff; /*safari only. see here https://stackoverflow.com/questions/57085123/targeting-disabled-field-in-safari-with-css */
 	text-align: center;
@@ -135,7 +132,7 @@ dialog input[type="number"]:disabled {
 
 /*hide spinner next to number input*/
 dialog input::-webkit-outer-spin-button,
-dialog input::-webkit-inner-spin-button {
+dialog input::-webkit-inner-spin-button { /* refactor */
 	/* for chrome and safari*/
 	-webkit-appearance: none;
 }
@@ -171,12 +168,12 @@ dialog #add-to-cart-button {
 }
 
 dialog label,
-dialog textarea {
+dialog textarea { /* POSSIBLE refactor */
 	display: block;
 }
 
 
-dialog textarea, dialog #quantity-section  {
+dialog textarea, dialog #quantity-section  { /* refactor */
     margin-bottom: 1rem;   
 }
 
@@ -190,13 +187,13 @@ main > section:first-of-type label, dialog label:first-of-type {
     font-weight: 700;
 }
 
-header button, dialog > button:first-of-type, dialog #qty-picker-wrapper button {
+header button, dialog > button:first-of-type, dialog #qty-picker-wrapper button { /* refactor */
     background-color: transparent;
     border: 0;
     
 }
 
-dialog input[type="number"]:disabled, dialog #add-to-cart-button {
+dialog input[type="number"]:disabled, dialog #add-to-cart-button { /* refactor */
     border-radius: 0.25rem;
 	border: 0;
 	background-color: teal;
@@ -204,7 +201,7 @@ dialog input[type="number"]:disabled, dialog #add-to-cart-button {
 }
 
 
-main section, footer,  dialog form > *:not(hr) {
+main section, footer,  dialog form > *:not(hr) { /* POSSIBLE refactor */
     margin-left: 0.5rem;
     margin-right: 0.5rem;
 }
@@ -292,6 +289,20 @@ main section, footer,  dialog form > *:not(hr) {
     pointer-events: none;
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
+}
+
+
+section:last-of-type dialog {
+    background: transparent linear-gradient(73deg, #000 0%, #585C41 100%) 0% 0% no-repeat padding-box;
+    color: #FFF;
+    max-width: 430px;
+    padding: 1rem;
+    border-radius: 1rem;
+    
+}
+
+section:last-of-type dialog::backdrop {
+    background-color: transparent;
 }
 
 @media (min-width: 428px) {

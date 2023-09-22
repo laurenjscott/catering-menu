@@ -267,3 +267,4 @@ const processChange = debounce((event) => validateEventDate(event)); //processCh
 //        timer = setTimeout(() => { func.apply(this, args)}, timeout); // After 500 ms (0.5 sec), runs function passed to debounce(), which is "(event) => validateEventDate(event)". The timer variable is then set with integer. From MDN's setTimeout docs: "The returned timeoutID is a positive integer value which identifies the timer created by the call to setTimeout(). This value can be passed to clearTimeout() to cancel the timeout."
 //    }
 
+document.querySelector("section:last-of-type dialog").showModal();

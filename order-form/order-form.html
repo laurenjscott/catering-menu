@@ -153,16 +153,16 @@
         </dialog>
 	</section>
     <section>
-        <dialog id="invalid-date-cart-full-dialog">
+        <dialog id="alert-dialog">
+            <p>Alert title</p>
+            <div>
+                <i class="fas fa-exclamation-triangle fa-2x"></i>
+            </div>
             <form action="" method="dialog">
+                <p>Alert text</p>
                 <div>
-                    <i class="fas fa-exclamation-triangle fa-2x"></i>
-                </div>
-                <p>Invalid Event Date or Time</p>
-                <p>You have entered a event date and/or time that is either empty or invalid. Do you want to revert changes back to 2023-09-30 at 15:30, or empty your cart?</p>
-                <div>
-                    <button type="button">Empty Cart</button>
-                    <button type="button">Reset Date</button>
+                    <button type="button" class="alert-dialog-button secondary-button">Secondary Button</button>
+                    <button type="button" class="alert-dialog-button primary-button" autofocus>Primary Button</button>
                 </div>
             </form>
         </dialog>

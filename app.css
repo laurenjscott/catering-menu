@@ -12,6 +12,10 @@ html {
 }
 
 button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 0;
     cursor: pointer;
     font-size: inherit;
 
@@ -19,6 +23,11 @@ button {
 
 button:disabled {
     cursor: auto;
+}
+
+button:focus {
+    outline: 5px auto #5E9ED6;
+    outline: 5px auto -webkit-focus-ring-color;
 }
 
 a {
@@ -58,6 +67,10 @@ nav li a {
     display: block;
     font-weight: 700;
     
+}
+
+dialog {
+    border: none;
 }
 
 dialog::backdrop {

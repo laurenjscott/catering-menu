@@ -95,17 +95,13 @@ window.addEventListener("load", (event) => {
 		}
 	});
 
-
-    
-//    document.querySelector("dialog").showModal();
     
     updateCartCount();
     
     pushEventDateRangeToInputs();
     
     //additional of argument is temporary while hosted via localhost
-    populateMainNavigation(import.meta.url.split("/").pop().split(".")[0]);
-    
+    populateMainNavigation(import.meta.url.split("/").pop().split(".")[0]);    
 
 });
 
@@ -139,6 +135,17 @@ function updateCartCount() {
 
 
     }
+}
+
+function emptyCart() {
+    //remove cart key from session storage
+    sessionStorage.removeItem("cart");
+    //update cart button in header
+    const cartButton = document.querySelector("header > button:last-of-type");
+    // disable the button
+    cartButton.setAttribute("disabled", true)
+    // update the string
+    cartButton.querySelector("span:last-of-type").textContent = "0";
 }
 
 function showCart() {
@@ -247,10 +254,49 @@ function passValidEventInputData(...hiddenInputs) {  //stores most recently ente
 
 function invalidDateCartCheck(...hiddenInputs) {//checks to see if cart has stuff in it. If it does, log the most recent valid event time and date to the console
     if(sessionStorage.cart != undefined) {
-        console.log(`You have entered a event date and/or time that is either empty or invalid. Do you want to revert changes back to ${hiddenInputs[0].value} at ${hiddenInputs[1].value}, or empty your cart?`); 
+        const alertDialog = document.querySelector("#alert-dialog");
+        alertDialog.classList.add("show-alert-dialog");
+        const alertTitle = alertDialog.querySelector(":scope > p"); //https://stackoverflow.com/questions/3680876/using-queryselectorall-to-retrieve-direct-children
+        const alertText = alertDialog.querySelector("form p");
+        const alertPrimaryButton = alertDialog.querySelector(".primary-button");
+        const alertSecondaryButton = alertDialog.querySelector(".secondary-button");
+        alertTitle.textContent = "Invalid Date or Time";
+        alertText.textContent = `You have entered an event date and/or time that is either empty or invalid. Do you want to revert changes back to ${hiddenInputs[0].value} at ${hiddenInputs[1].value}, or empty your cart?`;
+        alertPrimaryButton.textContent = "Revert Date";
+        alertSecondaryButton.textContent = "Empty Cart";
+        alertPrimaryButton.addEventListener("click", () => {
+            resetToLastValidEventTimeDate();
+            alertDialog.classList.remove("show-alert-dialog");
+            alertDialog.close();
+            //enable menu item links again
+            toggleMenuItemLinks(true);
+            //Issue: if date was invalid due to min/max constraints, the red italic text still shows. How to trigger validation script when input is modified programatically? By creating a synthetic input event!
+            simulateEventDateChange();
+        })
+        alertSecondaryButton.addEventListener("click", () => {
+            emptyCart();
+            alertDialog.classList.remove("show-alert-dialog");
+            alertDialog.close();
+        });
+        alertDialog.showModal();
+        alertPrimaryButton.focus();
     } 
 }
 
+function resetToLastValidEventTimeDate() {
+    const hiddenDateInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-date']");
+    const hiddenTimeInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-time']");
+    const dateInput = document.querySelector("#event-date-time-picker-section input[type='date']");
+    const timeInput = document.querySelector("#event-date-time-picker-section select");
+    dateInput.value = hiddenDateInput.value;
+    timeInput.value = hiddenTimeInput.value; 
+}
+
+function simulateEventDateChange() {
+    const dateInput = document.querySelector("#event-date-time-picker-section input[type='date']");
+    const event = new InputEvent("change");
+    dateInput.dispatchEvent(event);
+}
 
 function debounce(func, timeout = 500){ //Used to allow user to complete data entry before checking for validation errors.
     let timer; 
@@ -267,4 +313,3 @@ const processChange = debounce((event) => validateEventDate(event)); //processCh
 //        timer = setTimeout(() => { func.apply(this, args)}, timeout); // After 500 ms (0.5 sec), runs function passed to debounce(), which is "(event) => validateEventDate(event)". The timer variable is then set with integer. From MDN's setTimeout docs: "The returned timeoutID is a positive integer value which identifies the timer created by the call to setTimeout(). This value can be passed to clearTimeout() to cancel the timeout."
 //    }
 
-document.querySelector("section:last-of-type dialog").showModal();

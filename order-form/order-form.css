@@ -235,11 +235,10 @@ article h3 + p {
 #alert-dialog {
     background: transparent linear-gradient(73deg, #000 0%, #585C41 100%) 0% 0% no-repeat padding-box;
     color: #FFF;
-    max-width: 398px;
+    max-width: 350px;
     padding: 1rem;
     border-radius: 1rem;
     font-size: 0.75rem;
-    z-index: 100000;
 }
     
 
@@ -393,6 +392,10 @@ main section, footer,  #menu-item-dialog form > *:not(hr) {
 @media (min-width: 428px) {
     main label {
         display: inline-block;     
+    }
+    
+    #alert-dialog {
+        max-width: 398px;
     }
 }
 

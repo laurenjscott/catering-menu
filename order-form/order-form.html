@@ -18,6 +18,7 @@
         <button type="button" aria-label="View main navigation">
             <i class="fas fa-bars fa-2x" aria-hidden="true" title="View main navigation"></i>
         </button>
+        <div id="logo-placeholder">logo placeholder</div>
         <nav>
             <ul>
             </ul>
@@ -37,12 +38,12 @@
         </div>
         <section id="event-date-time-picker-section">
             <h2>Event Date and Time Information</h2>
-            <p><span>Orders must be placed at least 48 hours prior to the event date, and they can be made 6 months in advance.</span> Delivery times are every half-hour, starting at 10:30 AM and ending at 6:30 PM. All times are Central Standard Time.</p>
+            <p><span>Orders must be placed at least 48 hours prior to the event date, and they can be made 6 months in advance.</span> Delivery times are every half-hour, starting at 10:30 AM and ending at 6:30 PM. All times are Central Standard Time. Please enter your event date and time below.</p>
             <label for="date-picker">Event Date
-                <input id="date-picker" type="date" required title="Select an event date. At least 2 days notice required. Orders can be made up to 6 months in advance."> 
+                <input id="date-picker" name="event-date" type="date" required title="Select an event date. At least 2 days notice required. Orders can be made up to 6 months in advance."> 
             </label>
             <label for="time-picker">Event Time
-                <select name="time-picker" id="time-picker" required title="Select an event time.">
+                <select id="time-picker" name="event-time" required title="Select an event time.">
                   <option value=""></option>
                   <option value="10:30">10:30 AM</option>
                   <option value="11:00">11:00 AM</option>
@@ -68,60 +69,7 @@
         </section>
         <hr>
         <section id="menu-items">
-            <article>
-                <h3>Appetizers</h3>
-                <p>Minimum 2 dozen</p>
-                <ul>
-                  <li data-price="34.99" data-menu-item-name="Mini Crabless Cakes" data-gluten-free="false" data-per-serving="false" data-per-dozen="true">
-                      <a href="#menu-item-dialog" class="disabled-menu-item-link">
-                          <div class="image-wrapper">
-                              <img src="../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg" alt="image of food" width="100">
-                          </div>
-                          <div class="text-wrapper">
-                              <h4>Mini Crabless Cakes</h4>
-                              <p>$34.99 per dozen</p>
-                              <p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit. Possimus odio reiciendis quisquam dignissimos omnis itaque consequatur repellendus delectus, animi porro veritatis natus placeat cumque at, distinctio, iure ducimus necessitatibus alias.</p>
-                           </div>
-                      </a>
-                  </li>
-                  <li data-price="29.99" data-menu-item-name="King Oyster Mushroom Skewers w/Chimichurri Sauce" data-gluten-free="true" data-per-serving="false" data-per-dozen="true">
-                      <a href="#menu-item-dialog" class="disabled-menu-item-link">
-                          <div class="image-wrapper">
-                              <img src="../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg" alt="image of food" width="100">
-                          </div>
-                           <div class="text-wrapper">
-                              <h4>King Oyster Mushroom Skewers w/Chimichurri Sauce</h4>
-                              <p>$29.99 per dozen</p>
-                              <p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit. Possimus odio reiciendis quisquam dignissimos omnis itaque consequatur repellendus delectus, animi porro veritatis natus placeat cumque at, distinctio, iure ducimus necessitatibus alias.</p>
-                           </div>
-                      </a>
-                    </li>
-                    <li data-price="34.99" data-menu-item-name="Mini Crabless Cakes" data-gluten-free="false" data-per-serving="false" data-per-dozen="true">
-                      <a href="#menu-item-dialog" class="disabled-menu-item-link">
-                          <div class="image-wrapper">
-                              <img src="../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg" alt="image of food" width="100">
-                          </div>
-                          <div class="text-wrapper">
-                              <h4>Mini Crabless Cakes</h4>
-                              <p>$34.99 per dozen</p>
-                              <p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit. Possimus odio reiciendis quisquam dignissimos omnis itaque consequatur repellendus delectus, animi porro veritatis natus placeat cumque at, distinctio, iure ducimus necessitatibus alias.</p>
-                           </div>
-                      </a>
-                  </li>
-                  <li data-price="29.99" data-menu-item-name="King Oyster Mushroom Skewers w/Chimichurri Sauce" data-gluten-free="true" data-per-serving="false" data-per-dozen="true">
-                      <a href="#menu-item-dialog" class="disabled-menu-item-link">
-                          <div class="image-wrapper">
-                              <img src="../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg" alt="image of food" width="100">
-                          </div>
-                           <div class="text-wrapper">
-                              <h4>King Oyster Mushroom Skewers w/Chimichurri Sauce</h4>
-                              <p>$29.99 per dozen</p>
-                              <p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit. Possimus odio reiciendis quisquam dignissimos omnis itaque consequatur repellendus delectus, animi porro veritatis natus placeat cumque at, distinctio, iure ducimus necessitatibus alias.</p>
-                           </div>
-                      </a>
-                  </li>
-                </ul>
-            </article>
+            <p class="hide-element">Data failed to load. Try reloading the page.</p>
         </section>
     </main>
 	<section>

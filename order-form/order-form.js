@@ -307,7 +307,10 @@ function validateEventDate(event) {
             //un-target descriptive text
             minMaxInvalidString.classList.remove("invalid-min-max-description");
         }
-        dateInput.reportValidity();
+        //The following conditional statement is being used due to a bug in Firefox 117.0.1 during a "invalid date or time/full cart" scenario. Hopefully, this is a temporary workaround. An alert dialog is displayed and ask the user to either empty the cart or revert to last valid event date and time. In Firefox, the validation errors bubble that appears has a z-index larger than the dialog which is supposed to have a higher stacking order than everything else. The bubble sits top of the alert dialog and the user has to click something on screen to remove it and to  read the dialog withut obstruction. This is related to bug RW-17 in Jira.
+        if(sessionStorage.cart == undefined) {
+            dateInput.reportValidity();
+        }
         //disable all menu item links
         toggleMenuItemLinks(false);
         //check if cart is NOT empty
@@ -327,8 +330,10 @@ function validateEventTime(event) {
     const hiddenDateInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-date']");
     const hiddenTimeInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-time']");
     if(timeInput.validity.valid === false) {
-        //report validity
-        timeInput.reportValidity();
+        //The following conditional statement is being used due to a bug in Firefox 117.0.1 during a "invalid date or time/full cart" scenario. Hopefully, this is a temporary workaround. An alert dialog is displayed and ask the user to either empty the cart or revert to last valid event date and time. In Firefox, the validation errors bubble that appears has a z-index larger than the dialog which is supposed to have a higher stacking order than everything else. The bubble sits top of the alert dialog and the user has to click something on screen to remove it and to  read the dialog withut obstruction. This is related to bug RW-17 in Jira.
+        if(sessionStorage.cart == undefined) {
+            timeInput.reportValidity();
+        }
         //disable all menu item links
         toggleMenuItemLinks(false);
         invalidDateCartCheck(hiddenDateInput, hiddenTimeInput);

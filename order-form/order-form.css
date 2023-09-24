@@ -4,6 +4,7 @@ body {
 }
 
 h1 {
+    margin-top: 0;
     margin-left: 0.5rem;
 }
 
@@ -20,7 +21,21 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0.5rem 0.5rem 0;
+    padding: 0.5rem;
+    position: sticky;
+    top: 0;
+    background-color: #FFF;
+    z-index: 9999;
+}
+
+header #logo-placeholder { /* this is temporary during dev. Delete class and div before releasing into prod */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10rem;
+    height: 3rem;
+    background-color: #707070;
+    color: #FFF;
 }
 
 dialog p {
@@ -81,7 +96,6 @@ article h3 + p {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     gap: 1.5rem;
     margin: 0 1rem;
     padding: 0;
@@ -225,6 +239,7 @@ article h3 + p {
     padding: 1rem;
     border-radius: 1rem;
     font-size: 0.75rem;
+    z-index: 100000;
 }
     
 
@@ -284,6 +299,10 @@ main section, footer,  #menu-item-dialog form > *:not(hr) {
     margin-right: 0.5rem;
 } 
 
+.hide-element {
+    display: none;
+}
+
 
 .invalid-min-max-description {
     color: #F00;
@@ -315,7 +334,7 @@ main section, footer,  #menu-item-dialog form > *:not(hr) {
     -webkit-line-clamp: 1;
 }
 
-.text-wrapper p:last-of-type {
+.text-wrapper p:nth-of-type(2) {
     font-size: 0.85rem;
     margin-top: 0.25rem;
 }
@@ -335,6 +354,15 @@ main section, footer,  #menu-item-dialog form > *:not(hr) {
     pointer-events: none;
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
+}
+
+.gluten-free-tag {
+    padding: 0.125rem 0.25rem;
+    background-color: #707070;
+    color: #FFF;
+    margin-right: 0.25rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
 }
 
 .show-alert-dialog {
@@ -369,6 +397,27 @@ main section, footer,  #menu-item-dialog form > *:not(hr) {
 }
 
 @media (min-width: 800px) {
+    header {
+        display: grid;
+        grid-template-areas:
+            "hamburger logo cartButton";
+        grid-template-columns: auto 1fr auto;
+        grid-gap: 2rem;
+
+    }
+    
+    header > button:first-of-type {
+        grid-area: hamburger;
+    }
+    
+    header #logo-placeholder {
+        grid-area: logo;
+    }
+    
+    header > button:last-of-type {
+        grid-area: cartButton;
+    }
+    
     #menu-items ul {
         display: grid;
         grid-template-columns: 50% 50%;

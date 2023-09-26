@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Order Online | N9NE Caterers</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../app.css">
+	<link rel="stylesheet" href="order-form.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet">
+    <script src="../app.js" type="module"></script>
+	<script src="./order-form.js" type="module"></script>
+</head>
+<body>
+    <header>
+        <button type="button" aria-label="View main navigation">
+            <i class="fas fa-bars fa-2x" aria-hidden="true" title="View main navigation"></i>
+        </button>
+        <div id="logo-placeholder">logo placeholder</div>
+        <nav>
+            <ul>
+            </ul>
+            <button type="button" aria-label="Close main navigation">
+                <i class="fas fa-times-circle fa-2x" aria-hidden="true" title="Close main navigation"></i>
+            </button>
+        </nav>
+        <button type="button">
+            <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+            <span class="sr-only">Number of items in cart:</span>
+            <span>0</span>
+        </button>
+    </header>
+    <main>
+        <div id="h1-wrapper">
+            <h1>N9Ne Caterers</h1>
+        </div>
+        <section id="event-date-time-picker-section">
+            <h2>Event Date and Time Information</h2>
+            <p><span>Orders must be placed at least 48 hours prior to the event date, and they can be made 6 months in advance.</span> Delivery times are every half-hour, starting at 10:30 AM and ending at 6:30 PM. All times are Central Standard Time. Please enter your event date and time below.</p>
+            <label for="date-picker">Event Date
+                <input id="date-picker" name="event-date" type="date" required title="Select an event date. At least 2 days notice required. Orders can be made up to 6 months in advance."> 
+            </label>
+            <label for="time-picker">Event Time
+                <select id="time-picker" name="event-time" required title="Select an event time.">
+                  <option value=""></option>
+                  <option value="10:30">10:30 AM</option>
+                  <option value="11:00">11:00 AM</option>
+                  <option value="11:30">11:30 AM</option>
+                  <option value="12:00">12:00 PM</option>
+                  <option value="12:30">12:30 PM</option>
+                  <option value="13:00">01:00 PM</option>
+                  <option value="13:30">01:30 PM</option>
+                  <option value="14:00">02:00 PM</option>
+                  <option value="14:30">02:30 PM</option>
+                  <option value="15:00">03:00 PM</option>
+                  <option value="15:30">03:30 PM</option>
+                  <option value="16:00">04:00 PM</option>
+                  <option value="16:30">04:30 PM</option>
+                  <option value="17:00">05:00 PM</option>
+                  <option value="17:30">05:30 PM</option>
+                  <option value="18:00">06:00 PM</option>
+                  <option value="18:30">06:30 PM</option>
+                </select>   
+            </label>
+            <input type="text" name="hidden-event-date" hidden>
+            <input type="text" name="hidden-event-time" hidden>
+        </section>
+        <hr>
+        <section id="menu-items">
+            <p class="hide-element">Data failed to load. Try reloading the page.</p>
+        </section>
+    </main>
+	<section>
+        <dialog id="menu-item-dialog">
+                <button>
+                    <i class="fas fa-times-circle fa-3x"></i>
+                </button>
+            <section id="menu-item-image-dialog"></section>
+            <form action="" method="dialog">
+              <label for=""></label>
+              <p></p>
+              <hr>
+              <label for="special-instructions">Special Instructions</label>
+              <textarea name="special-instructions" id="special-instructions" cols="30" rows="8"></textarea>
+              <input id="hidden-price-input" name="price" type="hidden" value="0">
+              <input id="hidden-uuid-input" name="uuid" type="hidden">
+              <input id="hidden-per-dozen-input" name="per-dozen" type="hidden">
+              <div id="quantity-section">
+                  <div id="qty-picker-wrapper">
+                      <button id="decrease-quantity-button" type="button" disabled>
+                          <i class="fas fa-minus"></i>
+                      </button>
+                      <input id="" name="" type="number" step="1" min="1" value="1" disabled>
+                      <button id="increase-quantity-button" type="button" autofocus>
+                          <i class="fas fa-plus"></i>
+                      </button>
+                  </div>
+                  <button id="add-to-cart-button"><span>Add to cart</span><output>$0.00</output></button>
+              </div>
+		    </form>
+        </dialog>
+	</section>
+    <section>
+        <dialog id="alert-dialog">
+            <p>Alert title</p>
+            <div>
+                <i class="fas fa-exclamation-triangle fa-2x"></i>
+            </div>
+            <form action="" method="dialog">
+                <p>Alert text</p>
+                <div>
+                    <button type="button" class="alert-dialog-button secondary-button">Secondary Button</button>
+                    <button type="button" class="alert-dialog-button primary-button" autofocus>Primary Button</button>
+                </div>
+            </form>
+        </dialog>
+    </section>
+    <footer>
+        <p>&copy; 2022 NN Hospitality Group, LLC.</p>
+    </footer>
+</body>
+<script src="https://kit.fontawesome.com/28254238f5.js" crossorigin="anonymous"></script>
+</html>

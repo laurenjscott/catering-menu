@@ -1,0 +1,442 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin-top: 0;
+    margin-left: 0.5rem;
+}
+
+hr {
+    border: 0.5px solid gray;
+}
+
+input:invalid, select:invalid {
+    border-color: #F00;
+}
+
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    position: sticky;
+    top: 0;
+    background-color: #FFF;
+    z-index: 9999;
+}
+
+header #logo-placeholder { /* this is temporary during dev. Delete class and div before releasing into prod */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10rem;
+    height: 3rem;
+    background-color: #707070;
+    color: #FFF;
+}
+
+dialog p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+footer {
+    margin-top: 3rem;
+}
+
+header > button:last-of-type {
+    border: 1px solid #000;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+
+}
+
+header > button:last-of-type:disabled {
+    border: 1px solid lightgray;
+}
+
+main > div:first-of-type {
+    background: center / cover no-repeat url("../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg");
+    height: 20vh;
+    color: #FFF;
+    margin-bottom: 1rem;
+}
+
+
+main select, main input {
+    border: 1px solid #000;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
+    background-color: #FFF;
+    font-size: 85%;
+}
+
+main label {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+article h3 {
+    margin-bottom: 0;
+}
+
+article h3 + p {
+    margin-top: 0;
+    font-style: italic;
+}
+
+#menu-items {
+    margin-top: 1rem;
+}
+
+#menu-items ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 0 1rem;
+    padding: 0;
+    list-style: none;
+}
+
+#menu-items ul li a {
+    box-shadow: 1px 1px 2px 1px rgba(112, 112, 112, 0.2);
+    border-radius: 1rem;
+    overflow: hidden;
+
+}
+
+#menu-items ul li a:not(.disabled-menu-item-link):hover {
+    box-shadow: 2px 2px 6px 1px rgba(112, 112, 112, 0.2);   
+}
+
+#menu-items ul li a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+}
+
+
+
+#menu-item-dialog { 
+    padding: 0;
+    border: 0;
+    width: 350px;
+}
+
+
+#menu-item-dialog > button:first-of-type { 
+    position: absolute;
+    top:  0.5rem;
+    right: 0.5rem;
+    color: #FFF;
+    
+}
+
+#menu-item-dialog section:first-of-type { 
+    background: center / cover no-repeat url("../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg");
+    height: 10rem; 
+    margin-bottom: 2rem;
+}
+
+
+#menu-item-dialog label:first-of-type { 
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+}
+
+
+
+#menu-item-dialog form hr { 
+    margin-bottom: 2rem;
+}
+
+#menu-item-dialog textarea { 
+    resize: none;
+    width: calc(100% - 1rem); /* As of 2022-09-12, Chrome and Safari seems ignore the "cols" and "row" attribute values, so I have to set textarea siize manually with CSS. Also, setting the width to 100% by itself causes the textarea to overflow the form in all browsers since it seems like box-sizing is ignored and width doesn't take it consideration the margins */
+    height: 8rem;
+}
+
+
+#menu-item-dialog input[type="number"] {
+	/*for firefox*/
+	-moz-appearance: textfield;
+}
+
+
+#menu-item-dialog input[type="number"]:disabled {
+	width: 3rem;
+	-webkit-text-fill-color: #fff; /*safari only. see here https://stackoverflow.com/questions/57085123/targeting-disabled-field-in-safari-with-css */
+	text-align: center;
+    padding: 0.25rem 0.5rem;
+}
+
+/*hide spinner next to number input*/
+#menu-item-dialog input::-webkit-outer-spin-button,
+#menu-item-dialog input::-webkit-inner-spin-button {
+	/* for chrome and safari*/
+	-webkit-appearance: none;
+}
+
+#menu-item-dialog #quantity-section {
+	display: flex;
+	justify-content: space-between;
+    align-items: center;
+
+}
+
+
+#menu-item-dialog #qty-picker-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+
+#menu-item-dialog #qty-picker-wrapper button:first-of-type {
+    cursor: inherit;
+    
+}
+
+
+#menu-item-dialog #add-to-cart-button {
+	display: flex;
+	justify-content: space-between;
+	gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+#menu-item-dialog label,
+#menu-item-dialog textarea { 
+	display: block;
+}
+
+
+#menu-item-dialog textarea, #menu-item-dialog #quantity-section  { 
+    margin-bottom: 1rem;   
+}
+
+#quantity-section input, #quantity-section button {
+    font-size: 85%;
+}
+
+
+#menu-item-dialog input[type="number"]:disabled, #menu-item-dialog #add-to-cart-button { 
+    border-radius: 0.25rem;
+	border: 0;
+	background-color: teal;
+    color: #FFF;
+}
+
+
+#alert-dialog {
+    background: transparent linear-gradient(73deg, #000 0%, #585C41 100%) 0% 0% no-repeat padding-box;
+    color: #FFF;
+    max-width: 350px;
+    padding: 1rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+}
+    
+
+#alert-dialog form {
+    grid-area: form;
+}
+
+
+#alert-dialog form div {
+    display: flex;
+    gap: 2rem;
+    margin: 0 1.5rem;
+}
+
+#alert-dialog > div {
+    grid-area: icon;
+    display: flex;
+    align-items: center;
+}
+
+#alert-dialog > div i {
+    color: #D5E329;
+}
+
+#alert-dialog > p {
+    grid-area: para;
+}
+
+
+#alert-dialog > p, #alert-dialog form {
+    margin-left: 0.5rem;
+}
+
+
+#alert-dialog::backdrop {
+    opacity: 0.25;
+
+}
+
+
+main > section:first-of-type label, 
+#menu-item-dialog label:first-of-type,
+#menu-item-dialog #add-to-cart-button,
+#alert-dialog > p,
+.alert-dialog-button {
+    font-weight: 700;
+}
+
+header button, #menu-item-dialog > button:first-of-type, #menu-item-dialog #qty-picker-wrapper button { 
+    background-color: transparent;
+    border: 0;
+    
+}
+
+main section, footer,  #menu-item-dialog form > *:not(hr) { 
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+} 
+
+.hide-element {
+    display: none;
+}
+
+
+.invalid-min-max-description {
+    color: #F00;
+    font-style: italic;
+}
+
+.image-wrapper {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0; /* used to prevent the div from being shrunk to accomodate the text-wrapper flex item */
+
+}
+
+.text-wrapper {
+    padding: 0 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+
+.text-wrapper h4 {
+     -webkit-line-clamp: 2;
+}
+
+.text-wrapper p {
+    font-size: 0.9rem;
+    -webkit-line-clamp: 1;
+}
+
+.text-wrapper p:nth-of-type(2) {
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+
+.text-wrapper h4, .text-wrapper p {
+    margin-top: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+    /* See here for more on line-clamp: https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-line-clamp. I decided timplement this versus text-overflow so I don't have explicitly set a width on the paragragh. More responsive that way */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;   
+}
+
+.disabled-menu-item-link {
+    opacity: 0.5;
+    pointer-events: none;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+
+.gluten-free-tag {
+    padding: 0.125rem 0.25rem;
+    background-color: #707070;
+    color: #FFF;
+    margin-right: 0.25rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+}
+
+label .gluten-free-tag {
+    font-size: 0.875rem;
+}
+
+.show-alert-dialog {
+    display: grid;
+    grid-template-areas: 
+        "icon para para"
+        "icon form form"
+        "icon form form";
+    align-content: start;
+}
+
+.alert-dialog-button { /* for alert dialog buttons */
+    border-radius: 0.25rem;
+    padding: 0.125rem 1rem;
+}
+
+.primary-button {  /* for alert dialog primary buttons */
+     background-color: #FFF;  
+}
+
+.secondary-button {  /* for alert dialog secondary buttons  */
+    background-color: #707070;
+    color: #FFF;
+}
+
+
+
+@media (min-width: 428px) {
+    main label {
+        display: inline-block;     
+    }
+    
+    #alert-dialog {
+        max-width: 398px;
+    }
+}
+
+@media (min-width: 800px) {
+    header {
+        display: grid;
+        grid-template-areas:
+            "hamburger logo cartButton";
+        grid-template-columns: auto 1fr auto;
+        grid-gap: 2rem;
+
+    }
+    
+    header > button:first-of-type {
+        grid-area: hamburger;
+    }
+    
+    header #logo-placeholder {
+        grid-area: logo;
+    }
+    
+    header > button:last-of-type {
+        grid-area: cartButton;
+    }
+    
+    #menu-items ul {
+        display: grid;
+        grid-template-columns: 50% 50%;
+    }
+    
+}
+
+
+
+
+
+
+
+

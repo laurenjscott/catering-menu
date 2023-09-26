@@ -25,6 +25,7 @@ dialogBtn.addEventListener("click", () => {//If <dialog> is supported, then clos
 
 renderFullMenu(); //runs on window load. Rends the menu's data
 
+
 /*Functions*************************/
 async function renderFullMenu() {
     
@@ -36,6 +37,7 @@ async function renderFullMenu() {
       console.log(error);//This returns an error if something bad occurred while fetching data from the JSON file. The page load won't break instantly but an error will be placed in the console. Also, the function will quit after the error is logged.
       return;
     }
+    
     //At this point, the response has to be 200 to proceed. That means the JSON catering menu object was successfully retrieved from the JSON file and stored in the menuObj variable
     Object.keys(menuObj.menu).forEach((key) => { //loop through all categories in the menu object. "key" is the individual menu category
       //create an article and append it to main
@@ -52,6 +54,7 @@ async function renderFullMenu() {
       renderMenuItems(key, article);//sub-function that adds menu items for the current category
     });
     setTimeout(displayGFDialog, 10000); //wait 10 seconds and then display "gluten-free deal of the day" dialog element
+
 }
 
 //function retrieveData() {
@@ -75,7 +78,7 @@ function renderMenuItems(key, article) {// sub-function of renderFullMenu() func
   menuObj.menu[key].menuItems.forEach((item) => {
     let li = document.createElement("li");
     li.innerHTML = `<span class="menuItemName">${item.itemName}</span>	
-		${item.price != undefined ? Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(item.price)
+		${item.price != undefined && key != "Sides" ? Intl.NumberFormat("en-US", {style: "currency", currency: "USD"}).format(item.price)
 				: ""}
 		${
 			item.glutenFree === true
@@ -83,7 +86,7 @@ function renderMenuItems(key, article) {// sub-function of renderFullMenu() func
 				: ""
 		}	
 		<span class="perServingorDozen">${
-			item.perServing === true ? "serving" : item.perDozen === true ? "dozen" : ""
+			item.perServing === true ? "per serving" : item.perDozen === true ? "per dozen" : item.perUnit ? "per unit" : ""
 		}</span>`;
     ul.appendChild(li);
   });
@@ -124,3 +127,19 @@ function checkUnsupportedBrowser (hide) {
             dialog.classList.add("hidden");
         }
 }
+
+
+
+async function practiceTryCatch() {
+    const response = await fetch("./nf-catering-menu.json");//https://stackoverflow.com/questions/39297345/fetch-resolves-even-if-404
+    const data = await response.json().catch(error => console.log(error));
+    if(data == undefined) {
+        return;
+    } else {
+        console.log(data);
+    }
+}
+
+
+practiceTryCatch();
+

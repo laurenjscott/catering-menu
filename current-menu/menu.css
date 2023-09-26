@@ -86,7 +86,6 @@ dialog button {
     padding: 0.5rem 1.25rem;
     cursor: pointer;
     outline: 0;
-    font-size: inherit;
 }
 
 
@@ -94,9 +93,6 @@ dialog button:focus {
     outline: 1px solid #000;
 }
 
-dialog::backdrop {
-    background-color: rgba(0,0,0,0.4);
-}
 
 /*applies only to browsers that don't currently support <dialog>*/
 dialog.unsupported {

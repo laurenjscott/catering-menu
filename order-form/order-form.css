@@ -124,6 +124,7 @@ article h3 + p {
 #menu-item-dialog { 
     padding: 0;
     border: 0;
+    width: 350px;
 }
 
 
@@ -362,6 +363,10 @@ main section, footer,  #menu-item-dialog form > *:not(hr) {
     margin-right: 0.25rem;
     border-radius: 0.25rem;
     font-size: 0.75rem;
+}
+
+label .gluten-free-tag {
+    font-size: 0.875rem;
 }
 
 .show-alert-dialog {

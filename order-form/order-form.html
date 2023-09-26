@@ -79,23 +79,25 @@
                 </button>
             <section id="menu-item-image-dialog"></section>
             <form action="" method="dialog">
-              <label for="vegan-neopolitan-pizza">Vegan Neopolitan Pizza</label>
-              <p>Pomodoro, Fresh Mozzarella, Basil</p>
+              <label for=""></label>
+              <p></p>
               <hr>
               <label for="special-instructions">Special Instructions</label>
               <textarea name="special-instructions" id="special-instructions" cols="30" rows="8"></textarea>
-              <input type="hidden" value="10">
+              <input id="hidden-price-input" name="price" type="hidden" value="0">
+              <input id="hidden-uuid-input" name="uuid" type="hidden">
+              <input id="hidden-per-dozen-input" name="per-dozen" type="hidden">
               <div id="quantity-section">
                   <div id="qty-picker-wrapper">
                       <button id="decrease-quantity-button" type="button" disabled>
                           <i class="fas fa-minus"></i>
                       </button>
-                      <input id="vegan-neopolitan-pizza" name="vegan-neopolitan-pizza" type="number" step="1" min="1" value="1" disabled>
+                      <input id="" name="" type="number" step="1" min="1" value="1" disabled>
                       <button id="increase-quantity-button" type="button" autofocus>
                           <i class="fas fa-plus"></i>
                       </button>
                   </div>
-                  <button id="add-to-cart-button"><span>Add to cart</span><output>$10.00</output></button>
+                  <button id="add-to-cart-button"><span>Add to cart</span><output>$0.00</output></button>
               </div>
 		    </form>
         </dialog>

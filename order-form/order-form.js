@@ -83,7 +83,7 @@ function bindEventListeners() {
         window.location.replace("#"); //returns "https://laurenjscott.github.io/restaurant-website/order-form/order-form.html#"
         //  slice off the remaining '#' in HTML5:    
         if (typeof window.history.replaceState == 'function') { // I think this test to see if the browser supports the History API
-            history.replaceState({}, "", window.location.href.slice(0, -1);
+            history.replaceState({}, "", window.location.href.slice(0, -1));
         }
         
     })

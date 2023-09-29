@@ -2,8 +2,11 @@ import populateMainNavigation from "../app.js"; //Why is this being imported ins
 
 
 window.addEventListener("load", () => {
-    //additional of argument is temporary while hosted via localhost
-    populateMainNavigation(import.meta.url.split("/").pop().split(".")[0]); 
+    //addition of argument is temporary while hosted via localhost
+    populateMainNavigation(); 
+    
+    //If cart is not empty, push cart's event date and time to their corresponding inputs
+    populateCartEventDateTimeOnReload();
     
     updateShowCartButtonString();
     
@@ -25,8 +28,8 @@ window.addEventListener("load", () => {
         eventDataTimeSection.classList.add("hide-element");
         document.querySelector("main > hr:first-of-type").classList.add("hide-element");
         //Disable inputs
-        const allVisibleEventTimeDateInputs = [...document.querySelectorAll("#event-date-time-picker-section input:not([hidden]), #event-date-time-picker-section select:not([hidden])")];
-        allVisibleEventTimeDateInputs.forEach(input => {
+        const allEventDateTimeInputs = [...document.querySelectorAll("#event-date-time-picker-section input, #event-date-time-picker-section select")];
+        allEventDateTimeInputs.forEach(input => {
             input.setAttribute("disabled", true);
         });
         //Report data load fail to user
@@ -34,6 +37,19 @@ window.addEventListener("load", () => {
         fetchFailPara.classList.remove("hide-element");
     })
 });
+
+function populateCartEventDateTimeOnReload () {
+    const cart = sessionStorage.cart;
+    if(cart != undefined) {
+        const cartObj = JSON.parse(cart);
+        const cartEventDate = cartObj.eventDate;
+        const cartEventTime = cartObj.eventTime;
+        const dateInput = document.querySelector("#event-date-time-picker-section input");
+        const timeInput = document.querySelector("#event-date-time-picker-section select");
+        dateInput.value = cartEventDate;
+        timeInput.value = cartEventTime;
+    }
+}
 
 function bindEventListeners() {
 	const eventDateInput = document.querySelector(
@@ -168,7 +184,14 @@ function renderMenuItems(obj, key, article) {// sub-function of renderMenu() fun
         li.dataset.categoryGeneralDescription = obj.menu[key].generalDescription;
     }
     a.setAttribute("href", "#menu-item-dialog");
-    a.classList.add("disabled-menu-item-link");
+      
+    //disable menu links on session start or if cart is empty on page reload. Basically, disable the links if the event date/time inputs are empty. It is inferred that these values are valid since a cart would not be created if they weren't. Date/time is set on page load if there is a cart
+    const dateInput = document.querySelector("#event-date-time-picker-section input");
+    const timeInput = document.querySelector("#event-date-time-picker-section select");
+    if(dateInput.value == "" && timeInput.value == "") {
+        a.classList.add("disabled-menu-item-link");
+
+    }
     imageWrapper.classList.add("image-wrapper");
     img.setAttribute("src", "../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg");
     img.setAttribute("alt", "image of food")
@@ -276,18 +299,30 @@ function addToCart(event) {
 		orderLineItemObj.qty = qty;
 		orderLineItemObj.pricePerUnit = pricePerUnit;
 		orderLineItemObj.subtotal = subtotal;
+    
+        //added 2023-09-28. Testing a workflow...
+        const cartObj = {};
+        const dateInput = document.querySelector("#event-date-time-picker-section input[type='date']");
+        const timeInput = document.querySelector("#event-date-time-picker-section select");
+        cartObj.eventDate = dateInput.value;
+        cartObj.eventTime = timeInput.value;
+        cartObj.cartItems = [];
+        cartObj.cartItems.push(orderLineItemObj);
+
 
 		//determine if cart is empty. If it is, create it in session storage. If it's not, grab current cart, append new line item, and add back to session storage
 		const cart = sessionStorage.getItem("cart");
 		if (cart == null) {
 			//cart is empty
-			const cartArray = [];
-			cartArray.push(orderLineItemObj);
-			sessionStorage.setItem("cart", JSON.stringify(cartArray));
+            sessionStorage.setItem("cart", JSON.stringify(cartObj));
+
 		} else {
-			const previousCartItemsArray = JSON.parse(sessionStorage.getItem("cart"));
-			previousCartItemsArray.push(orderLineItemObj);
-			sessionStorage.setItem("cart", JSON.stringify(previousCartItemsArray));
+            const previousCartObj = JSON.parse(sessionStorage.getItem("cart"));
+            const previousCartItemsArray = previousCartObj.cartItems;
+            cartObj.cartItems.push(...previousCartItemsArray);
+            sessionStorage.setItem("cart", JSON.stringify(cartObj));
+
+
 		}
 		updateShowCartButtonString();
 }
@@ -301,7 +336,7 @@ function updateShowCartButtonString() {
         cartButton.setAttribute("disabled", true);
         
     } else {
-        cartSpanText.textContent = `${JSON.parse(cart).length}`;
+        cartSpanText.textContent = `${JSON.parse(cart).cartItems.length}`;
         cartButton.removeAttribute("disabled");
 
 
@@ -328,7 +363,7 @@ function showCart() {
 function updateSubtotal(num) {
     const output = document.querySelector("output");
     const pricePerUnit = Number(
-        document.querySelector("input[type='hidden']").value
+        document.querySelector("input#hidden-price-input").value
     );
     output.textContent = new Intl.NumberFormat("en-US", {
         style: "currency",
@@ -372,9 +407,8 @@ function validateEventDate(event) {
         //disable all menu item links
         toggleMenuItemLinks(false);
         //check if cart is NOT empty
-        const hiddenDateInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-date']");
-        const hiddenTimeInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-time']");
-        invalidDateCartCheck(hiddenDateInput, hiddenTimeInput);
+        invalidDateCartCheck();
+
     } else {
         //un-target descriptive text
         minMaxInvalidString.classList.remove("invalid-min-max-description");
@@ -385,8 +419,6 @@ function validateEventDate(event) {
 
 function validateEventTime(event) {
     const timeInput = event.target;
-    const hiddenDateInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-date']");
-    const hiddenTimeInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-time']");
     if(timeInput.validity.valid === false) {
         //The following conditional statement is being used due to a bug in Firefox 117.0.1 during a "invalid date or time/full cart" scenario. Hopefully, this is a temporary workaround. An alert dialog is displayed and ask the user to either empty the cart or revert to last valid event date and time. In Firefox, the validation errors bubble that appears has a z-index larger than the dialog which is supposed to have a higher stacking order than everything else. The bubble sits top of the alert dialog and the user has to click something on screen to remove it and to  read the dialog withut obstruction. This is related to bug RW-17 in Jira.
         if(sessionStorage.cart == undefined) {
@@ -394,37 +426,40 @@ function validateEventTime(event) {
         }
         //disable all menu item links
         toggleMenuItemLinks(false);
-        invalidDateCartCheck(hiddenDateInput, hiddenTimeInput);
+        invalidDateCartCheck();
+
     } else {
         //Do both event time/date inputs have valid values? If so, enable all menu item links
         checkFullEventInfoValidation();
     }
 }
 
+
 function checkFullEventInfoValidation() {
-    const allVisibleEventTimeDateInputs = [...document.querySelectorAll("#event-date-time-picker-section input:not([hidden]), #event-date-time-picker-section select:not([hidden])")];
-    const hiddenDateInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-date']");
-    const hiddenTimeInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-time']");
-    if(allVisibleEventTimeDateInputs.every(input => input.validity.valid === true)) {
+    const dateInput = document.querySelector("#event-date-time-picker-section input");
+    const timeInput = document.querySelector("#event-date-time-picker-section select");
+    const allEventDateTimeInputs = [dateInput, timeInput];
+    if(allEventDateTimeInputs.every(input => input.validity.valid === true)) {
         toggleMenuItemLinks(true);
         //add event listener to links
         const menuItemLinks = [...document.querySelectorAll("#menu-items a")];
         menuItemLinks.forEach(a => {
             a.addEventListener("click", (event) => renderMenuItemDialog(event));
         });
-        passValidEventInputData(hiddenDateInput, hiddenTimeInput);
+        //if cart is not empty, update the cart's eventDate and eventTime keys
+        const sessionStorageCart = sessionStorage.cart;
+        if(sessionStorageCart != undefined) {
+            const cartObj = JSON.parse(sessionStorageCart);
+            cartObj.eventDate = dateInput.value;
+            cartObj.eventTime = timeInput.value;
+        sessionStorage.setItem("cart", JSON.stringify(cartObj));
+        }
     } else {
         //disable menu item links
         toggleMenuItemLinks(false);
     }
 }
 
-function passValidEventInputData(...hiddenInputs) {  //stores most recently entered valid event date and time in hidden text inputs so they can be reset if user makes either of these fields contain invalid data AND they have a non-empty cart.
-    const dateInput = document.querySelector("#event-date-time-picker-section input[type='date']");
-    const timeInput = document.querySelector("#event-date-time-picker-section select");
-    hiddenInputs[0].value = dateInput.value;
-    hiddenInputs[1].value = timeInput.value;
-}
 
 function toggleMenuItemLinks(boolean) { //links are disabled if there is no event date and time data available. links are enabled if there is both event date and time data available
     const allMenuItemLinks = [...document.querySelectorAll("#menu-items a")];
@@ -440,8 +475,12 @@ function toggleMenuItemLinks(boolean) { //links are disabled if there is no even
    
 }
 
-function invalidDateCartCheck(...hiddenInputs) {//checks to see if cart has stuff in it. If it does, log the most recent valid event time and date to the console
+
+function invalidDateCartCheck() {//checks to see if cart has stuff in it. If it does, present a dialog asking user to eiher revert the date or empty the cart
     if(sessionStorage.cart != undefined) {
+        const cartObj = JSON.parse(sessionStorage.cart);
+        const cartEventDate = cartObj.eventDate;
+        const cartEventTime = cartObj.eventTime;
         const alertDialog = document.querySelector("#alert-dialog");
         alertDialog.classList.add("show-alert-dialog");
         const alertTitle = alertDialog.querySelector(":scope > p"); //https://stackoverflow.com/questions/3680876/using-queryselectorall-to-retrieve-direct-children
@@ -449,7 +488,7 @@ function invalidDateCartCheck(...hiddenInputs) {//checks to see if cart has stuf
         const alertPrimaryButton = alertDialog.querySelector(".primary-button");
         const alertSecondaryButton = alertDialog.querySelector(".secondary-button");
         alertTitle.textContent = "Invalid Date or Time";
-        alertText.textContent = `You have entered an event date and/or time that is either empty or invalid. Do you want to revert changes back to ${hiddenInputs[0].value} at ${hiddenInputs[1].value}, or empty your cart?`;
+        alertText.textContent = `You have entered an event date and/or time that is either empty or invalid. Do you want to revert changes back to ${cartEventDate} at ${cartEventTime}, or empty your cart?`;
         alertPrimaryButton.textContent = "Revert Date";
         alertSecondaryButton.textContent = "Empty Cart";
         alertPrimaryButton.addEventListener("click", () => {
@@ -471,13 +510,15 @@ function invalidDateCartCheck(...hiddenInputs) {//checks to see if cart has stuf
     } 
 }
 
+
 function resetToLastValidEventTimeDate() {
-    const hiddenDateInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-date']");
-    const hiddenTimeInput = document.querySelector("#event-date-time-picker-section input[name='hidden-event-time']");
+    const cart = JSON.parse(sessionStorage.cart);
+    const cartEventDate = cart.eventDate;
+    const cartEventTime = cart.eventTime;
     const dateInput = document.querySelector("#event-date-time-picker-section input[type='date']");
     const timeInput = document.querySelector("#event-date-time-picker-section select");
-    dateInput.value = hiddenDateInput.value;
-    timeInput.value = hiddenTimeInput.value; 
+    dateInput.value = cartEventDate;
+    timeInput.value = cartEventTime; 
 }
 
 function simulateEventDateChange() {

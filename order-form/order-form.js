@@ -79,12 +79,11 @@ function bindEventListeners() {
         categoryGeneralDescriptionPara.textContent = "";
         
         //remove url fragment (#menu-item-dialog) from location bar. https://stackoverflow.com/questions/269044/remove-fragment-in-url-with-javascript-w-out-causing-page-reload
-        const hash = window.location.hash;
         //  remove fragment as much as it can go without adding an entry in browser history:
-//        window.location.replace("#"); //returns "https://laurenjscott.github.io/restaurant-website/order-form/order-form.html#"
+        window.location.replace("#"); //returns "https://laurenjscott.github.io/restaurant-website/order-form/order-form.html#"
         //  slice off the remaining '#' in HTML5:    
         if (typeof window.history.replaceState == 'function') { // I think this test to see if the browser supports the History API
-            history.replaceState({}, "", window.location.href.slice(0, - (hash.length - 1)));
+            history.replaceState({}, "", window.location.href.slice(0, -1);
         }
         
     })

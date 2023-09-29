@@ -3,9 +3,17 @@ import populateMainNavigation from "../app.js"; //Why is this being imported ins
 
 window.addEventListener("load", () => {
     //addition of argument is temporary while hosted via localhost
-    populateMainNavigation(); 
+    populateMainNavigation(import.meta.url.split("/").pop().split(".")[0]);
     
-    //If cart is not empty, push cart's event date and time to their corresponding inputs
+    // remove fragment as much as it can go without adding an entry in browser history:
+window.location.replace("#");
+
+// slice off the remaining '#' in HTML5:    
+if (typeof window.history.replaceState == 'function') {
+  history.replaceState({}, '', window.location.href.slice(0, -1));
+}
+    
+    //If cart is not empty, push cart's event date and time to their corresponding inputs. 
     populateCartEventDateTimeOnReload();
     
     updateShowCartButtonString();
@@ -19,6 +27,10 @@ window.addEventListener("load", () => {
         pushEventDateRangeToInputs();
         //render menu
         renderMenu(data);
+        //enable menu item links if cart is not empty
+        if(sessionStorage.cart != undefined) {
+            checkFullEventInfoValidation();
+        }
         
         
     }).catch((error) => {
@@ -445,6 +457,7 @@ function checkFullEventInfoValidation() {
         const menuItemLinks = [...document.querySelectorAll("#menu-items a")];
         menuItemLinks.forEach(a => {
             a.addEventListener("click", (event) => renderMenuItemDialog(event));
+
         });
         //if cart is not empty, update the cart's eventDate and eventTime keys
         const sessionStorageCart = sessionStorage.cart;

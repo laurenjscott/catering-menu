@@ -24,7 +24,6 @@ window.addEventListener("load", () => {
         if(sessionStorage.cart != undefined) {
             checkFullEventInfoValidation();
         }
-        alert(navigator.maxTouchPoints);
         
         
     }).catch((error) => {
@@ -61,7 +60,11 @@ function bindEventListeners() {
 	const eventDateInput = document.querySelector(
 		"#event-date-time-picker-section input"
 	);
-	eventDateInput.addEventListener("change", (event) => processChange(event)); //When user enters a date into the event date input, processChange() is called and is passed the "change" event. processChange() basically calls (or invokes) the function declaration returned from debounce().
+    if(navigator.maxTouchPoints > 0) { //determines if device has a touchscreen. If it does, use the blur event. This is done for 1 main reason: Safari for iOS (current version I'm testing is 16.7 on a iPhone 13 as of 2023-09-30). Unlike other user agents, the change event is triggered as soon as the user click the date input because Safari automatically pushes the current date as the input value. This causes the validation message bubble to be displayed because of the min/max constraints on the input. The message also hides the "Done" button. If the user doesn't click the message bubble, there is no way to interact with the date picker. Clicking anything other the validation message bubble will close the picker. And the input becomes unclickable until focus is given to another element and then the user clicks the date input again. Another reason use blur for touchscreens is because direct date entry date inputs is not allowed anyway, so blur is just fine.
+       eventDateInput.addEventListener("blur", (event) => processChange(event)); //When user enters a date into the event date input, processChange() is called and is passed the "change" event. processChange() basically calls (or invokes) the function declaration returned from debounce().
+    } else {
+        eventDateInput.addEventListener("change", (event) => processChange(event)); //When user enters a date into the event date input, processChange() is called and is passed the "change" event. processChange() basically calls (or invokes) the function declaration returned from debounce().
+    }
 
 	const eventTimeSelect = document.querySelector(
 		"#event-date-time-picker-section select"

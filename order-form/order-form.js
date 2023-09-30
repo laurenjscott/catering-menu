@@ -24,6 +24,7 @@ window.addEventListener("load", () => {
         if(sessionStorage.cart != undefined) {
             checkFullEventInfoValidation();
         }
+        alert(navigator.maxTouchPoints);
         
         
     }).catch((error) => {

@@ -44,9 +44,9 @@ function toggleMainNavigation() {
 }
 
 function addListenerToMainNavLinks() {
-    const hyperlinkArray = [...document.querySelectorAll("a")];
+    const hyperlinkArray = [...document.querySelectorAll("nav a")];
     hyperlinkArray.forEach(link => {
-        link.addEventListener("click", () => toggleMainNavigation)
+        link.addEventListener("click", toggleMainNavigation);
     })
 }
 

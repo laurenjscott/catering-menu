@@ -71,6 +71,7 @@ function bindEventListeners() {
     
     const menuItemDialog = document.querySelector("#menu-item-dialog");
     menuItemDialog.addEventListener("close", () => {
+        const form = menuItemDialog.querySelector("form");
         const numberInput = menuItemDialog.querySelector("input[type='number']");
         const decreaseQuantityButton = menuItemDialog.querySelector("#decrease-quantity-button");
         const categoryGeneralDescriptionPara = menuItemDialog.querySelector("label:first-of-type + p");
@@ -85,6 +86,7 @@ function bindEventListeners() {
         if (typeof window.history.replaceState == 'function') { // I think this test to see if the browser supports the History API
             history.replaceState({}, "", window.location.href.slice(0, -1));
         }
+        form.reset();
         
     })
 

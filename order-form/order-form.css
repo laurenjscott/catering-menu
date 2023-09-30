@@ -158,6 +158,7 @@ article h3 + p {
     resize: none;
     width: calc(100% - 1rem); /* As of 2022-09-12, Chrome and Safari seems ignore the "cols" and "row" attribute values, so I have to set textarea siize manually with CSS. Also, setting the width to 100% by itself causes the textarea to overflow the form in all browsers since it seems like box-sizing is ignored and width doesn't take it consideration the margins */
     height: 8rem;
+    font-size: inherit;
 }
 
 
@@ -170,6 +171,7 @@ article h3 + p {
 #menu-item-dialog input[type="number"]:disabled {
 	width: 3rem;
 	-webkit-text-fill-color: #fff; /*safari only. see here https://stackoverflow.com/questions/57085123/targeting-disabled-field-in-safari-with-css */
+    opacity: 1; /* have to explicitly set the opacity for mobile devices */
 	text-align: center;
     padding: 0.25rem 0.5rem;
 }

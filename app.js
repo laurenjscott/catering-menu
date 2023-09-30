@@ -1,7 +1,7 @@
 window.addEventListener("load", event => {
     addListenersToMainNavButtons();
     modifyCopyrightYear();
-    addListenerToMainNavLinks();
+
 });
 
 
@@ -11,7 +11,7 @@ function modifyCopyrightYear() {
 }
 
 
-export default function populateMainNavigation(folder) { //folder argument is temporary
+export function populateMainNavigation(folder) { //folder argument is temporary
     //fileName is temporarily inactive while host via local host. "if" condition will use fileName once in production
 //    const fileName = document.querySelector("html").baseURI.split("/").pop();
     const navUl = document.querySelector("header nav ul");
@@ -38,16 +38,19 @@ function addListenersToMainNavButtons() {
     buttonArray.forEach(button => button.addEventListener("click", toggleMainNavigation));
 }
 
-function toggleMainNavigation() {
+export function toggleMainNavigation() {
     const nav = document.querySelector("nav");
-    nav.classList.toggle("show-main-nav");
+    if(arguments[0].target.tagName == "A") {
+        nav.classList.remove("show-main-nav");
+    } else {
+        nav.classList.toggle("show-main-nav");
+    }
+    
 }
 
-function addListenerToMainNavLinks() {
-    const hyperlinkArray = [...document.querySelectorAll("nav a")];
-    hyperlinkArray.forEach(link => {
-        link.addEventListener("click", toggleMainNavigation);
-    })
+export function addListenerToMainNavLinks() {
+    const hyperlinkArray = [...document.querySelectorAll("header nav a")];
+    hyperlinkArray.forEach(link => link.addEventListener("click", toggleMainNavigation));
 }
 
 

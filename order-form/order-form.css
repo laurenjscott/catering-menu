@@ -47,6 +47,7 @@ footer {
     margin-top: 3rem;
 }
 
+
 header > button:last-of-type {
     border: 1px solid #000;
     padding: 0.75rem;
@@ -292,8 +293,11 @@ main > section:first-of-type label,
 
 header button, #menu-item-dialog > button:first-of-type, #menu-item-dialog #qty-picker-wrapper button { 
     background-color: transparent;
-    border: 0;
-    
+    border: 0;   
+}
+
+header button:not([disabled]), #menu-item-dialog #qty-picker-wrapper button:not([disabled]) { /* this level of explicitness and specificity is needed for mobile devices. Otherwise, the button text and icons will be blue. */
+    color: #000;
 }
 
 main section, footer,  #menu-item-dialog form > *:not(hr) { 
@@ -434,11 +438,4 @@ label .gluten-free-tag {
     }
     
 }
-
-
-
-
-
-
-
 

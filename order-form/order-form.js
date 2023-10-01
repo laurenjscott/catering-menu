@@ -1,12 +1,9 @@
-import {populateMainNavigation, toggleMainNavigation, addListenerToMainNavLinks} from "../app.js"; //Why is populateMainNavigation() being imported instead of being run in app.js? Because of the issue with Dreamweaver live server not displaying the true URL of the HTML file it's called on. Once this is in prod, it can be run in app.js.
+import populateMainNavigation from "../app.js"; //Why is populateMainNavigation() being imported instead of being run in app.js? Because of the issue with Dreamweaver live server not displaying the true URL of the HTML file it's called on. Once this is in prod, it can be run in app.js.
 
 
 window.addEventListener("load", () => {
     //addition of argument is temporary while hosted via localhost
-    populateMainNavigation(import.meta.url.split("/").pop().split(".")[0]);
-    
-    addListenerToMainNavLinks();
-    
+    populateMainNavigation(import.meta.url.split("/").pop().split(".")[0]);    
     
     //If cart is not empty, push cart's event date and time to their corresponding inputs. 
     populateCartEventDateTimeOnReload();
@@ -44,6 +41,7 @@ window.addEventListener("load", () => {
         fetchFailPara.classList.remove("hide-element");
     })
 });
+
 
 function populateCartEventDateTimeOnReload () {
     const cart = sessionStorage.cart;

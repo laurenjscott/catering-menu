@@ -3,6 +3,7 @@ body {
     padding: 0;
 }
 
+
 h1 {
     margin-top: 0;
     margin-left: 0.5rem;
@@ -12,8 +13,24 @@ hr {
     border: 0.5px solid gray;
 }
 
+
 input:invalid, select:invalid {
     border-color: #F00;
+}
+
+/*hide spinner next to number input*/
+input[type="number"]:disabled::-webkit-outer-spin-button,
+input[type="number"]:disabled::-webkit-inner-spin-button { /* for chrome and safari*/
+	-webkit-appearance: none;
+}
+
+input[type="number"]:disabled {
+	-moz-appearance: textfield; /*for firefox*/
+    -webkit-text-fill-color: #fff; /*safari only. see here https://stackoverflow.com/questions/57085123/targeting-disabled-field-in-safari-with-css */
+    opacity: 1; /* have to explicitly set the opacity for mobile devices */
+	text-align: center;
+    width: 3rem;
+
 }
 
 
@@ -28,7 +45,7 @@ header {
     z-index: 9999;
 }
 
-header #logo-placeholder { /* this is temporary during dev. Delete class and div before releasing into prod */
+header > div { /* logo placeholder */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,7 +93,6 @@ main select, main input {
 }
 
 main label {
-    display: block;
     margin-bottom: 1rem;
 }
 
@@ -163,26 +179,10 @@ article h3 + p {
 }
 
 
-#menu-item-dialog input[type="number"] {
-	/*for firefox*/
-	-moz-appearance: textfield;
-}
-
-
 #menu-item-dialog input[type="number"]:disabled {
-	width: 3rem;
-	-webkit-text-fill-color: #fff; /*safari only. see here https://stackoverflow.com/questions/57085123/targeting-disabled-field-in-safari-with-css */
-    opacity: 1; /* have to explicitly set the opacity for mobile devices */
-	text-align: center;
     padding: 0.25rem 0.5rem;
 }
 
-/*hide spinner next to number input*/
-#menu-item-dialog input::-webkit-outer-spin-button,
-#menu-item-dialog input::-webkit-inner-spin-button {
-	/* for chrome and safari*/
-	-webkit-appearance: none;
-}
 
 #menu-item-dialog #quantity-section {
 	display: flex;
@@ -211,10 +211,11 @@ article h3 + p {
 	justify-content: space-between;
 	gap: 0.5rem;
     padding: 0.5rem;
+    font-size: 85%;
+
 }
 
-#menu-item-dialog label,
-#menu-item-dialog textarea { 
+label, #menu-item-dialog textarea { 
 	display: block;
 }
 
@@ -223,12 +224,9 @@ article h3 + p {
     margin-bottom: 1rem;   
 }
 
-#quantity-section input, #quantity-section button {
-    font-size: 85%;
-}
 
 
-#menu-item-dialog input[type="number"]:disabled, #menu-item-dialog #add-to-cart-button { 
+input[type="number"]:disabled, #menu-item-dialog #add-to-cart-button { 
     border-radius: 0.25rem;
 	border: 0;
 	background-color: teal;
@@ -282,19 +280,89 @@ article h3 + p {
 
 }
 
+#view-cart {
+    max-width: 430px;
+    display: flex;
+    flex-direction: column;
+}
 
-main > section:first-of-type label, 
-#menu-item-dialog label:first-of-type,
-#menu-item-dialog #add-to-cart-button,
-#alert-dialog > p,
-.alert-dialog-button {
+#view-cart > button {
+    text-align: right;
+}
+
+#view-cart fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+#view-cart fieldset > div {
+    display: grid;
+    grid-template-areas: 
+        "img text  total"
+        "img input delete";
+    align-items: start;
+    grid-template-columns: 75px 4fr 2fr;
+    margin-bottom: 1rem;
+}
+
+#view-cart fieldset > div img {
+    grid-area: img;
+    width: 75px;
+    height: 75px;
+    
+}
+
+#view-cart fieldset > div div {
+    grid-area: text;
+    margin-left: 0.5rem;
+
+    
+}
+
+#view-cart fieldset > div div p {
+   margin: 0;
+
+}
+
+#view-cart fieldset > div output {
+    grid-area: total;
+    text-align: right;
+}
+
+#view-cart > form > div {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.25rem;
     font-weight: 700;
 }
 
-header button, #menu-item-dialog > button:first-of-type, #menu-item-dialog #qty-picker-wrapper button { 
-    background-color: transparent;
-    border: 0;   
+
+
+#view-cart fieldset > div div:last-of-type {
+    grid-area: input;
 }
+
+
+#view-cart fieldset > div > button:last-of-type {
+    grid-area: delete;
+    justify-self: end;
+    color: #FF0000;
+
+}
+
+
+
+label,
+button, 
+#alert-dialog > p {
+    font-weight: 700;
+}
+
+header > button:last-of-type, #menu-item-dialog label:nth-of-type(2) {
+    font-weight: inherit;
+}
+
 
 header button:not([disabled]), #menu-item-dialog #qty-picker-wrapper button:not([disabled]) { /* this level of explicitness and specificity is needed for mobile devices. Otherwise, the button text and icons will be blue. */
     color: #000;
@@ -398,6 +466,10 @@ label .gluten-free-tag {
     color: #FFF;
 }
 
+.quantity-button, #view-cart fieldset > div > button:last-of-type { /*all "plus" and "minus" buttons in any dialog element. Also, the "delete line item" button in the cart*/
+    padding: 0.25rem 0.5rem;
+}
+
 
 
 @media (min-width: 428px) {
@@ -438,4 +510,6 @@ label .gluten-free-tag {
     }
     
 }
+
+
 

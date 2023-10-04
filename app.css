@@ -18,6 +18,8 @@ button {
     border: 0;
     cursor: pointer;
     font-size: inherit;
+    background-color: transparent;
+    border: 0;
 
 }
 
@@ -32,6 +34,10 @@ button:focus {
 
 a {
     color: #BC1FC3;
+}
+
+img {
+    display: block;
 }
 
 nav {

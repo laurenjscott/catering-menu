@@ -7,7 +7,6 @@ window.addEventListener("load", event => {
 window.addEventListener("pagehide", () => {
     const nav = document.querySelector("header nav");
     nav.classList.remove("show-main-nav");
-    console.log(new Date());
 });
 
 function modifyCopyrightYear() {

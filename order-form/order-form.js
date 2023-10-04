@@ -39,7 +39,10 @@ window.addEventListener("load", () => {
         //Report data load fail to user
         const fetchFailPara = document.querySelector("#menu-items > p");
         fetchFailPara.classList.remove("hide-element");
-    })
+    });
+    
+    populateCartDialog();
+    sessionStorage.cart != undefined ? document.querySelector("body > dialog:last-of-type").showModal() : document.querySelector("body > dialog:last-of-type").close();
 });
 
 
@@ -94,11 +97,14 @@ function bindEventListeners() {
         
     })
 
-	const closeMenuItemDialogButton = document.querySelector("#menu-item-dialog > button");
-	closeMenuItemDialogButton.addEventListener("click", (event) => {
-		const dialog = document.querySelector("#menu-item-dialog");
-		dialog.close();
-	});
+    
+    const closeDialogButtons = [...document.querySelectorAll("dialog button.close-dialog")];
+	closeDialogButtons.forEach(button => {
+        button.addEventListener("click", (event) => {
+		  const dialog = button.parentNode;
+		  dialog.close();
+	   });                     
+    });
 
 	const addToCartButton = document.querySelector(
 		"#quantity-section #add-to-cart-button"
@@ -143,6 +149,7 @@ function bindEventListeners() {
             decreaseQuantityButton.removeAttribute("disabled");
 		}
 	});
+    
 }
 
 async function fetchCurrentMenu() {
@@ -291,6 +298,9 @@ function addToCart(event) {
         //grab menu item's label text content
 		const menuItemName = document.querySelector("#menu-item-dialog label:first-of-type")
 			.lastChild.data;
+    
+        //grab perDozen data attribute value
+        const perDozen = document.querySelector("#menu-item-dialog #hidden-per-dozen-input").value;
 
 		//grab qty requested
 		const qty = parseInt(
@@ -316,10 +326,11 @@ function addToCart(event) {
 		orderLineItemObj.menuItemName = menuItemName;
 		orderLineItemObj.specialInstructions = specialInstructions;
 		orderLineItemObj.qty = qty;
+        orderLineItemObj.perDozen = perDozen;
 		orderLineItemObj.pricePerUnit = pricePerUnit;
 		orderLineItemObj.subtotal = subtotal;
     
-        //added 2023-09-28. Testing a workflow...
+        //added 2023-09-28
         const cartObj = {};
         const dateInput = document.querySelector("#event-date-time-picker-section input[type='date']");
         const timeInput = document.querySelector("#event-date-time-picker-section select");
@@ -346,6 +357,116 @@ function addToCart(event) {
 		updateShowCartButtonString();
 }
 
+function populateCartDialog() {
+    const cart = sessionStorage.cart;
+    if(cart != undefined) {
+        const cartObj = JSON.parse(cart);
+        const cartItemsArray = cartObj.cartItems;
+        const cartForm = document.querySelector("#view-cart form");
+        const fieldset = cartForm.querySelector("fieldset");
+        const h2 = cartForm.querySelector("h2");
+        const eventDatePara = cartForm.querySelector("form > p:first-of-type");
+        const eventTimePara = cartForm.querySelector("form > p:nth-of-type(2)");
+        h2.textContent = `Your Cart (${cartItemsArray.length} Item${cartItemsArray.length == 1 ? "" : "s"})`;
+        const dateObj = new Date(cartObj.eventDate);
+        const timeString = cartObj.eventTime;
+        const timeZoneOffset = dateObj.getTimezoneOffset();
+        const timeSplitArray = timeString.split(":");
+        const timeMilliseconds = (parseInt(timeSplitArray[0], 10) * 60 * 60 * 1000) + (parseInt(timeSplitArray[1], 10) * 60 * 1000);
+        const dateTimeObj = new Date(dateObj.getTime() + (timeZoneOffset*60*1000) + timeMilliseconds);
+        const eventTimeHours = dateTimeObj.getHours();
+        const eventTimeMinutes = dateTimeObj.getMinutes() < 10 ? `0${dateTimeObj.getMinutes()}` : dateTimeObj.getMinutes();
+        const eventTime12HourFormat = eventTimeHours > 12 ? eventTimeHours - 12 : eventTimeHours;
+        const amPM = eventTimeHours >= 12 ? "PM" : "AM";
+        eventDatePara.textContent = `Event Date: ${new Intl.DateTimeFormat('en-US', { dateStyle: "full"}).format(dateTimeObj)}`;
+        eventTimePara.textContent = `Event Time: ${eventTime12HourFormat}:${eventTimeMinutes} ${amPM}`;
+        renderCartItems(cartItemsArray, fieldset);
+        //calculate cart total
+        const grandTotalOutput = cartForm.querySelector(":scope > div:last-of-type output")
+        const lineItemOutputsArray = [...fieldset.querySelectorAll("output")];
+        grandTotalOutput.textContent = `${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(lineItemOutputsArray.reduce((acc, curValue) => acc + Number(curValue.value.replace(/[$,]/g, "")), 0))}`; //have to remove dollar sign and commas otherwise reduce function will return a NaN
+                
+    }
+}
+
+function renderCartItems(cartItemsArray, fieldset) {
+    cartItemsArray.forEach(item => {
+        let lineItemWrapper = document.createElement("div");
+        let textWrapper = document.createElement("div");
+        let inputButtonWrapper = document.createElement("div");
+        let img = document.createElement("img");
+        let label = document.createElement("label");
+        let input = document.createElement("input");
+        let decreaseButton = document.createElement("button");
+        let decreaseButtonIcon = document.createElement("i");
+        let increaseButton = document.createElement("button");
+        let increaseButtonIcon = document.createElement("i");
+        let deleteLineItemButton = document.createElement("button");
+        let deleteLineItemButtonIcon = document.createElement("i");
+        let lineItemTotal = document.createElement("output");
+        let categoryGeneralDescription;
+        img.setAttribute("src", "../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg");
+        img.setAttribute("alt", "image of food")
+        img.setAttribute("width", "75");
+        img.setAttribute("aria-hidden", true);
+        label.setAttribute("for", item.uuid);
+        label.textContent = item.menuItemName;
+        input.setAttribute("id", item.uuid);
+        input.setAttribute("name", item.uuid);
+        input.setAttribute("type", "number");
+        input.setAttribute("min", "1");
+        input.setAttribute("value", item.qty);
+        input.setAttribute("step", "1");
+        input.setAttribute("disabled", "true");
+        decreaseButton.setAttribute("type", "button");
+        decreaseButton.classList.add("quantity-button");
+        if((item.perDozen == "true" && item.qty == 2) || item.qty == 1) {
+            decreaseButton.setAttribute("disabled", "true");
+        };
+        decreaseButton.setAttribute("aria-label", "Decrease quantity");
+        decreaseButtonIcon.classList.add("fas");
+        decreaseButtonIcon.classList.add("fa-minus");
+        decreaseButtonIcon.setAttribute("aria-hidden", true);
+        increaseButton.setAttribute("type", "button");
+        increaseButton.setAttribute("autofocus", true);
+        increaseButton.classList.add("quantity-button");
+        increaseButton.setAttribute("aria-label", "Increase quantity");
+        increaseButtonIcon.classList.add("fas");
+        increaseButtonIcon.classList.add("fa-plus");
+        increaseButtonIcon.setAttribute("aria-hidden", true);
+        deleteLineItemButton.setAttribute("type", "button");
+        deleteLineItemButton.setAttribute("aria-label", "Delete line item");
+        deleteLineItemButtonIcon.classList.add("fas");
+        deleteLineItemButtonIcon.classList.add("fa-trash-alt");
+        deleteLineItemButtonIcon.setAttribute("aria-hidden", true);
+        lineItemTotal.textContent = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(item.pricePerUnit) * parseInt(item.qty));
+        decreaseButton.appendChild(decreaseButtonIcon);
+        increaseButton.appendChild(increaseButtonIcon);
+        deleteLineItemButton.appendChild(deleteLineItemButtonIcon);
+        lineItemWrapper.appendChild(img);
+        textWrapper.appendChild(label);
+        if(item.perDozen == "true") {
+            categoryGeneralDescription = document.createElement("p");
+            categoryGeneralDescription.textContent = "Minimum 2 dozen";
+            textWrapper.appendChild(categoryGeneralDescription);
+        };
+        if(item.specialInstructions != "") {
+            let specialInstructions = document.createElement("p");
+            specialInstructions.textContent = item.specialInstructions;
+            textWrapper.appendChild(specialInstructions);
+        }
+        inputButtonWrapper.appendChild(decreaseButton);
+        inputButtonWrapper.appendChild(input);
+        inputButtonWrapper.appendChild(increaseButton);
+        lineItemWrapper.appendChild(textWrapper);
+        lineItemWrapper.appendChild(lineItemTotal);
+        lineItemWrapper.appendChild(inputButtonWrapper);
+        lineItemWrapper.appendChild(deleteLineItemButton);
+        fieldset.appendChild(lineItemWrapper);
+            
+    });
+}
+
 function updateShowCartButtonString() {
     const cartButton = document.querySelector("header > button:last-of-type");
     const cart = sessionStorage.cart;
@@ -353,10 +474,13 @@ function updateShowCartButtonString() {
     if(cart == undefined) {
         cartSpanText.textContent = "0";
         cartButton.setAttribute("disabled", true);
+        cartButton.removeAttribute("aria-label");
+
         
     } else {
         cartSpanText.textContent = `${JSON.parse(cart).cartItems.length}`;
         cartButton.removeAttribute("disabled");
+        cartButton.setAttribute("aria-label", "View shopping cart");
 
 
     }
@@ -561,4 +685,5 @@ const processChange = debounce((event) => validateEventDate(event)); //processCh
 //        clearTimeout(timer); //does nothing if timer is undefined. Else, cancels previous setTimeout call. 
 //        timer = setTimeout(() => { func.apply(this, args)}, timeout); // After 500 ms (0.5 sec), runs function passed to debounce(), which is "(event) => validateEventDate(event)". The timer variable is then set with integer. From MDN's setTimeout docs: "The returned timeoutID is a positive integer value which identifies the timer created by the call to setTimeout(). This value can be passed to clearTimeout() to cancel the timeout."
 //    }
+
 

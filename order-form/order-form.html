@@ -18,7 +18,7 @@
         <button type="button" aria-label="View main navigation">
             <i class="fas fa-bars fa-2x" aria-hidden="true" title="View main navigation"></i>
         </button>
-        <div id="logo-placeholder">logo placeholder</div>
+        <div>logo placeholder</div>
         <nav>
             <ul>
             </ul>
@@ -33,7 +33,7 @@
         </button>
     </header>
     <main>
-        <div id="h1-wrapper">
+        <div>
             <h1>N9Ne Caterers</h1>
         </div>
         <section id="event-date-time-picker-section">
@@ -70,10 +70,9 @@
             <p class="hide-element">Data failed to load. Try reloading the page.</p>
         </section>
     </main>
-	<section>
         <dialog id="menu-item-dialog">
-                <button>
-                    <i class="fas fa-times-circle fa-3x"></i>
+                <button aria-label="Close dialog" class="close-dialog">
+                    <i class="fas fa-times-circle fa-3x" aria-hidden="true"></i>
                 </button>
             <section id="menu-item-image-dialog"></section>
             <form action="" method="dialog">
@@ -87,24 +86,22 @@
               <input id="hidden-per-dozen-input" name="per-dozen" type="hidden">
               <div id="quantity-section">
                   <div id="qty-picker-wrapper">
-                      <button id="decrease-quantity-button" type="button" disabled>
-                          <i class="fas fa-minus"></i>
+                      <button id="decrease-quantity-button" class="quantity-button" type="button" disabled aria-label="Decrease quantity">
+                          <i class="fas fa-minus" aria-hidden="true"></i>
                       </button>
                       <input id="menu-item" name="menu-item" type="number" step="1" min="1" value="1" disabled>
-                      <button id="increase-quantity-button" type="button" autofocus>
-                          <i class="fas fa-plus"></i>
+                      <button id="increase-quantity-button" class="quantity-button" type="button" autofocus aria-label="Increase quantity">
+                          <i class="fas fa-plus" aria-hidden="true"></i>
                       </button>
                   </div>
                   <button id="add-to-cart-button"><span>Add to cart</span><output>$0.00</output></button>
               </div>
 		    </form>
         </dialog>
-	</section>
-    <section>
         <dialog id="alert-dialog">
             <p>Alert title</p>
             <div>
-                <i class="fas fa-exclamation-triangle fa-2x"></i>
+                <i class="fas fa-exclamation-triangle fa-2x" aria-hidden="true"></i>
             </div>
             <form action="" method="dialog">
                 <p>Alert text</p>
@@ -114,7 +111,21 @@
                 </div>
             </form>
         </dialog>
-    </section>
+        <dialog id="view-cart">
+             <button aria-label="Close shopping cart" class="close-dialog">
+                <i class="fas fa-times-circle fa-2x" aria-hidden="true"></i>
+            </button>
+            <form action="" method="dialog">
+                <h2>Your Cart (0 Items)</h2>
+                <p>Delivery Date: Monday, October 2, 2023</p>
+                <p>Delivery Time: 03:30 PM CDT</p>
+                <fieldset></fieldset>
+                <div>
+                    <label for="grand-total">Total:</label>
+                    <output id="grand-total">$0.00</output>
+                </div>
+            </form>
+        </dialog>
     <footer>
         <p>&copy; 2022 NN Hospitality Group, LLC.</p>
     </footer>

@@ -285,7 +285,10 @@ input[type="number"]:disabled, #menu-item-dialog #add-to-cart-button {
     max-width: 430px;
     flex-direction: column;
     border-radius: 0.25rem 0 0 0.25rem;
+
 }
+
+
 
 #view-cart[open] { /* See top answer here for why this is here by "frontend_friend": https://stackoverflow.com/questions/60365510/html5-dialog-element-close-button-not-working-properly. Makes total sense. Chrome is strict about this but the other desktop browsers are more permissive and the "none" atrribute for close dialog elements overrides the flex attribute for opened dialogs */
     display: flex;
@@ -297,6 +300,7 @@ input[type="number"]:disabled, #menu-item-dialog #add-to-cart-button {
 #view-cart > button {
     text-align: right;
     align-self: end; /* ensures that focus outline is only surround the button and not the entire flex column */
+    padding-right: 0;
 }
 
 #view-cart fieldset {
@@ -378,7 +382,7 @@ header > button:last-of-type, #menu-item-dialog label:nth-of-type(2) {
 }
 
 
-header button:not([disabled]), #menu-item-dialog #qty-picker-wrapper button:not([disabled]) { /* this level of explicitness and specificity is needed for mobile devices. Otherwise, the button text and icons will be blue. */
+header button:not([disabled]), .quantity-button:not([disabled]), #view-cart > button { /* this level of explicitness and specificity is needed for mobile devices. Otherwise, the button text and icons will be blue. */
     color: #000;
 }
 

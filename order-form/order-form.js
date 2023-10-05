@@ -40,9 +40,7 @@ window.addEventListener("load", () => {
         const fetchFailPara = document.querySelector("#menu-items > p");
         fetchFailPara.classList.remove("hide-element");
     });
-    
-    populateCartDialog();
-    sessionStorage.cart != undefined ? document.querySelector("body > dialog:last-of-type").showModal() : document.querySelector("body > dialog:last-of-type").close();
+
 });
 
 
@@ -75,6 +73,21 @@ function bindEventListeners() {
 	eventTimeSelect.addEventListener("change", (event) =>
 		validateEventTime(event)
 	);
+    
+    const viewCartDialog = document.querySelector("#view-cart");
+    viewCartDialog.addEventListener("close", () => {
+        const form = viewCartDialog.querySelector("form");
+        const fieldset = viewCartDialog.querySelector("fieldset");
+        fieldset.textContent = "";
+        const output = viewCartDialog.querySelector(":scope > output");
+        const h2 = viewCartDialog.querySelector("h2");
+        const eventDatePara = viewCartDialog.querySelector("form > p:first-of-type");
+        const eventTimePara = viewCartDialog.querySelector("form > p:last-of-type");
+        form.reset();
+        [...output, h2, eventDatePara, eventTimePara].forEach(element => {
+            element.textContent = "";
+        })
+    })
     
     const menuItemDialog = document.querySelector("#menu-item-dialog");
     menuItemDialog.addEventListener("close", () => {
@@ -357,12 +370,10 @@ function addToCart(event) {
 		updateShowCartButtonString();
 }
 
-function populateCartDialog() {
-    const cart = sessionStorage.cart;
-    if(cart != undefined) {
+function populateCartDialog(cart, dialog) {
         const cartObj = JSON.parse(cart);
         const cartItemsArray = cartObj.cartItems;
-        const cartForm = document.querySelector("#view-cart form");
+        const cartForm = dialog.querySelector("form");
         const fieldset = cartForm.querySelector("fieldset");
         const h2 = cartForm.querySelector("h2");
         const eventDatePara = cartForm.querySelector("form > p:first-of-type");
@@ -385,8 +396,6 @@ function populateCartDialog() {
         const grandTotalOutput = cartForm.querySelector(":scope > div:last-of-type output")
         const lineItemOutputsArray = [...fieldset.querySelectorAll("output")];
         grandTotalOutput.textContent = `${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(lineItemOutputsArray.reduce((acc, curValue) => acc + Number(curValue.value.replace(/[$,]/g, "")), 0))}`; //have to remove dollar sign and commas otherwise reduce function will return a NaN
-                
-    }
 }
 
 function renderCartItems(cartItemsArray, fieldset) {
@@ -498,9 +507,12 @@ function emptyCart() {
 }
 
 function showCart() {
-    if(sessionStorage.cart != undefined) {
-        console.log(sessionStorage.cart);
-    }
+        const cart = sessionStorage.cart
+        if(cart != undefined) {
+            const dialog = document.querySelector("#view-cart");
+            populateCartDialog(cart, dialog);
+            dialog.showModal();
+        }
 }
 
 function updateSubtotal(num) {

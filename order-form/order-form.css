@@ -243,8 +243,25 @@ input[type="number"]:disabled, #menu-item-dialog #add-to-cart-button {
     border-radius: 1rem;
     font-size: 0.75rem;
 }
-    
 
+
+#alert-dialog.invalid-date-full-cart {
+    background: transparent linear-gradient(73deg, #000 0%, #585C41 100%) 0% 0% no-repeat padding-box;
+}
+
+#alert-dialog.invalid-date-full-cart > div i  {
+    color: #D5E329;
+}
+
+#alert-dialog.cart-delete {
+    background: transparent linear-gradient(71deg, #000 0%, #910606 200%) 0% 0% no-repeat padding-box;
+}
+
+#alert-dialog.cart-delete > div i {
+    color: #FF0000;
+}
+
+     
 #alert-dialog form {
     grid-area: form;
 }
@@ -262,9 +279,6 @@ input[type="number"]:disabled, #menu-item-dialog #add-to-cart-button {
     align-items: center;
 }
 
-#alert-dialog > div i {
-    color: #D5E329;
-}
 
 #alert-dialog > p {
     grid-area: para;
@@ -497,7 +511,8 @@ label .gluten-free-tag {
     }
     
     #alert-dialog {
-        max-width: 398px;
+      width: 398px;
+
     }
 }
 

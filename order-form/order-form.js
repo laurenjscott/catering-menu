@@ -79,15 +79,29 @@ function bindEventListeners() {
         const form = viewCartDialog.querySelector("form");
         const fieldset = viewCartDialog.querySelector("fieldset");
         fieldset.textContent = "";
-        const output = viewCartDialog.querySelector(":scope > output");
+        const output = viewCartDialog.querySelector("form > div output");
         const h2 = viewCartDialog.querySelector("h2");
         const eventDatePara = viewCartDialog.querySelector("form > p:first-of-type");
         const eventTimePara = viewCartDialog.querySelector("form > p:last-of-type");
         form.reset();
-        [...output, h2, eventDatePara, eventTimePara].forEach(element => {
+        [output, h2, eventDatePara, eventTimePara].forEach(element => {
             element.textContent = "";
         })
-    })
+    });
+    
+    const alertDialog = document.querySelector("#alert-dialog");
+    alertDialog.addEventListener("close", () => { // remove all event listeners from buttons on dialog close. cloneNode() is the only way to remove anonymous event listeners https://stackoverflow.com/questions/19469881/remove-all-event-listeners-of-specific-type
+        const primaryButton = alertDialog.querySelector(".primary-button");
+        const secondaryButton = alertDialog.querySelector(".secondary-button");
+        const clonedPrimaryButton = primaryButton.cloneNode(true);
+        const clonedSecondaryButton = secondaryButton.cloneNode(true);
+        const buttonParentNode = alertDialog.querySelector("button").parentNode;
+        buttonParentNode.replaceChild(clonedPrimaryButton, primaryButton);
+        buttonParentNode.replaceChild(clonedSecondaryButton, secondaryButton);
+
+    });
+    
+    
     
     const menuItemDialog = document.querySelector("#menu-item-dialog");
     menuItemDialog.addEventListener("close", () => {
@@ -511,8 +525,79 @@ function showCart() {
         if(cart != undefined) {
             const dialog = document.querySelector("#view-cart");
             populateCartDialog(cart, dialog);
+            const deleteLineItemButtonsArray = [...dialog.querySelectorAll("fieldset > div > button:last-of-type")];
+            deleteLineItemButtonsArray.forEach(button => {
+                button.addEventListener("click", confirmCartLineItemDeletion);
+            });
             dialog.showModal();
         }
+}
+
+function deleteCartLineItem(lineItemDiv) {
+    const dialog = document.querySelector("#view-cart");
+    const h2 = dialog.querySelector("h2");
+    const fieldset = dialog.querySelector("fieldset");
+    const output = dialog.querySelector("form > div:last-of-type output");
+    const cartObj = JSON.parse(sessionStorage.cart);
+    const cartItemsArray = cartObj.cartItems;
+    const lineItemId = lineItemDiv.querySelector(":scope > div:first-of-type label").getAttribute("for");
+    const lineItemInCartItemsArray = cartItemsArray.filter(obj => obj.uuid === lineItemId)[0];
+    const index = cartItemsArray.indexOf(lineItemInCartItemsArray);
+    //remove selected line item from cartItemsArray
+    cartItemsArray.splice(index, 1);
+    //update cartObj
+    cartObj.cartItems = cartItemsArray;
+    //recalculate cart total
+    const updatedCartTotal = cartObj.cartItems.reduce( (total, currentItem) =>
+        total + (currentItem.pricePerUnit * currentItem.qty)
+    , 0);
+    //display updated cart total in the dialog
+    output.textContent = `${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(updatedCartTotal)}`;
+    //update cart item count in the h2 element
+    h2.textContent = `Your Cart (${cartObj.cartItems.length} Item${cartObj.cartItems.length == 1 ? "" : "s"})`;
+    //repopulate cart items and push changes to sessionStorage. If cart is empty, remove the cart fro sessionStorage completely
+    if(cartObj.cartItems.length == 0) {
+        fieldset.textContent = "";
+        sessionStorage.removeItem("cart");
+    } else {
+        //remove div from fieldset
+        fieldset.removeChild(lineItemDiv);
+        sessionStorage.cart = JSON.stringify(cartObj);
+    }
+     
+}
+
+function confirmCartLineItemDeletion(event) {
+    const lineItemDiv = event.currentTarget.parentNode;
+    const menuItemName = lineItemDiv.querySelector("label").textContent;
+    const alertDialog = document.querySelector("#alert-dialog");
+    alertDialog.classList.add("show-alert-dialog");
+    alertDialog.classList.add("cart-delete");
+    const alertTitle = alertDialog.querySelector(":scope > p"); //https://stackoverflow.com/questions/3680876/using-queryselectorall-to-retrieve-direct-children
+    const alertText = alertDialog.querySelector("form p");
+    const alertIcon = alertDialog.querySelector(":scope > div:first-of-type i");
+    alertIcon.classList.add("fa-trash-alt");
+    const alertPrimaryButton = alertDialog.querySelector(".primary-button");
+    const alertSecondaryButton = alertDialog.querySelector(".secondary-button");
+    alertTitle.textContent = "Delete Menu Item";
+    alertText.textContent = `Delete "${menuItemName}"?`;
+    alertPrimaryButton.textContent = "Cancel";
+    alertSecondaryButton.textContent = "Delete";
+    alertPrimaryButton.addEventListener("click", () => { //"cancel" button
+        alertIcon.classList.remove("fa-trash-alt");
+        alertDialog.classList.remove("cart-delete");
+        alertDialog.classList.remove("show-alert-dialog");
+        alertDialog.close();
+    });
+    alertSecondaryButton.addEventListener("click", () => { //"delete" button
+        alertIcon.classList.remove("fa-trash-alt");
+        alertDialog.classList.remove("cart-delete");
+        alertDialog.classList.remove("show-alert-dialog");
+        alertDialog.close();
+        deleteCartLineItem(lineItemDiv);
+    });
+    alertDialog.showModal();
+    alertPrimaryButton.focus();
 }
 
 function updateSubtotal(num) {
@@ -639,8 +724,11 @@ function invalidDateCartCheck() {//checks to see if cart has stuff in it. If it 
         const cartEventTime = cartObj.eventTime;
         const alertDialog = document.querySelector("#alert-dialog");
         alertDialog.classList.add("show-alert-dialog");
+        alertDialog.classList.add("invalid-date-full-cart");
         const alertTitle = alertDialog.querySelector(":scope > p"); //https://stackoverflow.com/questions/3680876/using-queryselectorall-to-retrieve-direct-children
         const alertText = alertDialog.querySelector("form p");
+        const alertIcon = alertDialog.querySelector(":scope > div:first-of-type i");
+        alertIcon.classList.add("fa-exclamation-triangle");
         const alertPrimaryButton = alertDialog.querySelector(".primary-button");
         const alertSecondaryButton = alertDialog.querySelector(".secondary-button");
         alertTitle.textContent = "Invalid Date or Time";
@@ -649,6 +737,8 @@ function invalidDateCartCheck() {//checks to see if cart has stuff in it. If it 
         alertSecondaryButton.textContent = "Empty Cart";
         alertPrimaryButton.addEventListener("click", () => {
             resetToLastValidEventTimeDate();
+            alertIcon.classList.remove("fa-exclamation-triangle");
+            alertDialog.classList.remove("invalid-date-full-cart");
             alertDialog.classList.remove("show-alert-dialog");
             alertDialog.close();
             //enable menu item links again
@@ -658,6 +748,8 @@ function invalidDateCartCheck() {//checks to see if cart has stuff in it. If it 
         })
         alertSecondaryButton.addEventListener("click", () => {
             emptyCart();
+            alertIcon.classList.remove("fa-exclamation-triangle");
+            alertDialog.classList.remove("invalid-date-full-cart");
             alertDialog.classList.remove("show-alert-dialog");
             alertDialog.close();
         });

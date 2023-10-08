@@ -236,9 +236,8 @@ input[type="number"]:disabled, #menu-item-dialog #add-to-cart-button {
 
 
 #alert-dialog {
-    background: transparent linear-gradient(73deg, #000 0%, #585C41 100%) 0% 0% no-repeat padding-box;
     color: #FFF;
-    max-width: 350px;
+    width: 350px;
     padding: 1rem;
     border-radius: 1rem;
     font-size: 0.75rem;
@@ -364,6 +363,24 @@ input[type="number"]:disabled, #menu-item-dialog #add-to-cart-button {
     justify-content: space-between;
     font-size: 1.25rem;
     font-weight: 700;
+}
+
+#view-cart > form > button:last-of-type { /*empty cart button when button is enabled*/
+    padding: 0.125rem 0.75rem;
+    border: 1px solid #707070;
+    border-radius: 0.25rem;
+    margin-top: 3.25rem;
+    margin-bottom: 2.625rem;
+    color: #707070;
+    font-weight: normal;
+}
+
+#view-cart > form > button:last-of-type[disabled] { /*empty cart button that is disabled*/
+    opacity: 0.5;
+}
+
+#view-cart > form > button:last-of-type:not([disabled]) i { /*empty cart button's icon when button is enabled*/
+    color: #FF0000;
 }
 
 

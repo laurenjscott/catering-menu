@@ -317,6 +317,67 @@ function renderMenuItemDialog(event) {
     dialog.showModal();
 }
 
+function displayAlertDialog(key, ...args) {// key is "invalidDate" or "deleteLineItem"
+    let cartEventDate; //argument passed from invalidDateCartCheck function
+    let cartEventTime; //argument passed from invalidDateCartCheck function
+    let lineItemDiv; //argument passed from confirmLineItemDeletion function
+    let menuItemName; //argument passed from confirmLineItemDeletion function
+    if(key == "invalidDate") {
+        [cartEventDate, cartEventTime] = args;
+
+    } else {
+        [lineItemDiv, menuItemName] = args;
+    }
+    
+    const dictionary = {"invalidDate": {"alertTitle": "Invalid Date or Time", "alertText": `You have entered an event date and/or time that is either empty or invalid. Do you want to revert changes back to ${key == "invalidDate" ? new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'long', timeZone: 'America/Chicago' }).format(new Date(Date.parse(`${cartEventDate}T${cartEventTime}:00`))) : cartEventDate}, or empty your cart?`, "alertIconClassName": "fa-exclamation-triangle", "dialogClassName": "invalid-date-full-cart", "alertPrimaryButtonText": "Revert Date", "alertSecondaryButtonText": "Empty Cart"}, "deleteLineItem": {"alertTitle": "Delete Menu Item", "alertText": `Delete "${menuItemName}"?`, "alertIconClassName": "fa-trash-alt", "dialogClassName": "cart-delete", "alertPrimaryButtonText": "Cancel", "alertSecondaryButtonText": "Delete"}}; //conditional is used in invalidDate's alertTitle value to prevent an error being throw from "new Date()" if the key is not "invalidDate"
+    
+    //global
+    const alertDialog = document.querySelector("#alert-dialog");
+    alertDialog.classList.add("show-alert-dialog");
+    const alertTitle = alertDialog.querySelector(":scope > p"); //https://stackoverflow.com/questions/3680876/using-queryselectorall-to-retrieve-direct-children
+    const alertText = alertDialog.querySelector("form p");
+    const alertIcon = alertDialog.querySelector(":scope > div:first-of-type i");
+    const alertPrimaryButton = alertDialog.querySelector(".primary-button");
+    const alertSecondaryButton = alertDialog.querySelector(".secondary-button");
+    
+    alertTitle.textContent = dictionary[key].alertTitle;
+    alertText.textContent = dictionary[key].alertText;
+    alertDialog.classList.add(dictionary[key].dialogClassName);
+    alertIcon.classList.add(dictionary[key].alertIconClassName);
+    alertPrimaryButton.textContent = dictionary[key].alertPrimaryButtonText;
+    alertSecondaryButton.textContent = dictionary[key].alertSecondaryButtonText;
+    
+    const removeClassesandCloseDialog = () => {
+        alertIcon.classList.remove(dictionary[key].alertIconClassName);
+        alertDialog.classList.remove(dictionary[key].dialogClassName);
+        alertDialog.classList.remove("show-alert-dialog");
+        alertDialog.close();
+    }
+    
+    alertPrimaryButton.addEventListener("click", () => { //"cancel" button
+        removeClassesandCloseDialog();
+        if(key == "invalidDate") {
+            resetToLastValidEventTimeDate();
+            //enable menu item links again
+            toggleMenuItemLinks(true);
+            //Issue: if date was invalid due to min/max constraints, the red italic text still shows. How to trigger validation script when input is modified programatically? By creating a synthetic input event!
+            simulateEventDateChange();
+        }
+    });
+    alertSecondaryButton.addEventListener("click", () => { //destructive button. "Empty Cart" for "invalidDate" key, and "Delete" for "deleteLineItem" key.
+        removeClassesandCloseDialog();
+        if(key == "invalidDate") {
+            emptyCart();
+        } else { //"deleteLineItem"
+            deleteCartLineItem(lineItemDiv);
+        }
+    });
+
+    
+    alertDialog.showModal();
+    alertPrimaryButton.focus();
+}
+
 function addToCart(event) {
         //grab UUID of item
         const uuid = document.querySelector("#menu-item-dialog #hidden-uuid-input").value;
@@ -447,6 +508,7 @@ function renderCartItems(cartItemsArray, fieldset) {
             decreaseButton.setAttribute("disabled", "true");
         };
         decreaseButton.setAttribute("aria-label", "Decrease quantity");
+        decreaseButton.addEventListener("click", updateCartLineItemQuantity);
         decreaseButtonIcon.classList.add("fas");
         decreaseButtonIcon.classList.add("fa-minus");
         decreaseButtonIcon.setAttribute("aria-hidden", true);
@@ -454,6 +516,7 @@ function renderCartItems(cartItemsArray, fieldset) {
         increaseButton.setAttribute("autofocus", true);
         increaseButton.classList.add("quantity-button");
         increaseButton.setAttribute("aria-label", "Increase quantity");
+        increaseButton.addEventListener("click", updateCartLineItemQuantity);
         increaseButtonIcon.classList.add("fas");
         increaseButtonIcon.classList.add("fa-plus");
         increaseButtonIcon.setAttribute("aria-hidden", true);
@@ -564,44 +627,55 @@ function deleteCartLineItem(lineItemDiv) {
         fieldset.removeChild(lineItemDiv);
         sessionStorage.cart = JSON.stringify(cartObj);
     }
+    updateShowCartButtonString();
      
 }
 
 function confirmCartLineItemDeletion(event) {
     const lineItemDiv = event.currentTarget.parentNode;
     const menuItemName = lineItemDiv.querySelector("label").textContent;
-    const alertDialog = document.querySelector("#alert-dialog");
-    alertDialog.classList.add("show-alert-dialog");
-    alertDialog.classList.add("cart-delete");
-    const alertTitle = alertDialog.querySelector(":scope > p"); //https://stackoverflow.com/questions/3680876/using-queryselectorall-to-retrieve-direct-children
-    const alertText = alertDialog.querySelector("form p");
-    const alertIcon = alertDialog.querySelector(":scope > div:first-of-type i");
-    alertIcon.classList.add("fa-trash-alt");
-    const alertPrimaryButton = alertDialog.querySelector(".primary-button");
-    const alertSecondaryButton = alertDialog.querySelector(".secondary-button");
-    alertTitle.textContent = "Delete Menu Item";
-    alertText.textContent = `Delete "${menuItemName}"?`;
-    alertPrimaryButton.textContent = "Cancel";
-    alertSecondaryButton.textContent = "Delete";
-    alertPrimaryButton.addEventListener("click", () => { //"cancel" button
-        alertIcon.classList.remove("fa-trash-alt");
-        alertDialog.classList.remove("cart-delete");
-        alertDialog.classList.remove("show-alert-dialog");
-        alertDialog.close();
-    });
-    alertSecondaryButton.addEventListener("click", () => { //"delete" button
-        alertIcon.classList.remove("fa-trash-alt");
-        alertDialog.classList.remove("cart-delete");
-        alertDialog.classList.remove("show-alert-dialog");
-        alertDialog.close();
-        deleteCartLineItem(lineItemDiv);
-    });
-    alertDialog.showModal();
-    alertPrimaryButton.focus();
+    displayAlertDialog("deleteLineItem", lineItemDiv, menuItemName);
 }
 
-function updateSubtotal(num) {
-    const output = document.querySelector("output");
+function updateCartLineItemQuantity(event) {
+    const button = event.currentTarget;
+    const input = button.parentNode.querySelector("input");
+    const lineItemOutput = input.parentNode.parentNode.querySelector("output");
+    const grandTotalOutput = document.querySelector("#view-cart form > div output");
+    const itemId = input.id;
+    const cartObj = JSON.parse(sessionStorage.cart);
+    const index = cartObj.cartItems.findIndex(item => item.uuid == itemId);
+
+    //update number input.
+    if(button.getAttribute("aria-label") == "Increase quantity") {
+        input.value = parseInt(input.value) + 1;
+    } else {
+        input.value = parseInt(input.value) - 1;
+    }
+    
+    //If item is sold per dozen and the qty is now "2" or if the qty is now 1, disabled the MINUS button
+    if((input.value < 3 && cartObj.cartItems[index].perDozen == "true") || input.value < 2) {
+        button.parentNode.querySelector("[aria-label='Decrease quantity']").setAttribute("disabled", true);
+    } else {
+        button.parentNode.querySelector("[aria-label='Decrease quantity']").removeAttribute("disabled");
+    }
+
+    //Update sessionStorage
+    cartObj.cartItems[index].qty = parseInt(input.value);
+    cartObj.cartItems[index].subtotal = cartObj.cartItems[index].qty * cartObj.cartItems[index].pricePerUnit;
+    sessionStorage.setItem("cart", JSON.stringify(cartObj));
+    
+    //Update line item subtotal in cart dialog
+    lineItemOutput.textContent = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cartObj.cartItems[index].subtotal);
+    
+    //Update grandTotal in cart dialog
+    const grandTotal = cartObj.cartItems.reduce( (total, currentItem) => total + currentItem.subtotal, 0)
+    grandTotalOutput.textContent = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(grandTotal);
+    
+}
+
+function updateSubtotal(num) { //Menu item dialog
+    const output = document.querySelector("#menu-item-dialog output");
     const pricePerUnit = Number(
         document.querySelector("input#hidden-price-input").value
     );
@@ -717,45 +791,13 @@ function toggleMenuItemLinks(boolean) { //links are disabled if there is no even
 }
 
 
-function invalidDateCartCheck() {//checks to see if cart has stuff in it. If it does, present a dialog asking user to eiher revert the date or empty the cart
+function invalidDateCartCheck() {//Checks to see if cart has stuff in it. If it does, present a dialog asking user to eiher revert the date or empty the cart
     if(sessionStorage.cart != undefined) {
         const cartObj = JSON.parse(sessionStorage.cart);
         const cartEventDate = cartObj.eventDate;
         const cartEventTime = cartObj.eventTime;
-        const alertDialog = document.querySelector("#alert-dialog");
-        alertDialog.classList.add("show-alert-dialog");
-        alertDialog.classList.add("invalid-date-full-cart");
-        const alertTitle = alertDialog.querySelector(":scope > p"); //https://stackoverflow.com/questions/3680876/using-queryselectorall-to-retrieve-direct-children
-        const alertText = alertDialog.querySelector("form p");
-        const alertIcon = alertDialog.querySelector(":scope > div:first-of-type i");
-        alertIcon.classList.add("fa-exclamation-triangle");
-        const alertPrimaryButton = alertDialog.querySelector(".primary-button");
-        const alertSecondaryButton = alertDialog.querySelector(".secondary-button");
-        alertTitle.textContent = "Invalid Date or Time";
-        alertText.textContent = `You have entered an event date and/or time that is either empty or invalid. Do you want to revert changes back to ${cartEventDate} at ${cartEventTime}, or empty your cart?`;
-        alertPrimaryButton.textContent = "Revert Date";
-        alertSecondaryButton.textContent = "Empty Cart";
-        alertPrimaryButton.addEventListener("click", () => {
-            resetToLastValidEventTimeDate();
-            alertIcon.classList.remove("fa-exclamation-triangle");
-            alertDialog.classList.remove("invalid-date-full-cart");
-            alertDialog.classList.remove("show-alert-dialog");
-            alertDialog.close();
-            //enable menu item links again
-            toggleMenuItemLinks(true);
-            //Issue: if date was invalid due to min/max constraints, the red italic text still shows. How to trigger validation script when input is modified programatically? By creating a synthetic input event!
-            simulateEventDateChange();
-        })
-        alertSecondaryButton.addEventListener("click", () => {
-            emptyCart();
-            alertIcon.classList.remove("fa-exclamation-triangle");
-            alertDialog.classList.remove("invalid-date-full-cart");
-            alertDialog.classList.remove("show-alert-dialog");
-            alertDialog.close();
-        });
-        alertDialog.showModal();
-        alertPrimaryButton.focus();
-    } 
+        displayAlertDialog("invalidDate", cartEventDate, cartEventTime)
+    }
 }
 
 
@@ -789,5 +831,8 @@ const processChange = debounce((event) => validateEventDate(event)); //processCh
 //        clearTimeout(timer); //does nothing if timer is undefined. Else, cancels previous setTimeout call. 
 //        timer = setTimeout(() => { func.apply(this, args)}, timeout); // After 500 ms (0.5 sec), runs function passed to debounce(), which is "(event) => validateEventDate(event)". The timer variable is then set with integer. From MDN's setTimeout docs: "The returned timeoutID is a positive integer value which identifies the timer created by the call to setTimeout(). This value can be passed to clearTimeout() to cancel the timeout."
 //    }
+
+
+
 
 

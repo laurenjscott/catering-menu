@@ -89,6 +89,10 @@ function bindEventListeners() {
         })
     });
     
+    const emptyCartButton = viewCartDialog.querySelector("form > button:last-of-type");
+    emptyCartButton.addEventListener("click", resetCartDialogToEmptyState);
+    
+    
     const alertDialog = document.querySelector("#alert-dialog");
     alertDialog.addEventListener("close", () => { // remove all event listeners from buttons on dialog close. cloneNode() is the only way to remove anonymous event listeners https://stackoverflow.com/questions/19469881/remove-all-event-listeners-of-specific-type
         const primaryButton = alertDialog.querySelector(".primary-button");
@@ -101,8 +105,7 @@ function bindEventListeners() {
 
     });
     
-    
-    
+
     const menuItemDialog = document.querySelector("#menu-item-dialog");
     menuItemDialog.addEventListener("close", () => {
         const form = menuItemDialog.querySelector("form");
@@ -451,8 +454,9 @@ function populateCartDialog(cart, dialog) {
         const cartForm = dialog.querySelector("form");
         const fieldset = cartForm.querySelector("fieldset");
         const h2 = cartForm.querySelector("h2");
-        const eventDatePara = cartForm.querySelector("form > p:first-of-type");
-        const eventTimePara = cartForm.querySelector("form > p:nth-of-type(2)");
+        const eventDatePara = cartForm.querySelector(":scope > p:first-of-type");
+        const eventTimePara = cartForm.querySelector(":scope > p:nth-of-type(2)");
+        const emptyCartButton = cartForm.querySelector(":scope > button:last-of-type");
         h2.textContent = `Your Cart (${cartItemsArray.length} Item${cartItemsArray.length == 1 ? "" : "s"})`;
         const dateObj = new Date(cartObj.eventDate);
         const timeString = cartObj.eventTime;
@@ -466,6 +470,8 @@ function populateCartDialog(cart, dialog) {
         const amPM = eventTimeHours >= 12 ? "PM" : "AM";
         eventDatePara.textContent = `Event Date: ${new Intl.DateTimeFormat('en-US', { dateStyle: "full"}).format(dateTimeObj)}`;
         eventTimePara.textContent = `Event Time: ${eventTime12HourFormat}:${eventTimeMinutes} ${amPM}`;
+        //enable "empty cart" button
+        emptyCartButton.removeAttribute("disabled");
         renderCartItems(cartItemsArray, fieldset);
         //calculate cart total
         const grandTotalOutput = cartForm.querySelector(":scope > div:last-of-type output")
@@ -583,6 +589,21 @@ function emptyCart() {
     cartButton.querySelector("span:last-of-type").textContent = "0";
 }
 
+function resetCartDialogToEmptyState(event) {
+    emptyCart();
+    const button = event.currentTarget; // "empty cart" button
+    const dialog = button.parentNode.parentNode;
+    const h2 = dialog.querySelector("h2");
+    const grandTotalOutput = dialog.querySelector("form > div output");
+    const fieldset = dialog.querySelector("fieldset");
+    fieldset.textContent = "";    // remove menu items
+    h2.textContent = "Your Cart (0 Items)";
+    grandTotalOutput.textContent = "$0.00";
+    //disable button
+    button.setAttribute("disabled", true);
+    
+}
+
 function showCart() {
         const cart = sessionStorage.cart
         if(cart != undefined) {
@@ -620,8 +641,11 @@ function deleteCartLineItem(lineItemDiv) {
     h2.textContent = `Your Cart (${cartObj.cartItems.length} Item${cartObj.cartItems.length == 1 ? "" : "s"})`;
     //repopulate cart items and push changes to sessionStorage. If cart is empty, remove the cart fro sessionStorage completely
     if(cartObj.cartItems.length == 0) {
+        const emptyCartButton = dialog.querySelector("form > button");
+        emptyCartButton.setAttribute("disabled", true);
         fieldset.textContent = "";
         sessionStorage.removeItem("cart");
+        
     } else {
         //remove div from fieldset
         fieldset.removeChild(lineItemDiv);
@@ -811,6 +835,7 @@ function resetToLastValidEventTimeDate() {
     timeInput.value = cartEventTime; 
 }
 
+
 function simulateEventDateChange() {
     const dateInput = document.querySelector("#event-date-time-picker-section input[type='date']");
     const event = new InputEvent("change");
@@ -831,6 +856,8 @@ const processChange = debounce((event) => validateEventDate(event)); //processCh
 //        clearTimeout(timer); //does nothing if timer is undefined. Else, cancels previous setTimeout call. 
 //        timer = setTimeout(() => { func.apply(this, args)}, timeout); // After 500 ms (0.5 sec), runs function passed to debounce(), which is "(event) => validateEventDate(event)". The timer variable is then set with integer. From MDN's setTimeout docs: "The returned timeoutID is a positive integer value which identifies the timer created by the call to setTimeout(). This value can be passed to clearTimeout() to cancel the timeout."
 //    }
+
+
 
 
 

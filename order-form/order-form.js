@@ -90,7 +90,7 @@ function bindEventListeners() {
     });
     
     const emptyCartButton = viewCartDialog.querySelector("form > button:last-of-type");
-    emptyCartButton.addEventListener("click", resetCartDialogToEmptyState);
+    emptyCartButton.addEventListener("click", () => displayAlertDialog("emptyCart"));
     
     
     const alertDialog = document.querySelector("#alert-dialog");
@@ -325,14 +325,15 @@ function displayAlertDialog(key, ...args) {// key is "invalidDate" or "deleteLin
     let cartEventTime; //argument passed from invalidDateCartCheck function
     let lineItemDiv; //argument passed from confirmLineItemDeletion function
     let menuItemName; //argument passed from confirmLineItemDeletion function
-    if(key == "invalidDate") {
+    if(key == "invalidDate") { // if key is "emptyCart", that is the sole argument passed
         [cartEventDate, cartEventTime] = args;
 
     } else {
         [lineItemDiv, menuItemName] = args;
     }
     
-    const dictionary = {"invalidDate": {"alertTitle": "Invalid Date or Time", "alertText": `You have entered an event date and/or time that is either empty or invalid. Do you want to revert changes back to ${key == "invalidDate" ? new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'long', timeZone: 'America/Chicago' }).format(new Date(Date.parse(`${cartEventDate}T${cartEventTime}:00`))) : cartEventDate}, or empty your cart?`, "alertIconClassName": "fa-exclamation-triangle", "dialogClassName": "invalid-date-full-cart", "alertPrimaryButtonText": "Revert Date", "alertSecondaryButtonText": "Empty Cart"}, "deleteLineItem": {"alertTitle": "Delete Menu Item", "alertText": `Delete "${menuItemName}"?`, "alertIconClassName": "fa-trash-alt", "dialogClassName": "cart-delete", "alertPrimaryButtonText": "Cancel", "alertSecondaryButtonText": "Delete"}}; //conditional is used in invalidDate's alertTitle value to prevent an error being throw from "new Date()" if the key is not "invalidDate"
+    const dictionary = {"invalidDate": {"alertTitle": "Invalid Date or Time", "alertText": `You have entered an event date and/or time that is either empty or invalid. Do you want to revert changes back to ${key == "invalidDate" ? new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'long', timeZone: 'America/Chicago' }).format(new Date(Date.parse(`${cartEventDate}T${cartEventTime}:00`))) : cartEventDate}, or empty your cart?`, "alertIconClassName": "fa-exclamation-triangle", "dialogClassName": "invalid-date-full-cart", "alertPrimaryButtonText": "Revert Date", "alertSecondaryButtonText": "Empty Cart"}, "deleteLineItem": {"alertTitle": "Delete Menu Item", "alertText": `Delete "${menuItemName}"?`, "alertIconClassName": "fa-trash-alt", "dialogClassName": "cart-delete", "alertPrimaryButtonText": "Cancel", "alertSecondaryButtonText": "Delete"},  "emptyCart": {"alertTitle": "Empty Entire Cart", "alertText": `Empty Entire Cart?`, "alertIconClassName": "fa-trash-alt", "dialogClassName": "cart-delete", "alertPrimaryButtonText": "Cancel", "alertSecondaryButtonText": "Empty Cart"}}; //conditional is used in invalidDate's alertTitle value to prevent an error being throw from "new Date()" if the key is not "invalidDate"
+        
     
     //global
     const alertDialog = document.querySelector("#alert-dialog");
@@ -367,10 +368,12 @@ function displayAlertDialog(key, ...args) {// key is "invalidDate" or "deleteLin
             simulateEventDateChange();
         }
     });
-    alertSecondaryButton.addEventListener("click", () => { //destructive button. "Empty Cart" for "invalidDate" key, and "Delete" for "deleteLineItem" key.
+    alertSecondaryButton.addEventListener("click", () => { //destructive button. "Empty Cart" for both "invalidDate" and "emptyCart" keys, "Delete" for "deleteLineItem" key.
         removeClassesandCloseDialog();
         if(key == "invalidDate") {
             emptyCart();
+        } else if(key == "emptyCart") {
+            resetCartDialogToEmptyState();    
         } else { //"deleteLineItem"
             deleteCartLineItem(lineItemDiv);
         }
@@ -589,10 +592,10 @@ function emptyCart() {
     cartButton.querySelector("span:last-of-type").textContent = "0";
 }
 
-function resetCartDialogToEmptyState(event) {
+function resetCartDialogToEmptyState() {
     emptyCart();
-    const button = event.currentTarget; // "empty cart" button
-    const dialog = button.parentNode.parentNode;
+    const dialog = document.querySelector("#view-cart");
+    const button = dialog.querySelector("form > button"); // "empty cart" button
     const h2 = dialog.querySelector("h2");
     const grandTotalOutput = dialog.querySelector("form > div output");
     const fieldset = dialog.querySelector("fieldset");

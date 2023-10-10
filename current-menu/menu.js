@@ -1,34 +1,42 @@
-/*Elements**************/
-const main = document.querySelector("main");
-const dialog = document.querySelector("dialog");
-const dialogPara = document.querySelector("dialog p");
-const dialogBtn = document.querySelector("dialog button"); //close button
+import populateMainNavigation from "../app.js"; //Why is populateMainNavigation() being imported instead of being run in app.js? Because of the issue with Dreamweaver live server not displaying the true URL of the HTML file it's called on. Once this is in prod, it can be run in app.js.
 
-/*Data**************/
-let response; //will eventually store the response returned when querying a JSON file for a JSON catering menu object
-let menuObj; //will eventually store the JSON catering menu object that was created from the JSON file
+
+
 
 /****************************************************/
 
-//Check if browser supports the dialog element
-if (window.HTMLDialogElement == undefined) {
-	dialog.classList.add("unsupported", "hidden"); //mostly intended for Safari 15.3 (or maybe 15.4???) and lower since those version don't support the <dialog> element
-}
+window.addEventListener("load", () => {
+    
+    const dialog = document.querySelector("dialog");
+    const dialogPara = document.querySelector("dialog p");
+    const dialogBtn = document.querySelector("dialog button"); //close button
 
-dialogBtn.addEventListener("click", () => {//If <dialog> is supported, then close the element. Else, run a function that will control the visibility of the dialog element's substitute used in unsupported browsers. When run with a "hide=true" argument, the substitute block element is hidden.
-    if(dialog.classList.contains("unsupported")) {
-       checkUnsupportedBrowser(hide = true);
-    } else {
-        dialog.close(); //Must do this explicitly because of the type attribute applied to the button element. Otherwise, dialog won't close in browsers that support the dialog element. See comment in HTML file
+    
+    //addition of argument is temporary while hosted via localhost
+    populateMainNavigation(import.meta.url.split("/").pop().split(".")[0]); 
+    
+    //Check if browser supports the dialog element
+    if (window.HTMLDialogElement == undefined) {
+	   dialog.classList.add("unsupported", "hidden"); //mostly intended for Safari 15.3 (or maybe 15.4???) and lower since those version don't support the <dialog> element
     }
-})
 
-renderFullMenu(); //runs on window load. Rends the menu's data
+    dialogBtn.addEventListener("click", () => {//If <dialog> is supported, then close the element. Else, run a function that will control the visibility of the dialog element's substitute used in unsupported browsers. When run with a "hide=true" argument, the substitute block element is hidden.
+        if(dialog.classList.contains("unsupported")) {
+            checkUnsupportedBrowser(hide = true);
+        } else {
+            dialog.close(); //Must do this explicitly because of the type attribute applied to the button element. Otherwise, dialog won't close in browsers that support the dialog element. See comment in HTML file
+        }
+    })
+    
+    renderFullMenu(); //runs on window load. Rends the menu's data
+});
 
 
 /*Functions*************************/
 async function renderFullMenu() {
-    
+    const main = document.querySelector("main");
+    let response; //will eventually store the response returned when querying a JSON file for a JSON catering menu object
+    let menuObj; //will eventually store the JSON catering menu object that was created from the JSON file
     try {
         response = await fetch('./nf-catering-menu.json'); //returns a string
         menuObj = await response.json();  // converts response into a JS object. See if "await" this is even neccessary.
@@ -51,7 +59,7 @@ async function renderFullMenu() {
       let h3 = document.createElement("h3");
       h3.textContent = menuObj.menu[key].generalDescription;
       article.appendChild(h3);
-      renderMenuItems(key, article);//sub-function that adds menu items for the current category
+      renderMenuItems(key, article, menuObj);//sub-function that adds menu items for the current category
     });
     setTimeout(displayGFDialog, 10000); //wait 10 seconds and then display "gluten-free deal of the day" dialog element
 
@@ -72,7 +80,7 @@ async function renderFullMenu() {
 //    menuObj = response.json();
 //}
 
-function renderMenuItems(key, article) {// sub-function of renderFullMenu() function. Loops thru each of the categories' individual menu items. "key" is the category's name. and "article" is the HTML article element that represents the category in the DOM.
+function renderMenuItems(key, article, menuObj) {// sub-function of renderFullMenu() function. Loops thru each of the categories' individual menu items. "key" is the category's name. and "article" is the HTML article element that represents the category in the DOM.
   let ul = document.createElement("ul");
   article.appendChild(ul);
   menuObj.menu[key].menuItems.forEach((item) => {
@@ -127,19 +135,4 @@ function checkUnsupportedBrowser (hide) {
             dialog.classList.add("hidden");
         }
 }
-
-
-
-async function practiceTryCatch() {
-    const response = await fetch("./nf-catering-menu.json");//https://stackoverflow.com/questions/39297345/fetch-resolves-even-if-404
-    const data = await response.json().catch(error => console.log(error));
-    if(data == undefined) {
-        return;
-    } else {
-        console.log(data);
-    }
-}
-
-
-practiceTryCatch();
 

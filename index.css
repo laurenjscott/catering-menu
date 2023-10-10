@@ -1,6 +1,6 @@
 *, *:before, *:after {
     text-align: center;
-/*    color: #707070; removed 26 Nov 2022 because it made it impossible to color font swesome icons. There was no way to override the color assigned here*/
+/*    color: #707070; removed 26 Nov 2022 because it made it impossible to color font awesome icons. There was no way to override the color assigned here*/
 
 }
 
@@ -18,9 +18,7 @@ h1 {
 }
 
 header {
-    display: flex;
     justify-content: space-between;
-	align-items: center;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
 }

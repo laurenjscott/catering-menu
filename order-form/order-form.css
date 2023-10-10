@@ -36,9 +36,7 @@ input[type="number"]:disabled {
 
 
 header {
-    display: flex;
     justify-content: space-between;
-    align-items: center;
     padding: 0.5rem;
     position: sticky;
     top: 0;
@@ -46,15 +44,6 @@ header {
     z-index: 9999;
 }
 
-header > div { /* logo placeholder */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 10rem;
-    height: 3rem;
-    background-color: #707070;
-    color: #FFF;
-}
 
 dialog p {
     margin-top: 0;

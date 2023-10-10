@@ -40,6 +40,21 @@ img {
     display: block;
 }
 
+header {
+    display: flex;
+    align-items: center;
+}
+
+header > div { /* logo placeholder */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10rem;
+    height: 3rem;
+    background-color: #707070;
+    color: #FFF;
+}
+
 nav {
     display: flex;
     align-items: flex-start;
@@ -83,5 +98,7 @@ dialog::backdrop {
     background-color: #707070;
     opacity: 0.75;
 }
+
+
 
 

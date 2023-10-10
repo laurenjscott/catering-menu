@@ -44,6 +44,20 @@ header {
     z-index: 9999;
 }
 
+header > button:last-of-type {
+    border: 1px solid #000;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+
+}
+
+header > button:last-of-type:disabled {
+    border: 1px solid lightgray;
+}
+
+
+
+
 
 dialog p {
     margin-top: 0;
@@ -55,16 +69,6 @@ footer {
 }
 
 
-header > button:last-of-type {
-    border: 1px solid #000;
-    padding: 0.75rem;
-    border-radius: 0.75rem;
-
-}
-
-header > button:last-of-type:disabled {
-    border: 1px solid lightgray;
-}
 
 main > div:first-of-type {
     background: center / cover no-repeat url("../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg");
@@ -403,7 +407,7 @@ header > button:last-of-type, #menu-item-dialog label:nth-of-type(2) {
 }
 
 
-header button:not([disabled]), .quantity-button:not([disabled]), #view-cart > button { /* this level of explicitness and specificity is needed for mobile devices. Otherwise, the button text and icons will be blue. */
+.quantity-button:not([disabled]), #view-cart > button { /* this level of explicitness and specificity is needed for mobile devices. Otherwise, the button text and icons will be blue. */
     color: #000;
 }
 

@@ -5,15 +5,17 @@ import populateMainNavigation from "../app.js"; //Why is populateMainNavigation(
 
 /****************************************************/
 
+window.addEventListener("DOMContentLoaded", () => {
+    renderFullMenu(); //runs on window load. Renders the menu's data
+});
+
 window.addEventListener("load", () => {
     
-    const dialog = document.querySelector("dialog");
-    const dialogPara = document.querySelector("dialog p");
-    const dialogBtn = document.querySelector("dialog button"); //close button
-
-    
     //addition of argument is temporary while hosted via localhost
-    populateMainNavigation(import.meta.url.split("/").pop().split(".")[0]); 
+    populateMainNavigation(import.meta.url.split("/").pop().split(".")[0]);
+    
+    const dialog = document.querySelector("dialog");
+    const dialogBtn = document.querySelector("dialog button"); //close button 
     
     //Check if browser supports the dialog element
     if (window.HTMLDialogElement == undefined) {
@@ -28,25 +30,25 @@ window.addEventListener("load", () => {
         }
     })
     
-    renderFullMenu(); //runs on window load. Rends the menu's data
 });
 
 
 /*Functions*************************/
 async function renderFullMenu() {
-    const main = document.querySelector("main");
     let response; //will eventually store the response returned when querying a JSON file for a JSON catering menu object
     let menuObj; //will eventually store the JSON catering menu object that was created from the JSON file
     try {
         response = await fetch('./nf-catering-menu.json'); //returns a string
-        menuObj = await response.json();  // converts response into a JS object. See if "await" this is even neccessary.
+        menuObj = await response.json();  // converts response into a JS object. 
     }
     catch (error) {
       console.log(error);//This returns an error if something bad occurred while fetching data from the JSON file. The page load won't break instantly but an error will be placed in the console. Also, the function will quit after the error is logged.
       return;
     }
     
+    
     //At this point, the response has to be 200 to proceed. That means the JSON catering menu object was successfully retrieved from the JSON file and stored in the menuObj variable
+    const main = document.querySelector("main");
     Object.keys(menuObj.menu).forEach((key) => { //loop through all categories in the menu object. "key" is the individual menu category
       //create an article and append it to main
       let article = document.createElement("article");
@@ -61,24 +63,10 @@ async function renderFullMenu() {
       article.appendChild(h3);
       renderMenuItems(key, article, menuObj);//sub-function that adds menu items for the current category
     });
-    setTimeout(displayGFDialog, 10000); //wait 10 seconds and then display "gluten-free deal of the day" dialog element
+    setTimeout(() => displayGFDialog(menuObj), 10000); //wait 10 seconds and then display "gluten-free deal of the day" dialog element
 
 }
 
-//function retrieveData() {
-//    return new Promise((resolve, reject) => {
-//        response = fetch('./nf-catering-menu.json').then(response => {menuObj = response.json()});
-//        console.log(menuObj);
-//        if (response) {
-//            resolve(console.log("It works!"));
-//        } else {
-//            reject(console.log("Didn't work!"));
-//        }
-//        
-//    })
-//    response = fetch('./nf-catering-menu.json');
-//    menuObj = response.json();
-//}
 
 function renderMenuItems(key, article, menuObj) {// sub-function of renderFullMenu() function. Loops thru each of the categories' individual menu items. "key" is the category's name. and "article" is the HTML article element that represents the category in the DOM.
   let ul = document.createElement("ul");
@@ -100,13 +88,15 @@ function renderMenuItems(key, article, menuObj) {// sub-function of renderFullMe
   });
 }
 
-function displayGFDialog() { // displays a dialog showing the gluten free special of the day
+function displayGFDialog(menuObj) { // displays a dialog showing the gluten free special of the day
     const glutenFreeMenuItems = []; //will eventually hold the gluten-free menu items
-        Object.keys(menuObj.menu).forEach( //loop through all menu categories
-            key => {menuObj.menu[key].menuItems.forEach( //sub-loop through a menu category's menu items. "key" is the individual menu category
-                menuItem => { //an individual menu item in a category
-                    if(menuItem.glutenFree === true) { // push to glutenFreeMenuItems array if menu item is gluten free
-                        glutenFreeMenuItems.push(menuItem.itemName);
+    const dialog = document.querySelector("dialog");
+    const dialogPara = document.querySelector("dialog p");
+    Object.keys(menuObj.menu).forEach( //loop through all menu categories
+        key => {menuObj.menu[key].menuItems.forEach( //sub-loop through a menu category's menu items. "key" is the individual menu category
+            menuItem => { //an individual menu item in a category
+                if(menuItem.glutenFree === true) { // push to glutenFreeMenuItems array if menu item is gluten free
+                    glutenFreeMenuItems.push(menuItem.itemName);
                 }
             }
         )
@@ -121,18 +111,19 @@ function displayGFDialog() { // displays a dialog showing the gluten free specia
         }
     }
     
-    console.log(glutenFreeMenuItems);
 }
 
 //Controls visibility of element that renders when dialog isn't supported (it appears a div-like block element).
 function checkUnsupportedBrowser (hide) {
-        if (hide === false) {
-            dialog.classList.remove("hidden");
-            dialog.classList.add("display");
-        }
-        else {
-            dialog.classList.remove("display");
-            dialog.classList.add("hidden");
-        }
+    const dialog = document.querySelector("dialog");
+
+    if (hide === false) {
+        dialog.classList.remove("hidden");
+        dialog.classList.add("display");
+    }
+    else {
+        dialog.classList.remove("display");
+        dialog.classList.add("hidden");
+    }
 }
 

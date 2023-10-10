@@ -407,7 +407,7 @@ header > button:last-of-type, #menu-item-dialog label:nth-of-type(2) {
 }
 
 
-.quantity-button:not([disabled]), #view-cart > button { /* this level of explicitness and specificity is needed for mobile devices. Otherwise, the button text and icons will be blue. */
+header button:not([disabled]), .quantity-button:not([disabled]), #view-cart > button { /* this level of explicitness and specificity is needed for mobile devices. Otherwise, the button text and icons will be blue. */
     color: #000;
 }
 

@@ -66,9 +66,11 @@ dialog:not([class*="unsupported"]) {
 
 
 dialog button {
+/*
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+*/
     border: 0;
     border-radius: 0.25rem;
     background-color: slategray;

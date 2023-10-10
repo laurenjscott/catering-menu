@@ -3,7 +3,9 @@ import populateMainNavigation from "../app.js"; //Why is populateMainNavigation(
 
 window.addEventListener("load", () => {
     //addition of argument is temporary while hosted via localhost
-    populateMainNavigation(import.meta.url.split("/").pop().split(".")[0]);    
+    populateMainNavigation(import.meta.url.split("/").pop().split(".")[0]); 
+//    populateMainNavigation();    
+
     
     //If cart is not empty, push cart's event date and time to their corresponding inputs. 
     populateCartEventDateTimeOnReload();

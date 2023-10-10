@@ -17,6 +17,35 @@ h1 {
     margin-bottom: 1rem;
 }
 
+header {
+    display: flex;
+    justify-content: space-between;
+	align-items: center;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+header a {
+	background-color: #000;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	width: fit-content;
+	border-radius: 0.25rem;
+	padding: 0.625rem 0.25rem;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+header a div {
+	border-radius: 50%;
+	display: inline-block;
+	width: 1.125rem;
+	height: 1.125rem;
+	background-color: #639d20;
+	margin-right: 0.375rem;
+}
+
 
 a:hover {
 	color: #707070;
@@ -86,4 +115,40 @@ footer ul li a:hover {
     color: #C32DB1;
     border-color: #C32DB1;
 }
+
+
+
+@media (max-width: 375px) {
+	
+	header h1 {
+		font-size: 1.125rem;
+		
+	}
+
+	
+}
+
+@media (min-width: 700px) {
+	header {
+		display: grid;
+		grid-template-areas: ". h1 link";
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+    
+    header h1 {
+		grid-area: h1;
+		text-align: center;
+	}
+    
+	header a {
+		font-size: 1.125rem;
+		grid-area: link;
+		justify-self: end;
+	}
+
+	
+}
+
+
+
 

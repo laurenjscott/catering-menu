@@ -37,6 +37,10 @@ header a {
 	font-weight: bold;
 }
 
+header a:hover {
+	color: #FFF;
+}
+
 header a div {
 	border-radius: 50%;
 	display: inline-block;

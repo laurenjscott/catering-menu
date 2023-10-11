@@ -22,6 +22,10 @@ header {
     
 }
 
+header button:not([disabled]) { /* for iOS. Placing this in app.css does not work because iOS default styles overrides it for some reason. The button font color is blue by default in iOS */
+    color: #000;
+}
+
 main {
     padding-bottom: 2rem;
 }

@@ -19,8 +19,6 @@ button {
     cursor: pointer;
     font-size: inherit;
     background-color: transparent;
-    border: 0;
-
 }
 
 button:disabled {
@@ -54,6 +52,7 @@ header > div { /* logo placeholder */
     background-color: #707070;
     color: #FFF;
 }
+
 
 nav {
     display: flex;

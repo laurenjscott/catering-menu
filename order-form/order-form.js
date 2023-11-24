@@ -500,14 +500,15 @@ function renderCartItems(cartItemsArray, fieldset) {
         let deleteLineItemButtonIcon = document.createElement("i");
         let lineItemTotal = document.createElement("output");
         let categoryGeneralDescription;
+        lineItemWrapper.dataset.modificationTimestamp = item.timestamp;
         img.setAttribute("src", "../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg");
         img.setAttribute("alt", "image of food")
         img.setAttribute("width", "75");
         img.setAttribute("aria-hidden", true);
-        label.setAttribute("for", item.uuid);
+        label.setAttribute("for", `${item.uuid}-${item.timestamp}`);
         label.textContent = item.menuItemName;
-        input.setAttribute("id", item.uuid);
-        input.setAttribute("name", item.uuid);
+        input.setAttribute("id", `${item.uuid}-${item.timestamp}`);
+        input.setAttribute("name", `${item.uuid}-${item.timestamp}`);
         input.setAttribute("type", "number");
         input.setAttribute("min", "1");
         input.setAttribute("value", item.qty);
@@ -627,10 +628,12 @@ function deleteCartLineItem(lineItemDiv) {
     const h2 = dialog.querySelector("h2");
     const fieldset = dialog.querySelector("fieldset");
     const output = dialog.querySelector("form > div:last-of-type output");
+    const lineItemDivTimestamp = lineItemDiv.dataset.modificationTimestamp; 
     const cartObj = JSON.parse(sessionStorage.cart);
     const cartItemsArray = cartObj.cartItems;
-    const lineItemId = lineItemDiv.querySelector(":scope > div:first-of-type label").getAttribute("for");
-    const lineItemInCartItemsArray = cartItemsArray.filter(obj => obj.uuid === lineItemId)[0];
+    const inputId = lineItemDiv.querySelector("input").id;
+    const regex = /^\d+/g; 
+    const lineItemInCartItemsArray = cartItemsArray.filter(obj => obj.uuid == inputId.match(regex)[0] && obj.timestamp == lineItemDivTimestamp)[0]; 
     const index = cartItemsArray.indexOf(lineItemInCartItemsArray);
     //remove selected line item from cartItemsArray
     cartItemsArray.splice(index, 1);
@@ -644,7 +647,7 @@ function deleteCartLineItem(lineItemDiv) {
     output.textContent = `${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(updatedCartTotal)}`;
     //update cart item count in the h2 element
     h2.textContent = `Your Cart (${cartObj.cartItems.length} Item${cartObj.cartItems.length == 1 ? "" : "s"})`;
-    //repopulate cart items and push changes to sessionStorage. If cart is empty, remove the cart fro sessionStorage completely
+    //repopulate cart items and push changes to sessionStorage. If cart is empty, remove the cart from sessionStorage completely
     if(cartObj.cartItems.length == 0) {
         const emptyCartButton = dialog.querySelector("form > button");
         emptyCartButton.setAttribute("disabled", true);
@@ -671,9 +674,13 @@ function updateCartLineItemQuantity(event) {
     const input = button.parentNode.querySelector("input");
     const lineItemOutput = input.parentNode.parentNode.querySelector("output");
     const grandTotalOutput = document.querySelector("#view-cart form > div output");
-    const itemId = input.id;
+    const inputId = input.id;
+    const lineItemWrapper = input.parentNode.parentNode
+    const lineItemWrapperTimestamp = lineItemWrapper.dataset.modificationTimestamp; 
+    //data attribute on cart item div
     const cartObj = JSON.parse(sessionStorage.cart);
-    const index = cartObj.cartItems.findIndex(item => item.uuid == itemId);
+    const regex = /^\d+/g;
+    const index = cartObj.cartItems.findIndex(item => item.uuid == inputId.match(regex)[0] && lineItemWrapperTimestamp == item.timestamp);
 
     //update number input.
     if(button.getAttribute("aria-label") == "Increase quantity") {
@@ -692,7 +699,11 @@ function updateCartLineItemQuantity(event) {
     //Update sessionStorage
     cartObj.cartItems[index].qty = parseInt(input.value);
     cartObj.cartItems[index].subtotal = cartObj.cartItems[index].qty * cartObj.cartItems[index].pricePerUnit;
+    cartObj.cartItems[index].timestamp = new Date();
     sessionStorage.setItem("cart", JSON.stringify(cartObj));
+    
+    //add new timestamp data attribute value to wrapper div
+    lineItemWrapper.dataset.modificationTimestamp = cartObj.cartItems[index].timestamp.toISOString();
     
     //Update line item subtotal in cart dialog
     lineItemOutput.textContent = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cartObj.cartItems[index].subtotal);

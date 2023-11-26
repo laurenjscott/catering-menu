@@ -454,17 +454,23 @@ function addToCart(event) {
 }
 
 function populateCartDialog(cart, dialog) {
+        //retrieve cart items from session storage
         const cartObj = JSON.parse(cart);
         const cartItemsArray = cartObj.cartItems;
+        
         const cartForm = dialog.querySelector("form");
         const fieldset = cartForm.querySelector("fieldset");
         const h2 = cartForm.querySelector("h2");
         const eventDatePara = cartForm.querySelector(":scope > p:first-of-type");
         const eventTimePara = cartForm.querySelector(":scope > p:nth-of-type(2)");
         const emptyCartButton = cartForm.querySelector(":scope > button:last-of-type");
+    
+        //Update heading with the current cart count
         h2.textContent = `Your Cart (${cartItemsArray.length} Item${cartItemsArray.length == 1 ? "" : "s"})`;
+    
+        //Render and format event time and date
         const dateObj = new Date(cartObj.eventDate);
-        const timeString = cartObj.eventTime;
+        const timeString = cartObj.eventTime;    
         const timeZoneOffset = dateObj.getTimezoneOffset();
         const timeSplitArray = timeString.split(":");
         const timeMilliseconds = (parseInt(timeSplitArray[0], 10) * 60 * 60 * 1000) + (parseInt(timeSplitArray[1], 10) * 60 * 1000);
@@ -475,13 +481,23 @@ function populateCartDialog(cart, dialog) {
         const amPM = eventTimeHours >= 12 ? "PM" : "AM";
         eventDatePara.textContent = `Event Date: ${new Intl.DateTimeFormat('en-US', { dateStyle: "full"}).format(dateTimeObj)}`;
         eventTimePara.textContent = `Event Time: ${eventTime12HourFormat}:${eventTimeMinutes} ${amPM}`;
+    
         //enable "empty cart" button
         emptyCartButton.removeAttribute("disabled");
+    
         renderCartItems(cartItemsArray, fieldset);
+    
         //calculate cart total
         const grandTotalOutput = cartForm.querySelector(":scope > div:last-of-type output")
         const lineItemOutputsArray = [...fieldset.querySelectorAll("output")];
-        grandTotalOutput.textContent = `${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(lineItemOutputsArray.reduce((acc, curValue) => acc + Number(curValue.value.replace(/[$,]/g, "")), 0))}`; //have to remove dollar sign and commas otherwise reduce function will return a NaN
+
+        const cartTotal = cartItemsArray.reduce((total, curCartItem) => total + curCartItem.subtotal, 0);
+    
+    
+//        grandTotalOutput.textContent = `${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(lineItemOutputsArray.reduce((acc, curValue) => acc + Number(curValue.value.replace(/[$,]/g, "")), 0))}`; //have to remove dollar sign and commas otherwise reduce function will return a NaN
+    
+        grandTotalOutput.textContent = `${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(cartTotal)}`;
+    
 }
 
 function renderCartItems(cartItemsArray, fieldset) {

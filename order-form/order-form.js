@@ -152,7 +152,7 @@ function addToCart(event) {
 //Displays cart to user if cart isn't empty
 function showCart() {
         const cart = sessionStorage.cart // retrieve cart items from sessionStorage
-        if(cart != undefined) { //cart would be undefined if sessionStorage.cart is emoty
+        if(cart != undefined) { //cart would be undefined if sessionStorage.cart is empty
             const dialog = document.querySelector("#view-cart");
             populateCartDialog(cart, dialog);
             const deleteLineItemButtonsArray = [...dialog.querySelectorAll("fieldset > div > button:last-of-type")];
@@ -199,6 +199,7 @@ function populateCartDialog(cart, dialog) {
         //enable "empty cart" button
         emptyCartButton.removeAttribute("disabled");
     
+        //Added cart menu items to dialog
         renderCartItems(cartItemsArray, fieldset);
     
         //calculate cart total

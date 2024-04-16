@@ -151,8 +151,8 @@ function addToCart(event) {
 
 //Displays cart to user if cart isn't empty
 function showCart() {
-        const cart = sessionStorage.cart
-        if(cart != undefined) {
+        const cart = sessionStorage.cart // retrieve cart items from sessionStorage
+        if(cart != undefined) { //cart would be undefined if sessionStorage.cart is emoty
             const dialog = document.querySelector("#view-cart");
             populateCartDialog(cart, dialog);
             const deleteLineItemButtonsArray = [...dialog.querySelectorAll("fieldset > div > button:last-of-type")];
@@ -212,6 +212,13 @@ function populateCartDialog(cart, dialog) {
     
         grandTotalOutput.textContent = `${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(cartTotal)}`;
     
+}
+
+//Child function of showCart()
+function confirmCartLineItemDeletion(event) {
+    const lineItemDiv = event.currentTarget.parentNode;
+    const menuItemName = lineItemDiv.querySelector("label").textContent;
+    displayAlertDialog("deleteLineItem", lineItemDiv, menuItemName);
 }
 
 //Child function of populateCartDialog()
@@ -383,12 +390,6 @@ function deleteCartLineItem(lineItemDiv) {
     }
     updateShowCartButtonString();
      
-}
-
-function confirmCartLineItemDeletion(event) {
-    const lineItemDiv = event.currentTarget.parentNode;
-    const menuItemName = lineItemDiv.querySelector("label").textContent;
-    displayAlertDialog("deleteLineItem", lineItemDiv, menuItemName);
 }
 
 function updateCartLineItemQuantity(event) {

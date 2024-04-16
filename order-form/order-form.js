@@ -250,6 +250,7 @@ function renderCartItems(cartItemsArray, fieldset) {
         input.setAttribute("name", `${item.uuid}-${item.timestamp}`);
         input.setAttribute("type", "number");
         input.setAttribute("min", "1");
+        input.setAttribute("aria-label", `Current quantity is ${input.value}`); // new 
         input.setAttribute("value", item.qty);
         input.setAttribute("step", "1");
         input.setAttribute("disabled", "true");

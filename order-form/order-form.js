@@ -226,8 +226,11 @@ function confirmCartLineItemDeletion(event) {
 function renderCartItems(cartItemsArray, fieldset) {
     cartItemsArray.forEach(item => {
         let lineItemWrapper = document.createElement("div");
+        //text in lineItemWrapper
         let textWrapper = document.createElement("div");
+        //input and buttons in lineItemWrapper
         let inputButtonWrapper = document.createElement("div");
+        
         let img = document.createElement("img");
         let label = document.createElement("label");
         let input = document.createElement("input");
@@ -250,7 +253,6 @@ function renderCartItems(cartItemsArray, fieldset) {
         input.setAttribute("name", `${item.uuid}-${item.timestamp}`);
         input.setAttribute("type", "number");
         input.setAttribute("min", "1");
-        input.setAttribute("aria-label", `Current quantity is ${input.value}`); // new 
         input.setAttribute("value", item.qty);
         input.setAttribute("step", "1");
         input.setAttribute("disabled", "true");
@@ -259,7 +261,7 @@ function renderCartItems(cartItemsArray, fieldset) {
         if((item.perDozen == "true" && item.qty == 2) || item.qty == 1) {
             decreaseButton.setAttribute("disabled", "true");
         };
-        decreaseButton.setAttribute("aria-label", "Decrease quantity");
+        decreaseButton.setAttribute("aria-label", "Decrease quantity button");
         decreaseButton.addEventListener("click", updateCartLineItemQuantity);
         decreaseButtonIcon.classList.add("fas");
         decreaseButtonIcon.classList.add("fa-minus");
@@ -267,13 +269,13 @@ function renderCartItems(cartItemsArray, fieldset) {
         increaseButton.setAttribute("type", "button");
         increaseButton.setAttribute("autofocus", true);
         increaseButton.classList.add("quantity-button");
-        increaseButton.setAttribute("aria-label", "Increase quantity");
+        increaseButton.setAttribute("aria-label", "Increase quantity button");
         increaseButton.addEventListener("click", updateCartLineItemQuantity);
         increaseButtonIcon.classList.add("fas");
         increaseButtonIcon.classList.add("fa-plus");
         increaseButtonIcon.setAttribute("aria-hidden", true);
         deleteLineItemButton.setAttribute("type", "button");
-        deleteLineItemButton.setAttribute("aria-label", "Delete line item");
+        deleteLineItemButton.setAttribute("aria-label", "Delete line item button");
         deleteLineItemButtonIcon.classList.add("fas");
         deleteLineItemButtonIcon.classList.add("fa-trash-alt");
         deleteLineItemButtonIcon.setAttribute("aria-hidden", true);
@@ -408,7 +410,7 @@ function updateCartLineItemQuantity(event) {
     const index = cartObj.cartItems.findIndex(item => item.uuid == inputId.match(regex)[0] && lineItemWrapperTimestamp == item.timestamp);
 
     //update number input.
-    if(button.getAttribute("aria-label") == "Increase quantity") {
+    if(button.getAttribute("aria-label") == "Increase quantity button") {
         input.value = parseInt(input.value) + 1;
     } else {
         input.value = parseInt(input.value) - 1;
@@ -416,9 +418,9 @@ function updateCartLineItemQuantity(event) {
     
     //If item is sold per dozen and the qty is now "2" or if the qty is now 1, disabled the MINUS button
     if((input.value < 3 && cartObj.cartItems[index].perDozen == "true") || input.value < 2) {
-        button.parentNode.querySelector("[aria-label='Decrease quantity']").setAttribute("disabled", true);
+        button.parentNode.querySelector("[aria-label='Decrease quantity button']").setAttribute("disabled", true);
     } else {
-        button.parentNode.querySelector("[aria-label='Decrease quantity']").removeAttribute("disabled");
+        button.parentNode.querySelector("[aria-label='Decrease quantity button']").removeAttribute("disabled");
     }
 
     //Update sessionStorage

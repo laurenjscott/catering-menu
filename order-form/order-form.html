@@ -111,8 +111,8 @@
                 </div>
             </form>
         </dialog>
-        <dialog id="view-cart">
-             <button aria-label="Close shopping cart" class="close-dialog">
+        <dialog id="view-cart" aria-live="assertive">
+             <button aria-label="Close shopping cart button" class="close-dialog">
                 <i class="fas fa-times-circle fa-2x" aria-hidden="true"></i>
             </button>
             <form action="" method="dialog">
@@ -120,7 +120,7 @@
                 <p>Event Date: Monday, October 2, 2023</p>
                 <p>Event Time: 03:30 PM CDT</p>
                 <fieldset></fieldset>
-                <button type="button" disabled>
+                <button type="button" aria-label="Empty cart button" disabled>
                     <i class="fas fa-trash-alt" aria-hidden="true"></i>
                     Empty Cart
                 </button>

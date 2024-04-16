@@ -1,6 +1,7 @@
 import populateMainNavigation from "../app.js"; //Why is populateMainNavigation() being imported instead of being run in app.js? Because of the issue with Dreamweaver live server not displaying the true URL of the HTML file it's called on. Once this is in prod, it can be run in app.js.
 
 
+
 window.addEventListener("load", () => {
         
     //addition of argument is temporary while hosted via localhost
@@ -64,7 +65,7 @@ async function fetchCurrentMenu() {
 
 /********************************** Cart *************************************/
 
-//On page load
+//On page load, push cart's event date and time to date and time inputs. Doesn't do anything if cart is empty
 function populateCartEventDateTimeOnReload () {
     const cart = sessionStorage.cart;
     if(cart != undefined) {
@@ -107,7 +108,7 @@ function addToCart(event) {
 			document.querySelector("#menu-item-dialog output").textContent.replace(/\$/g, "")
 		);
 
-		//form a object based off of form information
+		//form an object based off of form information
 		const orderLineItemObj = {};
         orderLineItemObj.uuid = uuid;
         orderLineItemObj.timestamp = new Date();
@@ -145,6 +146,10 @@ function addToCart(event) {
 		updateShowCartButtonString();
 }
 
+
+
+
+//Displays cart to user if cart isn't empty
 function showCart() {
         const cart = sessionStorage.cart
         if(cart != undefined) {
@@ -291,6 +296,8 @@ function renderCartItems(cartItemsArray, fieldset) {
     });
 }
 
+
+
 //triggered on page load, when item is added to cart, and when cart line item is deleted
 function updateShowCartButtonString() {
     const cartButton = document.querySelector("header > button:last-of-type");
@@ -337,7 +344,6 @@ function resetCartDialogToEmptyState() {
     button.setAttribute("disabled", true);
     
 }
-
 
 function deleteCartLineItem(lineItemDiv) {
     const dialog = document.querySelector("#view-cart");

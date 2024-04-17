@@ -155,7 +155,7 @@ function showCart() {
         if(cart != undefined) { //cart would be undefined if sessionStorage.cart is empty
             const dialog = document.querySelector("#view-cart");
             dialog.showModal();
-            setTimeout(populateCartDialog(cart, dialog), 3000);
+            setTimeout(() => {populateCartDialog(cart, dialog)}, 30000);
             const deleteLineItemButtonsArray = [...dialog.querySelectorAll("fieldset > div > button:last-of-type")];
             deleteLineItemButtonsArray.forEach(button => {
                 button.addEventListener("click", confirmCartLineItemDeletion);

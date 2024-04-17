@@ -154,12 +154,13 @@ function showCart() {
         const cart = sessionStorage.cart // retrieve cart items from sessionStorage
         if(cart != undefined) { //cart would be undefined if sessionStorage.cart is empty
             const dialog = document.querySelector("#view-cart");
+            dialog.showModal();
             populateCartDialog(cart, dialog);
             const deleteLineItemButtonsArray = [...dialog.querySelectorAll("fieldset > div > button:last-of-type")];
             deleteLineItemButtonsArray.forEach(button => {
                 button.addEventListener("click", confirmCartLineItemDeletion);
             });
-            dialog.showModal();
+//            dialog.showModal();
         }
 }
 

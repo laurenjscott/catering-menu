@@ -483,18 +483,19 @@ function renderMenuItemDialog(event) {
     const hiddenUUIDInput = dialog.querySelector("input#hidden-uuid-input"); //stores data-uuid
     const hiddenPerDozenInput = dialog.querySelector("input#hidden-per-dozen-input"); //stores data-per-dozen
     
-    //2024-04-28 11:41:07 (Americas/Chicago): Add data attributes to the number input. This will eventually remove the need to have hidden inputs.
-    numberInput.dataset.uuid = uuid;
-    numberInput.dataset.perDozen = perDozen;
-    numberInput.dataset.price = price;
-    console.info(numberInput);
-    
     
     const output = dialog.querySelector("output");
     itemNameLabel.setAttribute("for", itemNameDashStyle);
     itemNameLabel.textContent = itemName;
     numberInput.setAttribute("id", itemNameDashStyle);
     numberInput.setAttribute("name", itemNameDashStyle);
+    
+    //2024-04-28 11:41:07 (Americas/Chicago): Add data attributes to the number input. This will eventually remove the need to have hidden inputs.
+    numberInput.dataset.uuid = uuid;
+    numberInput.dataset.perDozen = perDozen;
+    numberInput.dataset.price = price;
+    console.info(numberInput);
+    
     if(perDozen === "true") { //if item is sold per dozen - an as of 2023-09-25 iteration, only appetizers are sold per dozen - make the minumum qty be 2.
        numberInput.value = 2;
     };
@@ -680,17 +681,24 @@ function bindEventListeners() {
 	const decreaseQuantityButton = document.querySelector(
 		"#decrease-quantity-button"
 	);
+   
 	decreaseQuantityButton.addEventListener("click", (event) => {
 		const numberInput = document.querySelector("input[type='number']");
-        const hiddenPerDozenInput = document.querySelector("#menu-item-dialog #hidden-per-dozen-input"); //used to enforce "minimum 2 dozen" business rule
+//        const hiddenPerDozenInput = document.querySelector("#menu-item-dialog #hidden-per-dozen-input"); //used to enforce "minimum 2 dozen" business rule
+        const hiddenPerDozenInput = numberInput.dataset.perDozen; //used to enforce "minimum 2 dozen" business rule
+        
+
         if( 
-            (hiddenPerDozenInput.value === "true" && numberInput.value > 2 ) || 
-            (hiddenPerDozenInput.value === "false" && numberInput.value > 1) 
+//            (hiddenPerDozenInput.value === "true" && numberInput.value > 2 ) || 
+//            (hiddenPerDozenInput.value === "false" && numberInput.value > 1)
+            (hiddenPerDozenInput === "true" && numberInput.value > 2 ) || 
+            (hiddenPerDozenInput === "false" && numberInput.value > 1)
         ) {
             numberInput.value = parseInt(numberInput.value) - 1;
             updateSubtotal(parseInt(numberInput.value));
                 if( 
-                    (hiddenPerDozenInput.value === "true" && numberInput.value <= 2) || (hiddenPerDozenInput.value === "false" && numberInput.value <= 1) 
+//                    (hiddenPerDozenInput.value === "true" && numberInput.value <= 2) || (hiddenPerDozenInput.value === "false" && numberInput.value <= 1) 
+                    (hiddenPerDozenInput === "true" && numberInput.value <= 2) || (hiddenPerDozenInput === "false" && numberInput.value <= 1) 
                 ) {
                     decreaseQuantityButton.setAttribute("disabled", true);
                 }

@@ -494,7 +494,6 @@ function renderMenuItemDialog(event) {
     numberInput.dataset.uuid = uuid;
     numberInput.dataset.perDozen = perDozen;
     numberInput.dataset.price = price;
-    console.info(numberInput);
     
     if(perDozen === "true") { //if item is sold per dozen - an as of 2023-09-25 iteration, only appetizers are sold per dozen - make the minumum qty be 2.
        numberInput.value = 2;
@@ -684,20 +683,16 @@ function bindEventListeners() {
    
 	decreaseQuantityButton.addEventListener("click", (event) => {
 		const numberInput = document.querySelector("input[type='number']");
-//        const hiddenPerDozenInput = document.querySelector("#menu-item-dialog #hidden-per-dozen-input"); //used to enforce "minimum 2 dozen" business rule
         const hiddenPerDozenInput = numberInput.dataset.perDozen; //used to enforce "minimum 2 dozen" business rule
         
 
         if( 
-//            (hiddenPerDozenInput.value === "true" && numberInput.value > 2 ) || 
-//            (hiddenPerDozenInput.value === "false" && numberInput.value > 1)
             (hiddenPerDozenInput === "true" && numberInput.value > 2 ) || 
             (hiddenPerDozenInput === "false" && numberInput.value > 1)
         ) {
             numberInput.value = parseInt(numberInput.value) - 1;
             updateSubtotal(parseInt(numberInput.value));
                 if( 
-//                    (hiddenPerDozenInput.value === "true" && numberInput.value <= 2) || (hiddenPerDozenInput.value === "false" && numberInput.value <= 1) 
                     (hiddenPerDozenInput === "true" && numberInput.value <= 2) || (hiddenPerDozenInput === "false" && numberInput.value <= 1) 
                 ) {
                     decreaseQuantityButton.setAttribute("disabled", true);
@@ -711,12 +706,15 @@ function bindEventListeners() {
 	);
 	increaseQuantityButton.addEventListener("click", (event) => {
 		const numberInput = document.querySelector("input[type='number']");
-        const hiddenPerDozenInput = document.querySelector("#menu-item-dialog #hidden-per-dozen-input");//used to enforce "minimum 2 dozen" business rule
+        const hiddenPerDozenInput = numberInput.dataset.perDozen;//used to enforce "minimum 2 dozen" business rule
+        
+        
+        
 		numberInput.value = parseInt(numberInput.value) + 1;
 		updateSubtotal(parseInt(numberInput.value));
 		if ( 
-            (hiddenPerDozenInput.value === "true" && numberInput.value >= 3) || 
-            (hiddenPerDozenInput.value === "false" && numberInput.value >= 2) 
+            (hiddenPerDozenInput === "true" && numberInput.value >= 3) || 
+            (hiddenPerDozenInput === "false" && numberInput.value >= 2)
         ) {
             decreaseQuantityButton.removeAttribute("disabled");
 		}

@@ -465,7 +465,7 @@ function renderMenuItemDialog(event) {
     const uuid = li.dataset.uuid;
     const itemName = li.dataset.menuItemName;
     const itemNameDashStyle = itemName
-        .split(" ") //spaces not includes
+        .split(" ") //spaces not included
         .join("-") //one or more spaces replaced with a hyphen
         .toLowerCase()
         .replace(/[\/,']/g, ""); //remove illegal chars
@@ -477,9 +477,19 @@ function renderMenuItemDialog(event) {
     const itemNameLabel = dialog.querySelector("label:first-of-type");
     const categoryGeneralDescriptionPara = dialog.querySelector("label:first-of-type + p");
     const numberInput = dialog.querySelector("input[type='number']");
+    
+    //2024-04-28 11:41:07 (Americas/Chicago): Deprecated
     const hiddenPriceInput = dialog.querySelector("input#hidden-price-input"); //stores data-price
     const hiddenUUIDInput = dialog.querySelector("input#hidden-uuid-input"); //stores data-uuid
     const hiddenPerDozenInput = dialog.querySelector("input#hidden-per-dozen-input"); //stores data-per-dozen
+    
+    //2024-04-28 11:41:07 (Americas/Chicago): Add data attributes to the number input. This will eventually remove the need to have hidden inputs.
+    numberInput.dataset.uuid = uuid;
+    numberInput.dataset.perDozen = perDozen;
+    numberInput.dataset.price = price;
+    console.info(numberInput);
+    
+    
     const output = dialog.querySelector("output");
     itemNameLabel.setAttribute("for", itemNameDashStyle);
     itemNameLabel.textContent = itemName;
@@ -584,7 +594,7 @@ function displayAlertDialog(key, ...args) {// key is "invalidDate" or "deleteLin
 function bindEventListeners() {
 	const eventDateInput = document.querySelector(
 		"#event-date-time-picker-section input"
-	);
+	); 
     if(navigator.maxTouchPoints > 0) { //determines if device has a touchscreen. If it does, use the blur event. This is done for 1 main reason: Safari for iOS (current version I'm testing is 16.7 on a iPhone 13 as of 2023-09-30). Unlike other user agents, the change event is triggered as soon as the user clicks the date input because Safari for iOS automatically pushes the current date as the input value. This causes the validation message bubble to be displayed because of the min/max constraints on the input. The message also hides the "Done" button. If the user doesn't click the message bubble, there is no way to interact with the date picker. Clicking anything other the validation message bubble will close the picker. And the input becomes unclickable until focus is given to another element and then the user clicks the date input again. Another reason use blur for touchscreens is because direct date entry date inputs is not allowed anyway, so blur is just fine.
        eventDateInput.addEventListener("blur", (event) => processChange(event)); //When user enters a date into the event date input, processChange() is called and is passed the "blur" event. processChange() basically calls (or invokes) the function declaration returned from debounce().
     } else {

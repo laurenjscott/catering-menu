@@ -683,17 +683,17 @@ function bindEventListeners() {
    
 	decreaseQuantityButton.addEventListener("click", (event) => {
 		const numberInput = document.querySelector("input[type='number']");
-        const hiddenPerDozenInput = numberInput.dataset.perDozen; //used to enforce "minimum 2 dozen" business rule
+        const perDozenInput = numberInput.dataset.perDozen; //used to enforce "minimum 2 dozen" business rule
         
 
         if( 
-            (hiddenPerDozenInput === "true" && numberInput.value > 2 ) || 
-            (hiddenPerDozenInput === "false" && numberInput.value > 1)
+            (perDozenInput === "true" && numberInput.value > 2 ) || 
+            (perDozenInput === "false" && numberInput.value > 1)
         ) {
             numberInput.value = parseInt(numberInput.value) - 1;
             updateSubtotal(parseInt(numberInput.value));
                 if( 
-                    (hiddenPerDozenInput === "true" && numberInput.value <= 2) || (hiddenPerDozenInput === "false" && numberInput.value <= 1) 
+                    (perDozenInput === "true" && numberInput.value <= 2) || (perDozenInput === "false" && numberInput.value <= 1) 
                 ) {
                     decreaseQuantityButton.setAttribute("disabled", true);
                 }
@@ -706,15 +706,15 @@ function bindEventListeners() {
 	);
 	increaseQuantityButton.addEventListener("click", (event) => {
 		const numberInput = document.querySelector("input[type='number']");
-        const hiddenPerDozenInput = numberInput.dataset.perDozen;//used to enforce "minimum 2 dozen" business rule
+        const perDozenInput = numberInput.dataset.perDozen;//used to enforce "minimum 2 dozen" business rule
         
         
         
 		numberInput.value = parseInt(numberInput.value) + 1;
 		updateSubtotal(parseInt(numberInput.value));
 		if ( 
-            (hiddenPerDozenInput === "true" && numberInput.value >= 3) || 
-            (hiddenPerDozenInput === "false" && numberInput.value >= 2)
+            (perDozenInput === "true" && numberInput.value >= 3) || 
+            (perDozenInput === "false" && numberInput.value >= 2)
         ) {
             decreaseQuantityButton.removeAttribute("disabled");
 		}

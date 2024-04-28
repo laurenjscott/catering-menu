@@ -443,9 +443,8 @@ function updateCartLineItemQuantity(event) {
 
 function updateSubtotal(num) { //Menu item dialog
     const output = document.querySelector("#menu-item-dialog output");
-    const pricePerUnit = Number(
-        document.querySelector("input#hidden-price-input").value
-    );
+    const pricePerUnit = Number(document.querySelector("#qty-picker-wrapper input").dataset.price);
+    console.info(pricePerUnit);
     output.textContent = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD"
@@ -477,14 +476,8 @@ function renderMenuItemDialog(event) {
     const itemNameLabel = dialog.querySelector("label:first-of-type");
     const categoryGeneralDescriptionPara = dialog.querySelector("label:first-of-type + p");
     const numberInput = dialog.querySelector("input[type='number']");
-    
-    //2024-04-28 11:41:07 (Americas/Chicago): Deprecated
-    const hiddenPriceInput = dialog.querySelector("input#hidden-price-input"); //stores data-price
-    const hiddenUUIDInput = dialog.querySelector("input#hidden-uuid-input"); //stores data-uuid
-    const hiddenPerDozenInput = dialog.querySelector("input#hidden-per-dozen-input"); //stores data-per-dozen
-    
-    
     const output = dialog.querySelector("output");
+    
     itemNameLabel.setAttribute("for", itemNameDashStyle);
     itemNameLabel.textContent = itemName;
     numberInput.setAttribute("id", itemNameDashStyle);
@@ -495,22 +488,24 @@ function renderMenuItemDialog(event) {
     numberInput.dataset.perDozen = perDozen;
     numberInput.dataset.price = price;
     
+    
     if(perDozen === "true") { //if item is sold per dozen - an as of 2023-09-25 iteration, only appetizers are sold per dozen - make the minumum qty be 2.
        numberInput.value = 2;
     };
     if(categoryGeneralDescription != undefined) { //Used to show minimum qty to user if they select a menu item that is purchased per dozen. Re-enforces business rule that per dozen items have a mininum qty of 2 dozen
        categoryGeneralDescriptionPara.textContent = categoryGeneralDescription;
     }
-    hiddenPriceInput.value = price;
-    hiddenUUIDInput.value = uuid;
-    hiddenPerDozenInput.value = perDozen;
-    if(hiddenPerDozenInput.value === "true") {
+    
+    
+    if(numberInput.dataset.perDozen === "true") {
        output.textContent = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"
-        }).format(hiddenPriceInput.value * 2);
+        }).format(numberInput.dataset.price * 2);
     } else {
         output.textContent = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"
-        }).format(hiddenPriceInput.value);
+        }).format(numberInput.dataset.price);
     }
+    
+    
     if(glutenFree == "true") {
         let glutenFreeSpan = document.createElement("span");
         glutenFreeSpan.textContent = "GF";
@@ -520,6 +515,7 @@ function renderMenuItemDialog(event) {
         itemNameLabel.prepend(glutenFreeSpan);
     };
     dialog.showModal();
+    
 }
 
 function displayAlertDialog(key, ...args) {// key is "invalidDate" or "deleteLineItem"
@@ -683,17 +679,17 @@ function bindEventListeners() {
    
 	decreaseQuantityButton.addEventListener("click", (event) => {
 		const numberInput = document.querySelector("input[type='number']");
-        const perDozenInput = numberInput.dataset.perDozen; //used to enforce "minimum 2 dozen" business rule
+        const perDozen = numberInput.dataset.perDozen; //used to enforce "minimum 2 dozen" business rule
         
 
         if( 
-            (perDozenInput === "true" && numberInput.value > 2 ) || 
-            (perDozenInput === "false" && numberInput.value > 1)
+            (perDozen === "true" && numberInput.value > 2 ) || 
+            (perDozen === "false" && numberInput.value > 1)
         ) {
             numberInput.value = parseInt(numberInput.value) - 1;
             updateSubtotal(parseInt(numberInput.value));
                 if( 
-                    (perDozenInput === "true" && numberInput.value <= 2) || (perDozenInput === "false" && numberInput.value <= 1) 
+                    (perDozen === "true" && numberInput.value <= 2) || (perDozen === "false" && numberInput.value <= 1) 
                 ) {
                     decreaseQuantityButton.setAttribute("disabled", true);
                 }
@@ -706,15 +702,15 @@ function bindEventListeners() {
 	);
 	increaseQuantityButton.addEventListener("click", (event) => {
 		const numberInput = document.querySelector("input[type='number']");
-        const perDozenInput = numberInput.dataset.perDozen;//used to enforce "minimum 2 dozen" business rule
+        const perDozen = numberInput.dataset.perDozen;//used to enforce "minimum 2 dozen" business rule
         
         
         
 		numberInput.value = parseInt(numberInput.value) + 1;
 		updateSubtotal(parseInt(numberInput.value));
 		if ( 
-            (perDozenInput === "true" && numberInput.value >= 3) || 
-            (perDozenInput === "false" && numberInput.value >= 2)
+            (perDozen === "true" && numberInput.value >= 3) || 
+            (perDozen === "false" && numberInput.value >= 2)
         ) {
             decreaseQuantityButton.removeAttribute("disabled");
 		}

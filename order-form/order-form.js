@@ -80,16 +80,20 @@ function populateCartEventDateTimeOnReload () {
 }
 
 function addToCart(event) {
-        //grab UUID of item
-        const uuid = document.querySelector("#menu-item-dialog #hidden-uuid-input").value;
     
+        const numberInput = event.currentTarget.parentNode.querySelector("input");
+    
+        //grab UUID of item
+        const uuid = numberInput.dataset.uuid;
+
     
         //grab menu item's label text content
 		const menuItemName = document.querySelector("#menu-item-dialog label:first-of-type")
 			.lastChild.data;
     
-        //grab perDozen data attribute value
-        const perDozen = document.querySelector("#menu-item-dialog #hidden-per-dozen-input").value;
+        //grab perDozen
+        const perDozen = numberInput.dataset.perDozen;
+
 
 		//grab qty requested
 		const qty = parseInt(
@@ -100,8 +104,7 @@ function addToCart(event) {
 		const specialInstructions = document.querySelector("#menu-item-dialog textarea").value;
 
 		//grab price per unit
-		const pricePerUnit = Number(
-			document.querySelector("#menu-item-dialog input[type='hidden']").value);
+        const pricePerUnit = Number(numberInput.dataset.price);
     
 		//calculate subtotal
 		const subtotal = Number(
@@ -191,7 +194,6 @@ function populateCartDialog(cart, dialog) {
         const eventTime12HourFormat = eventTimeHours > 12 ? eventTimeHours - 12 : eventTimeHours;
         const amPM = eventTimeHours >= 12 ? "PM" : "AM";
     
-        console.info(dateObj);
 
         eventDatePara.textContent = `Event Date: ${new Intl.DateTimeFormat('en-US', { dateStyle: "full"}).format(dateTimeObj)}`;
         eventTimePara.textContent = `Event Time: ${eventTime12HourFormat}:${eventTimeMinutes} ${amPM}`;
@@ -444,7 +446,6 @@ function updateCartLineItemQuantity(event) {
 function updateSubtotal(num) { //Menu item dialog
     const output = document.querySelector("#menu-item-dialog output");
     const pricePerUnit = Number(document.querySelector("#qty-picker-wrapper input").dataset.price);
-    console.info(pricePerUnit);
     output.textContent = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD"
@@ -586,7 +587,7 @@ function displayAlertDialog(key, ...args) {// key is "invalidDate" or "deleteLin
 /********************************** *** *************************************/
 
 
-//What does this do???
+//Applys event listeners to elements onces data is fetched on page load
 function bindEventListeners() {
 	const eventDateInput = document.querySelector(
 		"#event-date-time-picker-section input"

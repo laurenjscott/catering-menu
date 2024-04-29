@@ -157,12 +157,13 @@ function showCart() {
         const cart = sessionStorage.cart // retrieve cart items from sessionStorage
         if(cart != undefined) { //cart would be undefined if sessionStorage.cart is empty
             const dialog = document.querySelector("#view-cart");
-            dialog.showModal();
-            setTimeout(() => {populateCartDialog(cart, dialog)}, 300);
+            populateCartDialog(cart, dialog);
             const deleteLineItemButtonsArray = [...dialog.querySelectorAll("fieldset > div > button:last-of-type")];
             deleteLineItemButtonsArray.forEach(button => {
                 button.addEventListener("click", confirmCartLineItemDeletion);
             });
+            dialog.showModal();
+
         }
 }
 
@@ -646,6 +647,15 @@ function bindEventListeners() {
         numberInput.value = "1";
         decreaseQuantityButton.setAttribute("disabled", true);
         categoryGeneralDescriptionPara.textContent = "";
+        
+        //added 2024-04-30. Data attributes need to be deletedfrom input on dialog close. ID and name attributes need to be reset.
+        delete numberInput.dataset.uuid;
+        delete numberInput.dataset.perDozen;
+        delete numberInput.dataset.price;
+        numberInput.id = "menu-item";
+        numberInput.name = "menu-item";
+
+
         
         //remove url fragment (#menu-item-dialog) from location bar. https://stackoverflow.com/questions/269044/remove-fragment-in-url-with-javascript-w-out-causing-page-reload
         //  remove fragment as much as it can go without adding an entry in browser history:

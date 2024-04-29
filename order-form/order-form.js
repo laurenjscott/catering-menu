@@ -80,16 +80,20 @@ function populateCartEventDateTimeOnReload () {
 }
 
 function addToCart(event) {
-        //grab UUID of item
-        const uuid = document.querySelector("#menu-item-dialog #hidden-uuid-input").value;
     
+        const numberInput = event.currentTarget.parentNode.querySelector("input");
+    
+        //grab UUID of item
+        const uuid = numberInput.dataset.uuid;
+
     
         //grab menu item's label text content
 		const menuItemName = document.querySelector("#menu-item-dialog label:first-of-type")
 			.lastChild.data;
     
-        //grab perDozen data attribute value
-        const perDozen = document.querySelector("#menu-item-dialog #hidden-per-dozen-input").value;
+        //grab perDozen
+        const perDozen = numberInput.dataset.perDozen;
+
 
 		//grab qty requested
 		const qty = parseInt(
@@ -100,8 +104,7 @@ function addToCart(event) {
 		const specialInstructions = document.querySelector("#menu-item-dialog textarea").value;
 
 		//grab price per unit
-		const pricePerUnit = Number(
-			document.querySelector("#menu-item-dialog input[type='hidden']").value);
+        const pricePerUnit = Number(numberInput.dataset.price);
     
 		//calculate subtotal
 		const subtotal = Number(
@@ -191,7 +194,6 @@ function populateCartDialog(cart, dialog) {
         const eventTime12HourFormat = eventTimeHours > 12 ? eventTimeHours - 12 : eventTimeHours;
         const amPM = eventTimeHours >= 12 ? "PM" : "AM";
     
-        console.info(dateObj);
 
         eventDatePara.textContent = `Event Date: ${new Intl.DateTimeFormat('en-US', { dateStyle: "full"}).format(dateTimeObj)}`;
         eventTimePara.textContent = `Event Time: ${eventTime12HourFormat}:${eventTimeMinutes} ${amPM}`;
@@ -443,9 +445,7 @@ function updateCartLineItemQuantity(event) {
 
 function updateSubtotal(num) { //Menu item dialog
     const output = document.querySelector("#menu-item-dialog output");
-    const pricePerUnit = Number(
-        document.querySelector("input#hidden-price-input").value
-    );
+    const pricePerUnit = Number(document.querySelector("#qty-picker-wrapper input").dataset.price);
     output.textContent = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD"
@@ -465,7 +465,7 @@ function renderMenuItemDialog(event) {
     const uuid = li.dataset.uuid;
     const itemName = li.dataset.menuItemName;
     const itemNameDashStyle = itemName
-        .split(" ") //spaces not includes
+        .split(" ") //spaces not included
         .join("-") //one or more spaces replaced with a hyphen
         .toLowerCase()
         .replace(/[\/,']/g, ""); //remove illegal chars
@@ -477,30 +477,36 @@ function renderMenuItemDialog(event) {
     const itemNameLabel = dialog.querySelector("label:first-of-type");
     const categoryGeneralDescriptionPara = dialog.querySelector("label:first-of-type + p");
     const numberInput = dialog.querySelector("input[type='number']");
-    const hiddenPriceInput = dialog.querySelector("input#hidden-price-input"); //stores data-price
-    const hiddenUUIDInput = dialog.querySelector("input#hidden-uuid-input"); //stores data-uuid
-    const hiddenPerDozenInput = dialog.querySelector("input#hidden-per-dozen-input"); //stores data-per-dozen
     const output = dialog.querySelector("output");
+    
     itemNameLabel.setAttribute("for", itemNameDashStyle);
     itemNameLabel.textContent = itemName;
     numberInput.setAttribute("id", itemNameDashStyle);
     numberInput.setAttribute("name", itemNameDashStyle);
+    
+    //2024-04-28 11:41:07 (Americas/Chicago): Add data attributes to the number input. This will eventually remove the need to have hidden inputs.
+    numberInput.dataset.uuid = uuid;
+    numberInput.dataset.perDozen = perDozen;
+    numberInput.dataset.price = price;
+    
+    
     if(perDozen === "true") { //if item is sold per dozen - an as of 2023-09-25 iteration, only appetizers are sold per dozen - make the minumum qty be 2.
        numberInput.value = 2;
     };
     if(categoryGeneralDescription != undefined) { //Used to show minimum qty to user if they select a menu item that is purchased per dozen. Re-enforces business rule that per dozen items have a mininum qty of 2 dozen
        categoryGeneralDescriptionPara.textContent = categoryGeneralDescription;
     }
-    hiddenPriceInput.value = price;
-    hiddenUUIDInput.value = uuid;
-    hiddenPerDozenInput.value = perDozen;
-    if(hiddenPerDozenInput.value === "true") {
+    
+    
+    if(numberInput.dataset.perDozen === "true") {
        output.textContent = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"
-        }).format(hiddenPriceInput.value * 2);
+        }).format(numberInput.dataset.price * 2);
     } else {
         output.textContent = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"
-        }).format(hiddenPriceInput.value);
+        }).format(numberInput.dataset.price);
     }
+    
+    
     if(glutenFree == "true") {
         let glutenFreeSpan = document.createElement("span");
         glutenFreeSpan.textContent = "GF";
@@ -510,6 +516,7 @@ function renderMenuItemDialog(event) {
         itemNameLabel.prepend(glutenFreeSpan);
     };
     dialog.showModal();
+    
 }
 
 function displayAlertDialog(key, ...args) {// key is "invalidDate" or "deleteLineItem"
@@ -580,11 +587,11 @@ function displayAlertDialog(key, ...args) {// key is "invalidDate" or "deleteLin
 /********************************** *** *************************************/
 
 
-//What does this do???
+//Applys event listeners to elements onces data is fetched on page load
 function bindEventListeners() {
 	const eventDateInput = document.querySelector(
 		"#event-date-time-picker-section input"
-	);
+	); 
     if(navigator.maxTouchPoints > 0) { //determines if device has a touchscreen. If it does, use the blur event. This is done for 1 main reason: Safari for iOS (current version I'm testing is 16.7 on a iPhone 13 as of 2023-09-30). Unlike other user agents, the change event is triggered as soon as the user clicks the date input because Safari for iOS automatically pushes the current date as the input value. This causes the validation message bubble to be displayed because of the min/max constraints on the input. The message also hides the "Done" button. If the user doesn't click the message bubble, there is no way to interact with the date picker. Clicking anything other the validation message bubble will close the picker. And the input becomes unclickable until focus is given to another element and then the user clicks the date input again. Another reason use blur for touchscreens is because direct date entry date inputs is not allowed anyway, so blur is just fine.
        eventDateInput.addEventListener("blur", (event) => processChange(event)); //When user enters a date into the event date input, processChange() is called and is passed the "blur" event. processChange() basically calls (or invokes) the function declaration returned from debounce().
     } else {
@@ -670,17 +677,20 @@ function bindEventListeners() {
 	const decreaseQuantityButton = document.querySelector(
 		"#decrease-quantity-button"
 	);
+   
 	decreaseQuantityButton.addEventListener("click", (event) => {
 		const numberInput = document.querySelector("input[type='number']");
-        const hiddenPerDozenInput = document.querySelector("#menu-item-dialog #hidden-per-dozen-input"); //used to enforce "minimum 2 dozen" business rule
+        const perDozen = numberInput.dataset.perDozen; //used to enforce "minimum 2 dozen" business rule
+        
+
         if( 
-            (hiddenPerDozenInput.value === "true" && numberInput.value > 2 ) || 
-            (hiddenPerDozenInput.value === "false" && numberInput.value > 1) 
+            (perDozen === "true" && numberInput.value > 2 ) || 
+            (perDozen === "false" && numberInput.value > 1)
         ) {
             numberInput.value = parseInt(numberInput.value) - 1;
             updateSubtotal(parseInt(numberInput.value));
                 if( 
-                    (hiddenPerDozenInput.value === "true" && numberInput.value <= 2) || (hiddenPerDozenInput.value === "false" && numberInput.value <= 1) 
+                    (perDozen === "true" && numberInput.value <= 2) || (perDozen === "false" && numberInput.value <= 1) 
                 ) {
                     decreaseQuantityButton.setAttribute("disabled", true);
                 }
@@ -693,12 +703,15 @@ function bindEventListeners() {
 	);
 	increaseQuantityButton.addEventListener("click", (event) => {
 		const numberInput = document.querySelector("input[type='number']");
-        const hiddenPerDozenInput = document.querySelector("#menu-item-dialog #hidden-per-dozen-input");//used to enforce "minimum 2 dozen" business rule
+        const perDozen = numberInput.dataset.perDozen;//used to enforce "minimum 2 dozen" business rule
+        
+        
+        
 		numberInput.value = parseInt(numberInput.value) + 1;
 		updateSubtotal(parseInt(numberInput.value));
 		if ( 
-            (hiddenPerDozenInput.value === "true" && numberInput.value >= 3) || 
-            (hiddenPerDozenInput.value === "false" && numberInput.value >= 2) 
+            (perDozen === "true" && numberInput.value >= 3) || 
+            (perDozen === "false" && numberInput.value >= 2)
         ) {
             decreaseQuantityButton.removeAttribute("disabled");
 		}

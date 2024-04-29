@@ -81,9 +81,7 @@
               <hr>
               <label for="special-instructions">Special Instructions</label>
               <textarea name="special-instructions" id="special-instructions" cols="30" rows="8"></textarea>
-              <input id="hidden-price-input" name="price" type="hidden" value="0">
-              <input id="hidden-uuid-input" name="uuid" type="hidden">
-              <input id="hidden-per-dozen-input" name="per-dozen" type="hidden">
+
               <div id="quantity-section">
                   <div id="qty-picker-wrapper">
                       <button id="decrease-quantity-button" class="quantity-button" type="button" disabled aria-label="Decrease quantity">
@@ -94,7 +92,10 @@
                           <i class="fas fa-plus" aria-hidden="true"></i>
                       </button>
                   </div>
-                  <button id="add-to-cart-button"><span>Add to cart</span><output>$0.00</output></button>
+                  <button id="add-to-cart-button">
+                      <span>Add to cart</span>
+                      <output>$0.00</output>
+                  </button>
               </div>
 		    </form>
         </dialog>

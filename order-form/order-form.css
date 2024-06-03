@@ -292,6 +292,8 @@ input[type="number"]:disabled, #menu-item-dialog #add-to-cart-button {
     max-width: 500px;
     flex-direction: column;
     border-radius: 0.25rem 0 0 0.25rem;
+    height: auto; /*added to prevent dialog from being truncated when there are a lot of cart titems */
+
 
 }
 

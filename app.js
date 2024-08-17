@@ -28,6 +28,15 @@ export default function populateMainNavigation(folder) { //folder argument is te
     }
 }
 
+document.fonts.ready.then((fontFaceSet) => {
+    // Any operation that needs to be done only after all used fonts
+    // have finished loading can go here.
+    const fontFaces = [...fontFaceSet];
+    console.log(fontFaces);
+    // some fonts may still be unloaded if they aren't used on the site
+    console.log(fontFaces.map((f) => f.status));
+  });
+
 
 window.addEventListener("load", event => {
     addListenersToMainNavButtons();

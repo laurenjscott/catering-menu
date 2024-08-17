@@ -85,11 +85,8 @@ main a:focus {
 	outline: 1px solid #707070;
 }
 
-address {
-    font-style: normal;
-}
 
-footer ul {
+/* footer ul {
     list-style: none;
     display: flex;
     justify-content: center;
@@ -98,9 +95,9 @@ footer ul {
     gap: 2rem;
     margin-top: 2rem;
 
-}
+} */
 
-footer ul li a {
+/* footer ul li a {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -118,7 +115,7 @@ footer ul li a {
 footer ul li a:hover {
     color: #C32DB1;
     border-color: #C32DB1;
-}
+} */
 
 
 

@@ -100,6 +100,7 @@ dialog::backdrop {
 
 footer {
     text-align: center;
+    margin-top: 1rem;
 }
 
 footer ul {
@@ -112,7 +113,7 @@ address {
     font-style: normal;
 }
 
-footer ul.site-map a {
+footer ul.site-map {
     margin-bottom: 1.5rem;
 }
 
@@ -126,6 +127,7 @@ footer ul.social-links {
     justify-content: center;
     align-items: center;
     padding: 2rem 0;
+    gap: 2rem;
 }
 
 footer ul.social-links a {

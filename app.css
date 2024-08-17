@@ -112,13 +112,23 @@ address {
     font-style: normal;
 }
 
-footer.social-links {
+footer ul.site-map a {
+    margin-bottom: 1.5rem;
+}
+
+footer ul.site-map a {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+footer ul.social-links {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 2rem 0;
 }
 
-footer.social-links a {
+footer ul.social-links a {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -133,7 +143,7 @@ footer.social-links a {
 
 }
 
-footer.social-links a:hover {
+footer ul.social-links a:hover {
     color: #C32DB1;
     border-color: #C32DB1;
 }

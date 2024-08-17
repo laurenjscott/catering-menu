@@ -36,9 +36,7 @@ window.addEventListener("load", event => {
         // Any operation that needs to be done only after all used fonts
         // have finished loading can go here.
         const fontFaces = [...fontFaceSet];
-        console.info(fontFaces);
-        // some fonts may still be unloaded if they aren't used on the site
-        console.info(fontFaces.map((f) => f.status));
+        console.log(fontFaces.filter(font => font.family == '"FontAwesome"'));
       });
 
 });

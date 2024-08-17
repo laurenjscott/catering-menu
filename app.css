@@ -38,6 +38,12 @@ img {
     display: block;
 }
 
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
 header {
     display: flex;
     align-items: center;
@@ -73,9 +79,6 @@ nav.show-main-nav {
 }
 
 nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
     margin-right: auto;
 }
 
@@ -100,14 +103,10 @@ dialog::backdrop {
 
 footer {
     text-align: center;
-    margin-top: 1rem 0 3rem 0;
+    margin: 1rem 0 3rem 0;
 }
 
-footer ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+
 
 address {
     font-style: normal;
@@ -118,9 +117,11 @@ footer ul.site-map {
 }
 
 footer ul.site-map a {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     display: inline-block;
+    font-weight: bold;
+    font-size: 1.125rem;
 }
 
 footer ul.social-links {

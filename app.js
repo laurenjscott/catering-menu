@@ -32,6 +32,12 @@ export default function populateMainNavigation(folder) { //folder argument is te
 window.addEventListener("load", event => {
     addListenersToMainNavButtons();
     modifyCopyrightYear();
+    document.fonts.ready.then((fontFaceSet) => {
+        // Any operation that needs to be done only after all used fonts
+        // have finished loading can go here.
+        const fontFaces = [...fontFaceSet];
+        console.log(fontFaces.filter(font => font.family == '"FontAwesome"'));
+      });
 
 });
 

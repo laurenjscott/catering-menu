@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Catering Menu | N9NE Caterers</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name = "format-detection" content = "telephone=no"> <!--used to prevent Safari for iOS from turning phone numbers into hyperlink-->
     <link rel="stylesheet" href="../app.css">
     <link rel="stylesheet" href="menu.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,16 +38,27 @@
 </dialog>
 <footer>
 	<small>Standard rates and minimums apply.</small>
+    <ul class="site-map">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../order-form/order-form.html">Order Online</a></li>
+        <li><a href="#">View Printable Menu</a></li>
+    </ul>
     <address>
         <p>N9ne Caterers<br>
-           2400 West Michigan Avenue<br>
-           Chicago, IL 60647    
+            2400 West Michigan Avenue<br>
+            Chicago, IL 60647    
         </p>
-        <p>1-312-555-5555</p>
-        <p><a href="">info@example.com</a></p>
+        <p>1-312-555-5555<br>
+            <a href="">info@example.com</a>
+        </p>
     </address>
+    <ul class="social-links" title="List of social media links">
+        <li><a href="" title="Twitter link"><i class="fab fa-twitter fa-2x"></i></a></li>
+        <li><a href="" title="Instagram link"><i class="fab fa-instagram fa-2x"></i></a></li>
+        <li><a href="" title="LinkedIn link"><i class="fab fa-linkedin-in fa-2x"></i></a></li>
+        <li><a href="" title="TikTok link"><i class="fab fa-tiktok fa-2x"></i></a></li>
+    </ul>
     <p>&copy; 2022 NN Hospitality Group, LLC.</p>
-
 </footer>
 <script src="../app.js" type="module"></script>
 <script src="./menu.js" type="module"></script>

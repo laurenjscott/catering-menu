@@ -85,40 +85,6 @@ main a:focus {
 	outline: 1px solid #707070;
 }
 
-address {
-    font-style: normal;
-}
-
-footer ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-left: 0;
-    gap: 2rem;
-    margin-top: 2rem;
-
-}
-
-footer ul li a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    height: 3rem;
-    width: 3rem;
-    border-radius: 50%;
-    color: #707070;
-    border: 2px solid #707070;
-    text-decoration: none;
-    transition: all 0.5s ease-out;
-
-}
-
-footer ul li a:hover {
-    color: #C32DB1;
-    border-color: #C32DB1;
-}
 
 
 

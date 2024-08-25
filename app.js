@@ -2,29 +2,27 @@ export default function populateMainNavigation() { //folder argument is temporar
     //fileName is temporarily inactive while host via local host. "if" condition will use fileName once in production
     const fileName = document.querySelector("html").baseURI.split("/").pop();
     const navUl = document.querySelector("header nav ul");
-    const homeListItem = document.createElement("li");
-    const currentMenuListItem = document.createElement("li");
-    const orderFormListItem = document.createElement("li");
+    const homeListItem = document.querySelector("nav ul li:first-child");
+    const otherListItem = document.querySelector("nav ul li:last-child");// will be either "currentMenu" list item or "orderForm" list item
     const homeAnchor = document.createElement("a");
-    const currentMenuAnchor = document.createElement("a");
-    const orderFormAnchor = document.createElement("a");
     homeAnchor.href = "../index.html";
     homeAnchor.textContent = "Home";
-    currentMenuAnchor.href = "../current-menu/menu.html";
-    currentMenuAnchor.textContent = "Current Menu";
-    orderFormAnchor.href = "../order-form/order-form.html";
-    orderFormAnchor.textContent = "Order Online";
     homeListItem.appendChild(homeAnchor);
-    currentMenuListItem.appendChild(currentMenuAnchor);
-    orderFormListItem.appendChild(orderFormAnchor);
+
+
     if(fileName == "order-form.html") {
         //populate nav with links to index.html and current-menu.html
-        navUl.appendChild(homeListItem);
-        navUl.appendChild(currentMenuListItem);
+        const currentMenuAnchor = document.createElement("a");
+        currentMenuAnchor.href = "../current-menu/menu.html";
+        currentMenuAnchor.textContent = "Current Menu";
+        otherListItem.appendChild(currentMenuAnchor);
     } else if(fileName == "menu.html") {
         //populate nav with links to index.html and order-form.html
-        navUl.appendChild(homeListItem);
-        navUl.appendChild(orderFormListItem);
+        const orderFormAnchor = document.createElement("a");
+        orderFormAnchor.href = "../order-form/order-form.html";
+        orderFormAnchor.textContent = "Order Online";
+        otherListItem.appendChild(orderFormAnchor);
+
     }
 }
 

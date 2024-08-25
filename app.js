@@ -4,24 +4,20 @@ export default function populateMainNavigation() { //folder argument is temporar
     const navUl = document.querySelector("header nav ul");
     const homeListItem = document.querySelector("nav ul li:first-child");
     const otherListItem = document.querySelector("nav ul li:last-child");// will be either "currentMenu" list item or "orderForm" list item
-    const homeAnchor = document.createElement("a");
+    const homeAnchor = homeListItem.querySelector("a");
     homeAnchor.href = "../index.html";
     homeAnchor.textContent = "Home";
-    homeListItem.appendChild(homeAnchor);
 
+    const otherListItemAnchor = otherListItem.querySelector("a");
 
     if(fileName == "order-form.html") {
         //populate nav with links to index.html and current-menu.html
-        const currentMenuAnchor = document.createElement("a");
-        currentMenuAnchor.href = "../current-menu/menu.html";
-        currentMenuAnchor.textContent = "Current Menu";
-        otherListItem.appendChild(currentMenuAnchor);
+        otherListItemAnchor.href = "../current-menu/menu.html";
+        otherListItemAnchor.textContent = "Current Menu";
     } else if(fileName == "menu.html") {
         //populate nav with links to index.html and order-form.html
-        const orderFormAnchor = document.createElement("a");
-        orderFormAnchor.href = "../order-form/order-form.html";
-        orderFormAnchor.textContent = "Order Online";
-        otherListItem.appendChild(orderFormAnchor);
+        otherListItemAnchor.href = "../order-form/order-form.html";
+        otherListItemAnchor.textContent = "Order Online";
 
     }
 }

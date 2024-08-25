@@ -55,11 +55,9 @@ function toggleMainNavigation() {
     const nav = document.querySelector("nav");
     const hamburger = document.querySelector("header > button");
     if(!nav.classList.contains("show-main-nav")) { //current state before visibility of nav element is toggled. Tests if user just chose to open the nav menu
-        nav.setAttribute("aria-hidden", false);
         hamburger.setAttribute("aria-expanded", true);
         populateMainNavigation();
     } else {
-        nav.setAttribute("aria-hidden", true);
         hamburger.setAttribute("aria-expanded", false);
         [...nav.querySelectorAll("nav ul a")].forEach(a => {
             a.textContent = "";

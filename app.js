@@ -65,7 +65,9 @@ function toggleMainNavigation() {
     } else {
         nav.setAttribute("aria-hidden", true);
         hamburger.setAttribute("aria-expanded", false);
-        nav.querySelector("ul").textContent = "";
+        [...nav.querySelectorAll("nav ul li")].forEach(li => {
+            li.textContent = "";
+        });
 
     }
     nav.classList.toggle("show-main-nav");

@@ -61,8 +61,9 @@ function toggleMainNavigation() {
     } else {
         nav.setAttribute("aria-hidden", true);
         hamburger.setAttribute("aria-expanded", false);
-        [...nav.querySelectorAll("nav ul li")].forEach(li => {
-            li.textContent = "";
+        [...nav.querySelectorAll("nav ul a")].forEach(a => {
+            a.textContent = "";
+            a.href = "";
         });
 
     }

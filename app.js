@@ -59,7 +59,17 @@ function addListenersToMainNavButtons() {
 
 function toggleMainNavigation() {
     const nav = document.querySelector("nav");
+    const hamburger = document.querySelector("header > button");
+    if(!nav.classList.contains("show-main-nav")) { //current state before visibility of nav element is toggled. Tests if user just chose to open the nav menu
+        nav.setAttribute("aria-hidden", false);
+        hamburger.setAttribute("aria-expanded", true);
+    } else {
+        nav.setAttribute("aria-hidden", true);
+        hamburger.setAttribute("aria-expanded", false);
+
+    }
     nav.classList.toggle("show-main-nav");
+    
 }
     
 

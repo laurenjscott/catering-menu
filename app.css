@@ -92,6 +92,11 @@ nav li a {
     
 }
 
+nav[aria-hidden="true"] li a, nav[aria-hidden="true"] button {
+    visibility: hidden;
+    
+}
+
 dialog {
     border: none;
 }

@@ -17,11 +17,11 @@ export default function populateMainNavigation() { //folder argument is temporar
     homeListItem.appendChild(homeAnchor);
     currentMenuListItem.appendChild(currentMenuAnchor);
     orderFormListItem.appendChild(orderFormAnchor);
-    if(fileName == "order-form") {
+    if(fileName == "order-form.html") {
         //populate nav with links to index.html and current-menu.html
         navUl.appendChild(homeListItem);
         navUl.appendChild(currentMenuListItem);
-    } else if(fileName == "menu") {
+    } else if(fileName == "menu.html") {
         //populate nav with links to index.html and order-form.html
         navUl.appendChild(homeListItem);
         navUl.appendChild(orderFormListItem);

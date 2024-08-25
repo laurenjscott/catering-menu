@@ -1,11 +1,11 @@
-import populateMainNavigation from "../app.js"; //Why is populateMainNavigation() being imported instead of being run in app.js? Because of the issue with Dreamweaver live server not displaying the true URL of the HTML file it's called on. Once this is in prod, it can be run in app.js.
+// import populateMainNavigation from "../app.js"; //Why is populateMainNavigation() being imported instead of being run in app.js? Because of the issue with Dreamweaver live server not displaying the true URL of the HTML file it's called on. Once this is in prod, it can be run in app.js.
 
 
 
 window.addEventListener("load", () => {
         
     //addition of argument is temporary while hosted via localhost
-    populateMainNavigation(import.meta.url.split("/").pop().split(".")[0]); 
+    // populateMainNavigation(import.meta.url.split("/").pop().split(".")[0]); 
 //    populateMainNavigation();    
 
     

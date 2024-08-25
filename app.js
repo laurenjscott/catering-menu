@@ -1,6 +1,6 @@
-export default function populateMainNavigation(folder) { //folder argument is temporary
+export default function populateMainNavigation() { //folder argument is temporary
     //fileName is temporarily inactive while host via local host. "if" condition will use fileName once in production
-//    const fileName = document.querySelector("html").baseURI.split("/").pop();
+    const fileName = document.querySelector("html").baseURI.split("/").pop();
     const navUl = document.querySelector("header nav ul");
     const homeListItem = document.createElement("li");
     const currentMenuListItem = document.createElement("li");
@@ -17,11 +17,11 @@ export default function populateMainNavigation(folder) { //folder argument is te
     homeListItem.appendChild(homeAnchor);
     currentMenuListItem.appendChild(currentMenuAnchor);
     orderFormListItem.appendChild(orderFormAnchor);
-    if(folder == "order-form") {
+    if(fileName == "order-form") {
         //populate nav with links to index.html and current-menu.html
         navUl.appendChild(homeListItem);
         navUl.appendChild(currentMenuListItem);
-    } else if(folder == "menu") {
+    } else if(fileName == "menu") {
         //populate nav with links to index.html and order-form.html
         navUl.appendChild(homeListItem);
         navUl.appendChild(orderFormListItem);
@@ -63,9 +63,11 @@ function toggleMainNavigation() {
     if(!nav.classList.contains("show-main-nav")) { //current state before visibility of nav element is toggled. Tests if user just chose to open the nav menu
         nav.setAttribute("aria-hidden", false);
         hamburger.setAttribute("aria-expanded", true);
+        populateMainNavigation();
     } else {
         nav.setAttribute("aria-hidden", true);
         hamburger.setAttribute("aria-expanded", false);
+        nav.querySelector("ul").textContent = "";
 
     }
     nav.classList.toggle("show-main-nav");

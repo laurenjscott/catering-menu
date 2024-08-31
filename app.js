@@ -81,7 +81,7 @@ function toggleMainNavigation() {
 	*/
     if(nav.classList.contains("show-main-nav")) { 
         hamburger.setAttribute("aria-expanded", true);
-        populateMainNavigation();
+        setTimeout(populateMainNavigation, 500);
     } else {
         hamburger.setAttribute("aria-expanded", false);
         [...nav.querySelectorAll("nav ul a")].forEach(a => {

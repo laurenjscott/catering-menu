@@ -73,8 +73,12 @@ function toggleMainNavigation() {
 
     const nav = document.querySelector("nav");
     const hamburger = document.querySelector("header > button");
-    nav.classList.toggle("show-main-nav");
-
+    nav.classList.toggle("show-main-nav"); /*
+    	If this class is applied, the nav element did this:
+			1."display: none" changed into "display: block"
+			2. element moved into the visual viewport by going from "left: -999" to "left: 0". 
+				i. Only by moved into the visual viewport is the nav able to be and/or enclose an ARIA live region
+	*/
     if(nav.classList.contains("show-main-nav")) { 
         hamburger.setAttribute("aria-expanded", true);
         populateMainNavigation();

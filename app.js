@@ -81,7 +81,7 @@ function toggleMainNavigation() {
 	*/
     if(nav.classList.contains("show-main-nav")) { 
         hamburger.setAttribute("aria-expanded", true);
-        setTimeout(populateMainNavigation, 500);
+        setTimeout(populateMainNavigation, 300); // used setTimeout to give nav element enougth time to be added to the DOM
     } else {
         hamburger.setAttribute("aria-expanded", false);
         [...nav.querySelectorAll("nav ul a")].forEach(a => {

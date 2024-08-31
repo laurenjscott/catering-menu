@@ -77,12 +77,13 @@ nav {
 }
 
 nav.show-main-nav {
-    left: 0;
     /*Added 2024-08-31 as a test*/ display: flex;
 }
 
 nav.make-visible {
     visibility: visible;
+    left: 0;
+
 }
 
 nav ul {

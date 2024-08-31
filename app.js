@@ -37,7 +37,7 @@ window.addEventListener("load", event => {
 
 window.addEventListener("pagehide", () => {
     const nav = document.querySelector("header nav");
-    nav.classList.remove("show-main-nav");
+    nav.classList.remove("add-to-dom");
 });
 
 function modifyCopyrightYear() {
@@ -54,7 +54,7 @@ function addListenersToMainNavButtons() {
 // function toggleMainNavigation() {
 //     const nav = document.querySelector("nav");
 //     const hamburger = document.querySelector("header > button");
-//     if(!nav.classList.contains("show-main-nav")) { //current state before visibility of nav element is toggled. Tests if user just chose to open the nav menu
+//     if(!nav.classList.contains("add-to-dom")) { //current state before visibility of nav element is toggled. Tests if user just chose to open the nav menu
 //         hamburger.setAttribute("aria-expanded", true);
 //         populateMainNavigation();
 //     } else {
@@ -65,7 +65,7 @@ function addListenersToMainNavButtons() {
 //         });
 
 //     }
-//     nav.classList.toggle("show-main-nav");
+//     nav.classList.toggle("add-to-dom");
     
 // }
 
@@ -73,24 +73,23 @@ function toggleMainNavigation() {
 
     const nav = document.querySelector("nav");
     const hamburger = document.querySelector("header > button");
-    nav.classList.toggle("show-main-nav"); /*
+    nav.classList.toggle("add-to-dom"); /*
     	If this class is applied, the nav element did this:
-			1."display: none" changed into "display: block"
-			2. element moved into the visual viewport by going from "left: -999" to "left: 0". 
-				i. Only by moved into the visual viewport is the nav able to be and/or enclose an ARIA live region
+			1."display: none" changed into "display: flex"
+            2. brings element back into the DOM layout, though still hidden from accessibility tree
 	*/
-    if(nav.classList.contains("show-main-nav")) { 
+    if(nav.classList.contains("add-to-dom")) { 
         hamburger.setAttribute("aria-expanded", true);
         setTimeout(() =>{ 
-            nav.classList.add("make-visible");
-            setTimeout(populateMainNavigation, 600);
-        }, 300) /*Added 2024-08-31 as a test*/ 
+            nav.classList.add("make-visible"); // adds element to accessibility tree and displays it in the visual viewport
+            setTimeout(populateMainNavigation, 600); // gives nav enough time to be added to accessibility tree before adding dynamic content to live region
+        }, 300) /*Added 2024-08-31 */ 
     } else {
         hamburger.setAttribute("aria-expanded", false);
         [...nav.querySelectorAll("nav ul a")].forEach(a => {
             a.textContent = "";
             a.href = "";
-            nav.classList.remove("make-visible") /*Added 2024-08-31 as a test*/ 
+            nav.classList.remove("make-visible") /*Added 2024-08-31 */ 
         });
 
     }

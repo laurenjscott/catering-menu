@@ -83,7 +83,7 @@ function toggleMainNavigation() {
         hamburger.setAttribute("aria-expanded", true);
         setTimeout(() =>{ 
             nav.classList.add("make-visible");
-            populateMainNavigation();
+            setTimeout(populateMainNavigation, 600);
         }, 300) /*Added 2024-08-31 as a test*/ 
     } else {
         hamburger.setAttribute("aria-expanded", false);

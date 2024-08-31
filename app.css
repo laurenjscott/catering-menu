@@ -72,10 +72,12 @@ nav {
     opacity: 0.9;
     transition: all 0.3s ease;
     border-radius: 0 0.5rem 0.5rem 0;
+    /*Added 2024-08-31 as a test*/ display: none;
 }
 
 nav.show-main-nav {
     left: 0;
+    /*Added 2024-08-31 as a test*/ display: block;
 }
 
 nav ul {

@@ -82,7 +82,7 @@ function toggleMainNavigation() {
     if(nav.classList.contains("show-main-nav")) { 
         hamburger.setAttribute("aria-expanded", true);
         populateMainNavigation();
-        nav.classList.add("make-visible") /*Added 2024-08-31 as a test*/ 
+        setTimeout(() => nav.classList.add("make-visible"), 300) /*Added 2024-08-31 as a test*/ 
     } else {
         hamburger.setAttribute("aria-expanded", false);
         [...nav.querySelectorAll("nav ul a")].forEach(a => {

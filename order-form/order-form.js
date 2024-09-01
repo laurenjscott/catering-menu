@@ -971,7 +971,7 @@ function addFaFallback(parentElement, string) { //adds fallback text when Font A
 }
 
 
-const processChange = debounce((event) => {console.info(new Date());validateEventDate(event)}); //processChange is assigned the return value from debounce(), which is a function declaration. When processChange(event) is called via event trigger on the date input, the following anonymous function is invoked:
+const processChange = debounce((event) => {validateEventDate(event)}); //processChange is assigned the return value from debounce(), which is a function declaration. When processChange(event) is called via event trigger on the date input, the following anonymous function is invoked:
 //processChange = (...args) => { // the "change event" is the argument passed to this function
 //        clearTimeout(timer); //does nothing if timer is undefined. Else, cancels previous setTimeout call. 
 //        timer = setTimeout(() => { func.apply(this, args)}, timeout); // After 500 ms (0.5 sec), runs function passed to debounce(), which is "(event) => validateEventDate(event)". The timer variable is then set with integer. From MDN's setTimeout docs: "The returned timeoutID is a positive integer value which identifies the timer created by the call to setTimeout(). This value can be passed to clearTimeout() to cancel the timeout."

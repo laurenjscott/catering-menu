@@ -16,8 +16,9 @@
 </head>
 <body>
     <header>
-        <button type="button" aria-label="View main navigation"  aria-expanded="false" aria-controls="global-nav">
+        <button type="button" aria-label="View main navigation" aria-expanded="false" aria-controls="global-nav" title="View main navigation">
             <i class="fas fa-bars fa-2x" aria-hidden="true" title="View main navigation"></i>
+            <span class="sr-only">View Main Navigation</span>
         </button>
         <div>logo placeholder</div>
         <nav id="global-nav">
@@ -29,12 +30,13 @@
                     <a href=""></a>
                 </li>
             </ul>
-            <button type="button" aria-label="Close main navigation">
+            <button type="button" aria-label="Close main navigation" title="Close main navigation">
                 <i class="fas fa-times-circle fa-2x" aria-hidden="true" title="Close main navigation"></i>
+                <span class="sr-only">Close main navigation</span>
             </button>
         </nav>
-        <button type="button">
-            <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+        <button type="button" title="View shopping cart">
+            <i class="fas fa-shopping-cart" aria-hidden="true" title="View shopping cart"></i>
             <span class="sr-only">Number of items in cart:</span>
             <span>0</span>
         </button>
@@ -78,8 +80,9 @@
         </section>
     </main>
         <dialog id="menu-item-dialog">
-                <button aria-label="Close dialog" class="close-dialog">
-                    <i class="fas fa-times-circle fa-3x" aria-hidden="true"></i>
+                <button aria-label="Close menu item dialog" class="close-dialog" title="Close menu item dialog">
+                    <i class="fas fa-times-circle fa-3x" aria-hidden="true" title="Close menu item dialog"></i>
+                    <span class="sr-only">Close menu item dialog</span>
                 </button>
             <section id="menu-item-image-dialog"></section>
             <form action="" method="dialog">
@@ -91,12 +94,14 @@
 
               <div id="quantity-section">
                   <div id="qty-picker-wrapper">
-                      <button id="decrease-quantity-button" class="quantity-button" type="button" disabled aria-label="Decrease quantity">
-                          <i class="fas fa-minus" aria-hidden="true"></i>
+                      <button id="decrease-quantity-button" class="quantity-button" type="button" disabled aria-label="Decrease quantity" title="Decrease quantity">
+                          <i class="fas fa-minus" aria-hidden="true" title="Decrease quantity"></i>
+                          <span class="sr-only">Decrease quantity</span>
                       </button>
                       <input id="menu-item" name="menu-item" type="number" step="1" min="1" value="1" disabled>
-                      <button id="increase-quantity-button" class="quantity-button" type="button" autofocus aria-label="Increase quantity">
-                          <i class="fas fa-plus" aria-hidden="true"></i>
+                      <button id="increase-quantity-button" class="quantity-button" type="button" autofocus aria-label="Increase quantity" title="Increase quantity">
+                          <i class="fas fa-plus" aria-hidden="true" title="Increase quantity"></i>
+                          <span class="sr-only">Increase quantity</span>
                       </button>
                   </div>
                   <button id="add-to-cart-button">
@@ -120,8 +125,9 @@
             </form>
         </dialog>
         <dialog id="view-cart">
-             <button aria-label="Close shopping cart button" class="close-dialog">
-                <i class="fas fa-times-circle fa-2x" aria-hidden="true"></i>
+             <button aria-label="Close shopping cart button" class="close-dialog" title="Close shopping cart">
+                <i class="fas fa-times-circle fa-2x" aria-hidden="true" title="Close shopping cart"></i>
+                <span class="sr-only">Close shopping cart</span>
             </button>
             <form action="" method="dialog">
                 <h2></h2>
@@ -155,10 +161,30 @@
                 </p>
             </address>
             <ul class="social-links" title="List of social media links">
-                <li><a href="" title="Twitter link"><i class="fab fa-twitter fa-2x"></i></a></li>
-                <li><a href="" title="Instagram link"><i class="fab fa-instagram fa-2x"></i></a></li>
-                <li><a href="" title="LinkedIn link"><i class="fab fa-linkedin-in fa-2x"></i></a></li>
-                <li><a href="" title="TikTok link"><i class="fab fa-tiktok fa-2x"></i></a></li>
+                <li>
+                    <a href="" title="Twitter link">
+                        <i class="fab fa-twitter fa-2x"></i>
+                        <span class="sr-only">Twitter link</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" title="Instagram link">
+                        <i class="fab fa-instagram fa-2x"></i>
+                        <span class="sr-only">Instagram link</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" title="LinkedIn link">
+                        <i class="fab fa-linkedin-in fa-2x"></i>
+                        <span class="sr-only">LinkedIn link</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" title="TikTok link">
+                        <i class="fab fa-tiktok fa-2x"></i>
+                        <span class="sr-only">Tik Tok link</span>
+                    </a>
+                </li>
             </ul>
             <p>&copy; 2022 NN Hospitality Group, LLC.</p>
         </footer>

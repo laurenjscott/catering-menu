@@ -228,12 +228,20 @@ function renderCartItems(cartItemsArray, fieldset) {
         let img = document.createElement("img");
         let label = document.createElement("label");
         let input = document.createElement("input");
+
         let decreaseButton = document.createElement("button");
         let decreaseButtonIcon = document.createElement("i");
+        addFaFallback(decreaseButton, "Decrease quantity");
+        
+
         let increaseButton = document.createElement("button");
         let increaseButtonIcon = document.createElement("i");
+        addFaFallback(increaseButton, "Increase quantity");
+
         let deleteLineItemButton = document.createElement("button");
         let deleteLineItemButtonIcon = document.createElement("i");
+        addFaFallback(deleteLineItemButton, "Delete line item");
+
         let lineItemTotal = document.createElement("output");
         let categoryGeneralDescription;
         lineItemWrapper.dataset.modificationTimestamp = item.timestamp;
@@ -274,6 +282,8 @@ function renderCartItems(cartItemsArray, fieldset) {
         deleteLineItemButtonIcon.classList.add("fa-trash-alt");
         deleteLineItemButtonIcon.setAttribute("aria-hidden", true);
         lineItemTotal.textContent = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(item.pricePerUnit) * parseInt(item.qty));
+
+
         decreaseButton.appendChild(decreaseButtonIcon);
         increaseButton.appendChild(increaseButtonIcon);
         deleteLineItemButton.appendChild(deleteLineItemButtonIcon);
@@ -939,6 +949,13 @@ function debounce(func, timeout = 500){ //Used to allow user to complete data en
         timer = setTimeout(() => func(...args), timeout);
     };
     return test;
+}
+
+function addFaFallback(parentElement, string) { //adds fallback text when Font Awesome web fonts don't load. Done obvi for accessibility purposes. Invoked when parent button or anchor element is created.
+	const span = document.createElement("span");
+	span.classList.add("sr-only");
+	span.textContext = string;
+	parentElement.appendChild(span);
 }
 
 const processChange = debounce((event) => {console.info(new Date());validateEventDate(event)}); //processChange is assigned the return value from debounce(), which is a function declaration. When processChange(event) is called via event trigger on the date input, the following anonymous function is invoked:

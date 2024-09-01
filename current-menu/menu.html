@@ -14,8 +14,9 @@
 </head>
 <body>
 <header>
-    <button type="button" aria-label="View main navigation" aria-expanded="false" aria-controls="global-nav">
+    <button type="button" aria-label="View main navigation" aria-expanded="false" aria-controls="global-nav" title="View main navigation">
         <i class="fas fa-bars fa-2x" aria-hidden="true" title="View main navigation"></i>
+        <span class="sr-only">View Main Navigation</span>
     </button>
     <div>logo placeholder</div>
     <nav id="global-nav">
@@ -27,8 +28,9 @@
                 <a href=""></a>
             </li>
         </ul>
-        <button type="button" aria-label="Close main navigation">
+        <button type="button" aria-label="Close main navigation" title="Close main navigation">
             <i class="fas fa-times-circle fa-2x" aria-hidden="true" title="Close main navigation"></i>
+            <span class="sr-only">Close main navigation</span>
         </button>
     </nav>
 </header>
@@ -59,10 +61,30 @@
         </p>
     </address>
     <ul class="social-links" title="List of social media links">
-        <li><a href="" title="Twitter link"><i class="fab fa-twitter fa-2x"></i></a></li>
-        <li><a href="" title="Instagram link"><i class="fab fa-instagram fa-2x"></i></a></li>
-        <li><a href="" title="LinkedIn link"><i class="fab fa-linkedin-in fa-2x"></i></a></li>
-        <li><a href="" title="TikTok link"><i class="fab fa-tiktok fa-2x"></i></a></li>
+        <li>
+            <a href="" title="Twitter link">
+                <i class="fab fa-twitter fa-2x"></i>
+                <span class="sr-only">Twitter link</span>
+            </a>
+        </li>
+        <li>
+            <a href="" title="Instagram link">
+                <i class="fab fa-instagram fa-2x"></i>
+                <span class="sr-only">Instagram link</span>
+            </a>
+        </li>
+        <li>
+            <a href="" title="LinkedIn link">
+                <i class="fab fa-linkedin-in fa-2x"></i>
+                <span class="sr-only">LinkedIn link</span>
+            </a>
+        </li>
+        <li>
+            <a href="" title="TikTok link">
+                <i class="fab fa-tiktok fa-2x"></i>
+                <span class="sr-only">Tik Tok link</span>
+            </a>
+        </li>
     </ul>
     <p>&copy; 2022 NN Hospitality Group, LLC.</p>
 </footer>

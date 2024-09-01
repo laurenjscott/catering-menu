@@ -51,23 +51,7 @@ function addListenersToMainNavButtons() {
     buttonArray.forEach(button => button.addEventListener("click", toggleMainNavigation));
 }
 
-// function toggleMainNavigation() {
-//     const nav = document.querySelector("nav");
-//     const hamburger = document.querySelector("header > button");
-//     if(!nav.classList.contains("add-to-dom")) { //current state before visibility of nav element is toggled. Tests if user just chose to open the nav menu
-//         hamburger.setAttribute("aria-expanded", true);
-//         populateMainNavigation();
-//     } else {
-//         hamburger.setAttribute("aria-expanded", false);
-//         [...nav.querySelectorAll("nav ul a")].forEach(a => {
-//             a.textContent = "";
-//             a.href = "";
-//         });
 
-//     }
-//     nav.classList.toggle("add-to-dom");
-    
-// }
 
 function toggleMainNavigation() {
 

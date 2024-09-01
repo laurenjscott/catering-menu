@@ -245,12 +245,15 @@ function renderCartItems(cartItemsArray, fieldset) {
         let lineItemTotal = document.createElement("output");
         let categoryGeneralDescription;
         lineItemWrapper.dataset.modificationTimestamp = item.timestamp;
+
         img.setAttribute("src", "../assets/nadine-primeau-l5Mjl9qH8VU-unsplash.jpg");
         img.setAttribute("alt", "image of food")
         img.setAttribute("width", "75");
         img.setAttribute("aria-hidden", true);
+
         label.setAttribute("for", `${item.uuid}-${item.timestamp}`);
         label.textContent = item.menuItemName;
+
         input.setAttribute("id", `${item.uuid}-${item.timestamp}`);
         input.setAttribute("name", `${item.uuid}-${item.timestamp}`);
         input.setAttribute("type", "number");
@@ -258,7 +261,9 @@ function renderCartItems(cartItemsArray, fieldset) {
         input.setAttribute("value", item.qty);
         input.setAttribute("step", "1");
         input.setAttribute("disabled", "true");
+
         decreaseButton.setAttribute("type", "button");
+        decreaseButton.setAttribute("title", "Decrease quantity");
         decreaseButton.classList.add("quantity-button");
         if((item.perDozen == "true" && item.qty == 2) || item.qty == 1) {
             decreaseButton.setAttribute("disabled", "true");
@@ -268,19 +273,26 @@ function renderCartItems(cartItemsArray, fieldset) {
         decreaseButtonIcon.classList.add("fas");
         decreaseButtonIcon.classList.add("fa-minus");
         decreaseButtonIcon.setAttribute("aria-hidden", true);
+        decreaseButtonIcon.setAttribute("title", "Decrease quantity");
+
         increaseButton.setAttribute("type", "button");
         increaseButton.setAttribute("autofocus", true);
         increaseButton.classList.add("quantity-button");
         increaseButton.setAttribute("aria-label", "Increase quantity button");
+        increaseButton.setAttribute("title", "Increase quantity")
         increaseButton.addEventListener("click", updateCartLineItemQuantity);
         increaseButtonIcon.classList.add("fas");
         increaseButtonIcon.classList.add("fa-plus");
         increaseButtonIcon.setAttribute("aria-hidden", true);
+        increaseButtonIcon.setAttribute("title", "Increase quantity")
+
         deleteLineItemButton.setAttribute("type", "button");
         deleteLineItemButton.setAttribute("aria-label", "Delete line item button");
+        deleteLineItemButton.setAttribute("title", "Delete line item")
         deleteLineItemButtonIcon.classList.add("fas");
         deleteLineItemButtonIcon.classList.add("fa-trash-alt");
         deleteLineItemButtonIcon.setAttribute("aria-hidden", true);
+        deleteLineItemButtonIcon.setAttribute("title", "Delete line item")
         lineItemTotal.textContent = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(item.pricePerUnit) * parseInt(item.qty));
 
 
@@ -954,9 +966,10 @@ function debounce(func, timeout = 500){ //Used to allow user to complete data en
 function addFaFallback(parentElement, string) { //adds fallback text when Font Awesome web fonts don't load. Done obvi for accessibility purposes. Invoked when parent button or anchor element is created.
 	const span = document.createElement("span");
 	span.classList.add("sr-only");
-	span.textContext = string;
+	span.textContent = string;
 	parentElement.appendChild(span);
 }
+
 
 const processChange = debounce((event) => {console.info(new Date());validateEventDate(event)}); //processChange is assigned the return value from debounce(), which is a function declaration. When processChange(event) is called via event trigger on the date input, the following anonymous function is invoked:
 //processChange = (...args) => { // the "change event" is the argument passed to this function

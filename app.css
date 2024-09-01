@@ -72,10 +72,18 @@ nav {
     opacity: 0.9;
     transition: all 0.3s ease;
     border-radius: 0 0.5rem 0.5rem 0;
+    visibility: hidden;  /*Added 2024-08-31 as a test*/
+    display: none;  /*Added 2024-08-31 as a test*/ 
 }
 
-nav.show-main-nav {
+nav.add-to-dom {
+    display: flex;  /*Added 2024-08-31. Element is still not visible yet if not injunction with .make-visible class because (1) the left property value is -999, (2) visibility is still hidden until .make-visible class is invoked. The reason why? I want to add the element back to the DOM as early as possible to make sure transitions work, but I don't want it shown immediately so the transitions aren't so jagged */ 
+}
+
+nav.make-visible { /* brings nav into visible viewport */
+    visibility: visible;
     left: 0;
+
 }
 
 nav ul {
